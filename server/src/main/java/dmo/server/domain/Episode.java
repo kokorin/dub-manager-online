@@ -27,6 +27,11 @@ public class Episode {
     private Anime anime;
 
     public enum Type {
-
+        REGULAR,
+        SPECIAL,
+        CREDIT,
+        TRAILER,
+        PARODY,
+        OTHER
     }
 }
