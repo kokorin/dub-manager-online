@@ -6,4 +6,6 @@ import lombok.Data;
 public class AnimeDto {
     private Long id;
     private String title;
+    // TODO make it enum
+    private String type;
 }
