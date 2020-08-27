@@ -3,7 +3,7 @@
                       logicalFilePath="changelog-base.xml">
 
     <changeSet author="kokorin" id="base-1">
-        <createTable tableName="Anime">
+        <createTable tableName="anime">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" />
             </column>
@@ -12,7 +12,7 @@
     </changeSet>
 
     <changeSet author="kokorin" id="base-2">
-        <createTable tableName="Episode">
+        <createTable tableName="episode">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" />
             </column>
@@ -29,5 +29,11 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet author="kokorin" id="base-3">        
+        <addForeignKeyConstraint constraintName="episode_anime_id"
+          baseTableName="episode" baseColumnNames="anime_id"
+          referencedTableName="anime" referencedColumnNames="id" />
     </changeSet>
 </databaseChangeLog> 

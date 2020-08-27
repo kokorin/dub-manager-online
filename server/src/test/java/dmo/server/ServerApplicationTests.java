@@ -1,40 +1,36 @@
 package dmo.server;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import dmo.server.ServerApplicationTests.Initializer;
-
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(initializers = { Initializer.class })
+@SpringJUnitConfig
+@Testcontainers
+@TestPropertySource(properties = {
+	"logging.level.ROOT=INFO"
+})
 class ServerApplicationTests {
+
+	@Container
+	public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>().withReuse(true);
+
+	@DynamicPropertySource
+	public static void updateConfig(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", database::getJdbcUrl);
+		registry.add("spring.datasource.username", database::getUsername);
+		registry.add("spring.datasource.password", database::getPassword);
+	}
 
 	@Test
 	void contextLoads() {
 
 	}
-
-	static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-		public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-				JdbcDatabaseContainer<?> database = new MariaDBContainer<>();
-				
-				database.start();
-
-	            TestPropertyValues.of(
-	              "spring.datasource.url=" + database.getJdbcUrl(),
-	              "spring.datasource.username=" + database.getUsername(),
-	              "spring.datasource.password=" + database.getPassword()
-	            ).applyTo(configurableApplicationContext);
-	        }
-	}
-
 }
