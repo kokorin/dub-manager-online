@@ -1,18 +1,18 @@
 package dmo.server.integration.anidb;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlValue;
-import java.util.Date;
+import lombok.ToString;
+
+import javax.xml.bind.annotation.*;
+import java.time.LocalDate;
 import java.util.List;
 
+@ToString
 public class AnidbEpisode {
     @XmlAttribute
     public Long id;
 
     @XmlAttribute
-    public Date update;
+    public LocalDate update;
 
     @XmlElement
     public EpNo epno;
@@ -21,13 +21,13 @@ public class AnidbEpisode {
     public Long length;
 
     @XmlElement(name = "airdate")
-    public Date airDate;
+    public LocalDate airDate;
 
     @XmlElement(name = "title")
     public List<AnidbEpisodeTitle> titles;
 
     public static class EpNo {
-        @XmlAttribute
+        @XmlAttribute(name = "type")
         private Type type;
 
         @XmlValue
@@ -37,12 +37,25 @@ public class AnidbEpisode {
             return type;
         }
 
+        /**
+         * AniDB episode number may contain not only digits but also leading letter.
+         * This letter duplicates type field.
+         * @return episode number
+         */
         public Long getNumber() {
-            String value = number.replaceFirst("^\\w", "");
+            if (number == null || number.isEmpty()) {
+                return null;
+            }
+
+            String value = number;
+            if (type != Type.REGULAR) {
+                value = value.substring(1);
+            }
             return Long.valueOf(value);
         }
     }
 
+    @XmlType(name = "AnidbEpisodeType")
     public enum Type {
         @XmlEnumValue("1")
         REGULAR,

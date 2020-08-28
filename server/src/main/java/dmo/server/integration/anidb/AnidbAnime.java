@@ -1,13 +1,16 @@
 package dmo.server.integration.anidb;
 
+import lombok.ToString;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @XmlRootElement
+@ToString
 public class AnidbAnime {
     @XmlAttribute
     public Long id;
@@ -19,10 +22,10 @@ public class AnidbAnime {
     public Long episodeCount;
 
     @XmlElement(name = "startdate")
-    public Date startDate;
+    public LocalDate startDate;
 
     @XmlElement(name = "enddate")
-    public Date endDate;
+    public LocalDate endDate;
 
     @XmlElementWrapper(name = "titles")
     @XmlElement(name = "title")

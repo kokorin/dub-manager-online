@@ -1,6 +1,6 @@
 package dmo.server.integration.anidb;
 
-import dmo.server.okhttp.MockInterceptor;
+import dmo.server.util.okhttp.MockInterceptor;
 import lombok.RequiredArgsConstructor;
 import okhttp3.Interceptor;
 

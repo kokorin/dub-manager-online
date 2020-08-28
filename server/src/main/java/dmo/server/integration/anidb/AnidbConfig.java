@@ -1,6 +1,6 @@
 package dmo.server.integration.anidb;
 
-import dmo.server.okhttp.XmlUngzipInterceptor;
+import dmo.server.util.okhttp.XmlUngzipInterceptor;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;

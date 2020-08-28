@@ -1,4 +1,4 @@
-package dmo.server.okhttp;
+package dmo.server.util.okhttp;
 
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
