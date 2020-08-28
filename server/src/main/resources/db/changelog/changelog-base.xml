@@ -1,11 +1,32 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd"
-                      logicalFilePath="changelog-base.xml">
+                   logicalFilePath="changelog-base.xml">
+
+    <changeSet author="kokorin" id="0" runAlways="true">
+        <preConditions onFail="HALT" onFailMessage="SET CHARSET TO utf8mb4">
+            <dbms type="mariadb,mysql"/>
+            <sqlCheck expectedResult="0"><![CDATA[
+                SELECT COUNT(1) FROM INFORMATION_SCHEMA.SYSTEM_VARIABLES
+                WHERE VARIABLE_NAME IN (
+                    'CHARACTER_SET_RESULTS',
+                    'CHARACTER_SET_CLIENT',
+                    'CHARACTER_SET_CONNECTION',
+                    'CHARACTER_SET_SERVER',
+                    '### excluded from check ### CHARACTER_SET_SYSTEM',
+                    'CHARACTER_SET_DATABASE'
+                ) AND (
+                    ( SESSION_VALUE <> 'utf8mb4' AND SESSION_VALUE IS NOT NULL )
+                    OR GLOBAL_VALUE <> 'utf8mb4'
+                )
+         ]]></sqlCheck>
+        </preConditions>
+    </changeSet>
 
     <changeSet author="kokorin" id="1598541702654">
         <createTable tableName="anime_type">
             <column name="type" type="VARCHAR(32)">
-                <constraints primaryKey="true" />
+                <constraints primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -14,45 +35,24 @@
         <insert tableName="anime_type">
             <column name="type" value="MOVIE"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598541917407">
         <insert tableName="anime_type">
             <column name="type" value="OVA"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598541970690">
         <insert tableName="anime_type">
             <column name="type" value="TV_SERIES"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598541989697">
         <insert tableName="anime_type">
             <column name="type" value="TV_SPECIAL"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542011890">
         <insert tableName="anime_type">
             <column name="type" value="WEB"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542027700">
         <insert tableName="anime_type">
             <column name="type" value="MUSIC_VIDEO"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542044770">
         <insert tableName="anime_type">
             <column name="type" value="OTHER"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542061795">
         <insert tableName="anime_type">
             <column name="type" value="UNKNOWN"/>
         </insert>
@@ -63,25 +63,84 @@
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false" />
-            </column>
             <column name="type" type="VARCHAR(32)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet author="kokorin" id="base-anime-type-constraint">
-        <addForeignKeyConstraint constraintName="fk_anime_anime_type"
+        <addForeignKeyConstraint constraintName="fk_anime_to_anime_type"
                                  baseTableName="anime" baseColumnNames="type"
                                  referencedTableName="anime_type" referencedColumnNames="type"/>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598587905522">
+        <createTable tableName="anime_title_type">
+            <column name="type" type="VARCHAR(32)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598587956215">
+        <insert tableName="anime_title_type">
+            <column name="type" value="SHORT"/>
+        </insert>
+        <insert tableName="anime_title_type">
+            <column name="type" value="OFFICIAL"/>
+        </insert>
+        <insert tableName="anime_title_type">
+            <column name="type" value="SYNONYM"/>
+        </insert>
+        <insert tableName="anime_title_type">
+            <column name="type" value="MAIN"/>
+        </insert>
+        <insert tableName="anime_title_type">
+            <column name="type" value="CARD"/>
+        </insert>
+        <insert tableName="anime_title_type">
+            <column name="type" value="KANA"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598587028399">
+        <createTable tableName="anime_title">
+            <column name="type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lang" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="anime_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598587211267" dbms="mariadb,mysql">
+        <sql>CREATE FULLTEXT INDEX idx_anime_title ON anime_title(text)</sql>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598587149590">
+        <addForeignKeyConstraint constraintName="fk_anime_title_to_anime_id"
+                                 baseTableName="anime_title" baseColumnNames="anime_id"
+                                 referencedTableName="anime" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598588015928">
+        <addForeignKeyConstraint constraintName="fk_anime_title_to_anime_title_type"
+                                 baseTableName="anime_title" baseColumnNames="type"
+                                 referencedTableName="anime_title_type" referencedColumnNames="type"/>
     </changeSet>
 
     <changeSet author="kokorin" id="1598542296521">
         <createTable tableName="episode_type">
             <column name="type" type="VARCHAR(32)">
-                <constraints primaryKey="true" />
+                <constraints primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -90,33 +149,18 @@
         <insert tableName="episode_type">
             <column name="type" value="REGULAR"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542358178">
         <insert tableName="episode_type">
             <column name="type" value="SPECIAL"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542369978">
         <insert tableName="episode_type">
             <column name="type" value="CREDIT"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542381217">
         <insert tableName="episode_type">
             <column name="type" value="TRAILER"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542394771">
         <insert tableName="episode_type">
             <column name="type" value="PARODY"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542406379">
         <insert tableName="episode_type">
             <column name="type" value="OTHER"/>
         </insert>
@@ -126,32 +170,32 @@
     <changeSet author="kokorin" id="1598542447133">
         <createTable tableName="episode">
             <column name="id" type="BIGINT">
-                <constraints primaryKey="true" />
+                <constraints primaryKey="true"/>
             </column>
             <column name="number" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="type" type="VARCHAR(32)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="anime_id" type="BIGINT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet author="kokorin" id="1598542460021">
-        <addForeignKeyConstraint constraintName="fk_episode_anime_id"
-          baseTableName="episode" baseColumnNames="anime_id"
-          referencedTableName="anime" referencedColumnNames="id" />
+        <addForeignKeyConstraint constraintName="fk_episode_to_anime_id"
+                                 baseTableName="episode" baseColumnNames="anime_id"
+                                 referencedTableName="anime" referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet author="kokorin" id="1598542470556">
-        <addForeignKeyConstraint constraintName="episode_episode_type"
-          baseTableName="episode" baseColumnNames="type"
-          referencedTableName="episode_type" referencedColumnNames="type" />
+        <addForeignKeyConstraint constraintName="fk_episode_to_episode_type"
+                                 baseTableName="episode" baseColumnNames="type"
+                                 referencedTableName="episode_type" referencedColumnNames="type"/>
     </changeSet>
 </databaseChangeLog> 

@@ -1,8 +1,5 @@
 package dmo.server;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,9 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @SpringJUnitConfig
 @Testcontainers
@@ -34,7 +34,9 @@ class ServerApplicationTests {
 	private TestRestTemplate restTemplate;
 
 	@Container
-	public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>().withReuse(true);
+	public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>()
+			.withReuse(true)
+			.withConfigurationOverride("/dmo/server/maria_conf_d");
 
 	@DynamicPropertySource
 	public static void updateConfig(DynamicPropertyRegistry registry) {
@@ -44,15 +46,16 @@ class ServerApplicationTests {
 	}
 
 	@Test
-	void contextLoads() throws Exception {
+	void testOpenapiIsUpToDate() throws Exception {
 		Assert.assertNotEquals(0, port);
 
-		String url = "http://127.0.0.1:" + port + "/api/openapi?group=v1";
+		String url = "http://localhost:" + port + "/api/openapi?group=v1";
 		String content = restTemplate.getForObject(url, String.class);
 
 		String expected;
 		try (InputStream input = this.getClass().getResourceAsStream("openapi_v1.json")) {
 			expected = StreamUtils.copyToString(input, Charset.defaultCharset());
+			expected = expected.replace("localhost:8080", "localhost:" + port);
 		}
 		
 		Assert.assertEquals(expected, content);

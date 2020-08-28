@@ -1,16 +1,15 @@
 package dmo.server.integration.anidb;
 
+import dmo.server.domain.Anime;
+import dmo.server.event.AnimeListUpdated;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.ResponseBody;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -21,8 +20,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class AnidbTracking {
+public class AnidbUpdateTracker {
     private final AnidbClient anidbClient;
+    private final ApplicationEventPublisher publisher;
+    private final AnidbAnimeLightMapper anidbAnimeLightMapper;
 
     private final AtomicReference<Instant> lastUpdateInstant = new AtomicReference<>(Instant.EPOCH);
     private final static Duration UPDATE_TIMEOUT = Duration.ofHours(12);
@@ -46,6 +47,10 @@ public class AnidbTracking {
                 .orElse(Collections.emptyList());
 
         log.info("Update successful, got: {} items", result.size());
+
+        List<Anime> animeList = anidbAnimeLightMapper.toAnimeList(result);
+        AnimeListUpdated animeListUpdated = new AnimeListUpdated(animeList);
+        publisher.publishEvent(animeListUpdated);
 
         lastUpdateInstant.set(Instant.now().plus(UPDATE_TIMEOUT));
     }

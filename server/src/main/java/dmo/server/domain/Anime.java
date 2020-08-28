@@ -1,21 +1,23 @@
 package dmo.server.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Anime {
     @Id
     private Long id;
 
-    private String title;
+    @ElementCollection
+    @CollectionTable(name = "anime_title")
+    private List<AnimeTitle> titles;
 
     @Enumerated(EnumType.STRING)
     private Type type;
@@ -30,4 +32,5 @@ public class Anime {
         OTHER,
         UNKNOWN;
     }
+
 }
