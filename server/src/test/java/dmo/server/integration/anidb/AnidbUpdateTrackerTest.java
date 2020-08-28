@@ -3,16 +3,14 @@ package dmo.server.integration.anidb;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
 import dmo.server.event.AnimeListUpdated;
-import dmo.server.okhttp.MockInterceptor;
-import okhttp3.Interceptor;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -32,14 +30,7 @@ public class AnidbUpdateTrackerTest {
         };
 
         try (InputStream input = AnidbUpdateTrackerTest.class.getResourceAsStream("anime-titles.xml.gz")) {
-            AnidbConfig anidbConfig = new AnidbConfig() {
-                @Override
-                List<Interceptor> interceptors() {
-                    List<Interceptor> result = new ArrayList<>(super.interceptors());
-                    result.add(new MockInterceptor("application/gzip", input));
-                    return result;
-                }
-            };
+            AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
             AnidbUpdateTracker tracking = new AnidbUpdateTracker(anidbClient, eventPublisher, anidbAnimeLightMapper);
@@ -60,19 +51,18 @@ public class AnidbUpdateTrackerTest {
         AnimeTitle title = anime.getTitles().get(0);
         Assert.assertEquals(AnimeTitle.Type.SHORT, title.getType());
         Assert.assertEquals("en", title.getLang());
-        Assert.assertEquals("CotS", title.getText());
-
-        long emptyTitlesCount = animeListUpdated.getAnimeList().stream()
-                .map(Anime::getTitles)
-                .filter(CollectionUtils::isEmpty)
-                .count();
-
-        Assert.assertEquals("Anime titles shouldn't be empty", 0L, emptyTitlesCount);
 
         List<Anime> nonParsedAnimeList = animeListUpdated.getAnimeList().stream()
-                .filter(a -> a.getId() == null || a.getTitles() == null || a.getType() == null)
+                .filter(a -> a.getId() == null || CollectionUtils.isEmpty(a.getTitles()))
                 .collect(Collectors.toList());
         Assert.assertEquals("Anime should be parsed", Collections.emptyList(), nonParsedAnimeList);
+
+        List<AnimeTitle> nonParsedAnimeTitleList = animeListUpdated.getAnimeList().stream()
+                .map(Anime::getTitles)
+                .flatMap(List::stream)
+                .filter(t -> t.getType() == null || StringUtils.isEmpty(t.getLang()) || StringUtils.isEmpty(t.getText()))
+                .collect(Collectors.toList());
+        Assert.assertEquals("Anime titles should be parsed", Collections.emptyList(), nonParsedAnimeTitleList);
 
     }
 

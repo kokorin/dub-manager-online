@@ -1,7 +1,8 @@
 package dmo.server.integration.anidb;
 
 import dmo.server.okhttp.XmlUngzipInterceptor;
-import okhttp3.*;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
@@ -23,7 +24,8 @@ public class AnidbConfig {
         interceptors().forEach(clientBuilder::addInterceptor);
 
         return new Retrofit.Builder()
-                .baseUrl("https://anidb.net/")
+                //because anidb uses different hosts for anime list and anime
+                .baseUrl("http://localhost/why/")
                 .client(clientBuilder.build())
                 .addConverterFactory(JaxbConverterFactory.create())
                 .build();

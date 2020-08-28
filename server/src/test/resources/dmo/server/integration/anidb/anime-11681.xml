@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anime id="11681" restricted="false">
+    <type>Movie</type>
+    <episodecount>1</episodecount>
+    <startdate>2017-02-18</startdate>
+    <enddate>2017-02-18</enddate>
+    <titles>
+        <title xml:lang="x-jat" type="main">Gekijouban Sword Art Online: Ordinal Scale</title>
+        <title xml:lang="ja" type="synonym">SWORD ART ONLINE THE MOVIE -Ordinal Scale-</title>
+        <title xml:lang="en" type="synonym">SAO Movie Ordinal Scale</title>
+        <title xml:lang="x-jat" type="short">Gekijouban SAO Ordinal Scale</title>
+        <title xml:lang="ja" type="official">劇場版 ソードアート・オンライン -オーディナル・スケール-</title>
+        <title xml:lang="zh" type="official">刀劍神域劇場版：序列爭戰</title>
+        <title xml:lang="de" type="official">Sword Art Online the Movie: Ordinal Scale</title>
+        <title xml:lang="fr" type="official">SWORD ART ONLINE THE MOVIE: Ordinal Scale</title>
+        <title xml:lang="it" type="official">Sword Art Online the Movie: Ordinal Scale</title>
+        <title xml:lang="zh-Hant" type="official">刀劍神域劇場版：序列爭戰</title>
+    </titles>
+    <relatedanime>
+        <anime id="13493" type="Sequel">Sword Art Online: Alicization</anime>
+        <anime id="10376" type="Prequel">Sword Art Online II</anime>
+    </relatedanime>
+    <recommendations total="6">
+        <recommendation type="For Fans" uid="713767">I recommend this movie to all SAO-Fans. In my Opinion it is far
+            better than the Series. It`s a nice balance of everything you would like to see in an SAO-Movie.
+        </recommendation>
+        <recommendation type="For Fans" uid="219363">SAO never had a great battles or story, but it had likeable
+            characters and well established border between virtual reality and real life. The second season had many
+            flaws, but I really liked it as it developed the characters, their passions and struggles to adapt to normal
+            life.
+
+            I find that this balance was lost in Ordinal Scale, it does not develop the characters or the setting. The
+            audience is more mature now, but the movie itself isn`t.
+
+            As a fan I really liked it for what it was, a love letter to SAO fans and a teaser for Season 3. I have high
+            expectations of Alicization, as this arc does exactly what I crave from a SAO sequel.
+        </recommendation>
+        <recommendation type="Recommended" uid="97395">It`s a good continuation of the Series. It`s nothing new, as
+            expected after 2 seasons, but I was happy to see these lovable characters again. Some of them have very few
+            screentime, but it was worth my time.
+        </recommendation>
+        <recommendation type="Recommended" uid="136010">I went in expecting nothing and almost skipped the movie because
+            some recommendations said its not needed for the third season but I ended up watching it anyways. Totally
+            worth it. I very much enjoyed the movie. Fantastic fight scenes, good soundtrack and an okay story fitting
+            to the franchise.
+        </recommendation>
+        <recommendation type="Recommended" uid="478777">So this movie had a lot going on for it: excellent animation and
+            visually pleasing action, interesting plot, Asuna x Kirito sweet moments, Asuna`s sideboob zoomed in and in
+            its full glory...But I guess the most important thing was the absolute cocktease of a a final scene
+            introducing Alicization.
+
+            Yeah I am quite content with this movie. Defo recommended! (p.s: It does require previous knowledge of
+            everything that happened so far)
+        </recommendation>
+    </recommendations>
+    <url>http://sao-movie.net/</url>
+    <creators>
+        <name id="8899" type="Character Design">Adachi Shingo</name>
+        <name id="1303" type="Work">A-1 Pictures</name>
+        <name id="8068" type="Direction">Itou Tomohiko</name>
+        <name id="704" type="Music">Kajiura Yuki</name>
+        <name id="28670" type="Original Work">Kawahara Reki</name>
+        <name id="8899" type="Chief Animation Direction">Adachi Shingo</name>
+    </creators>
+    <description>* Based on http://anidb.net/cr28670 [Kawahara Reki]`s light novel series Sword Art Online.
+        In 2022, the world of virtual reality was upended by the arrival of a new invention from a genius programmer,
+        http://anidb.net/ch43412 [Kayaba Akihiko]. Called NerveGear, it was the first full-dive system and with it, came
+        endless possibilities to VRMMORPGs.
+        In 2026, a new machine called the Augma is developed to compete against the NerveGear and its successor, the
+        Amusphere. A next-gen wearable device, the Augma doesn`t have a full-dive function like its predecessors.
+        Instead, it uses Augmented Reality (AR) to get players into the game. It is safe, user-friendly and lets users
+        play while they are conscious, making it an instant hit on the market. The most popular game on the system is
+        Ordinal Scale (aka: OS), an ARMMORPG developed exclusively for the Augma.
+        http://anidb.net/ch49857 [Asuna] and the gang have already been playing OS for a while, by the time
+        http://anidb.net/ch46771 [Kirito] decides to join them. They`re about to find out that Ordinal Scale isn`t all
+        fun and games...
+        Source: aniplexusa
+    </description>
+    <ratings>
+        <permanent count="1829">6.54</permanent>
+        <temporary count="1842">7.30</temporary>
+        <review count="2">4.33</review>
+    </ratings>
+    <picture>221965.jpg</picture>
+    <resources>
+        <resource type="1">
+            <externalentity>
+                <identifier>18141</identifier>
+            </externalentity>
+        </resource>
+        <resource type="2">
+            <externalentity>
+                <identifier>36439</identifier>
+            </externalentity>
+            <externalentity>
+                <identifier>31765</identifier>
+            </externalentity>
+        </resource>
+        <resource type="4">
+            <externalentity>
+                <url>http://sao-movie.net/</url>
+            </externalentity>
+        </resource>
+        <resource type="5">
+            <externalentity>
+                <url>http://sao-movie.net/us/</url>
+            </externalentity>
+        </resource>
+        <resource type="6">
+            <externalentity>
+                <identifier>Sword_Art_Online_The_Movie:_Ordinal_Scale</identifier>
+            </externalentity>
+        </resource>
+        <resource type="7">
+            <externalentity>
+                <identifier>ソードアート・オンライン</identifier>
+            </externalentity>
+        </resource>
+        <resource type="8">
+            <externalentity>
+                <identifier>4412</identifier>
+            </externalentity>
+        </resource>
+        <resource type="9">
+            <externalentity>
+                <identifier>354344</identifier>
+            </externalentity>
+        </resource>
+        <resource type="23">
+            <externalentity>
+                <identifier>SwordArtUSA</identifier>
+            </externalentity>
+            <externalentity>
+                <identifier>sao_anime</identifier>
+            </externalentity>
+        </resource>
+        <resource type="32">
+            <externalentity>
+                <identifier>B079LL9W3H</identifier>
+            </externalentity>
+        </resource>
+    </resources>
+    <tags>
+        <tag id="55" parentid="6151" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2014-08-11">
+            <name>awards</name>
+        </tag>
+        <tag id="2604" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2018-11-08">
+            <name>content indicators</name>
+            <description>The content indicators branch is intended to be a less geographically specific tool than the
+                `age rating` used by convention, for warning about things that might cause offence. Obviously there is
+                still a degree of subjectivity involved, but hopefully it will prove useful for parents with delicate
+                children, or children with delicate parents.
+                Note: Refer to further guidance on http://wiki.anidb.net/w/Categories:Content_Indicators [the Wiki page]
+                for how to apply tag weights for content indicators.
+            </description>
+        </tag>
+        <tag id="2605" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2014-09-28">
+            <name>dynamic</name>
+            <description>Some of the central structural elements in anime are:
+                Plot Continuity
+                How does the plot or several plots unfold. Are they a strictly linear retelling of one big continuing
+                story, a serial, possibly with several side stories, or is the content chopped into a set of unconnected
+                episodes, only sharing the same setting and characters?
+                Stereotype Characters
+                Then there is the question of the character set presentation. Is it completely original, or is it your
+                usual stereotypical character cast. Both choices have their merit, for example it would not really make
+                much sense to reinvent the wheel for a harem anime. Fans of that genre come to expect their favourite
+                stereotype protagonists.
+                Plot Twists
+                Finally there is the question of how complex the plot / the story unfolds. Are there side-plots that
+                merge into the main plot leading to unexpected plot twists, or is the anime quite predictable? The
+                latter would not be appropriate for detective stories. In harem anime on the other hand a foreseeable
+                outcome is actually something the fans will come to expect.
+            </description>
+        </tag>
+        <tag id="2609" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2018-09-01">
+            <name>original work</name>
+            <description>What the anime is based on! This is given as the original work credit in the OP. Mostly of
+                academic interest, but a useful bit of info, hinting at the possible depth of story.
+            </description>
+        </tag>
+        <tag id="2610" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2009-04-22">
+            <name>setting</name>
+            <description>The setting describes in what time and place an anime takes place. To a certain extent it
+                describes what you can expect from the world in the anime.
+            </description>
+        </tag>
+        <tag id="2611" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2014-09-08">
+            <name>elements</name>
+            <description>Next to Themes setting the backdrop for the protagonists in anime, there are the more detailed
+                plot Elements that centre on character interactions: "What do characters do to each other or what is
+                done to them?". Is it violent Action, an awe-inspiring Adventure in a foreign place, the gripping life
+                of a Detective, a slapstick Comedy, an Ecchi Harem anime, a SciFi epic, or some Fantasy travelling
+                adventure?
+            </description>
+        </tag>
+        <tag id="2613" parentid="2610" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2016-09-04">
+            <name>place</name>
+            <description>The places the anime can take place in. Includes more specific places such as a country on
+                Earth, as well as more general places such as a dystopia or a mirror world.
+            </description>
+        </tag>
+        <tag id="2628" parentid="2613" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2018-08-31">
+            <name>fictional location</name>
+            <description>A fictional location is a place or world which is run by different set of rules than our common
+                and ordinary world. This may include completely fictional worlds with no semblance of Earth,
+                computer-generated worlds, fantasy worlds, magical worlds, parallel worlds accessible through portals,
+                and so on. Or it may be fictional places like floating islands, dungeons or planets, which can co-exist
+                with ordinary Earth, but are otherwise separate from it.
+                A world that generally shares the characteristics of, and/or is generally indistinguishable from the
+                real world (bar research on a "more than cursory" level), would NOT be considered a fictional world. A
+                good example is http://anidb.net/a4521 [Code Geass]. It contains several real world nationalities, such
+                as http://anidb.net/a4521 [China], http://anidb.net/t2672 [Japan] (now Area 11), http://anidb.net/t5091
+                [India], etc, along with fictional nationalities such as http://anidb.net/t2361 [Britannia]. China,
+                Japan, and India are easily identified with a cursory look. The location is unmistakably the planet
+                Earth, even though national borders have been redrawn.
+                The fictional world should only be tagged if it plays a materially important role in the plot and
+                setting; generally, an episodic occurrence of a fictional world should not be tagged.
+                A fantasy world is a type of fictional world, part of a fictional universe. Typical worlds involve, but
+                are not limited to: magic or magical abilities, and/or a medieval theme. Some examples include: a
+                parallel world tenuously connected to Earth via magical portals or items; a fictional Earth-like planet
+                in the remote past or future; or an entirely independent world set in another universe. Many fantasy
+                worlds draw heavily on real world history, geography, and sociology, and also on folklore.
+            </description>
+        </tag>
+        <tag id="2749" parentid="2604" weight="300" localspoiler="false" globalspoiler="false" verified="true"
+             update="2018-11-08">
+            <name>nudity</name>
+            <description>Nudity is the state of wearing no clothing. The wearing of clothing is exclusively a human
+                characteristic. The amount of clothing worn depends on functional considerations (such as a need for
+                warmth or protection from the elements) and social considerations. In some situations the minimum amount
+                of clothing (i.e. covering of a person`s genitals) may be socially acceptable, while in others much more
+                clothing is expected.
+                Note: Refer to further guidance on http://wiki.anidb.net/w/Categories:Content_Indicators [the Wiki page]
+                for how to apply tag weights for content indicators.
+                People, as individuals and in groups, have varying attitudes towards their own nudity. Some people are
+                relaxed about appearing less than fully clothed in front of others, while others are uncomfortable or
+                inhibited in that regard. People are nude in a variety of situations, and whether they are prepared to
+                disrobe in front of others depends on the social context in which the issue arises. For example, people
+                need to bathe without clothing, some people also sleep in the nude, some prefer to sunbathe in the nude
+                or at least topless, while others are nude in other situations. Some people adopt naturism as a
+                lifestyle.
+                Though the wearing of clothes is the social norm in most cultures, some cultures, groups and individuals
+                are more relaxed about nudity, though attitudes often depend on context. On the other hand, some people
+                feel uncomfortable in the presence of any nudity, and the presence of a nude person in a public place
+                can give rise to controversy, irrespective of the attitude of the person who is nude. Besides meeting
+                social disapproval, in some places public nudity may constitute a crime of indecent exposure. Many
+                people have strong views on nudity, which to them can involve issues and standards of modesty, decency
+                and morality. Some people have an psychological aversion to nudity, called gymnophobia. Many people
+                regard nudity to be inherently sexual and erotic.
+                Nudity is to be found in a multitude of media, including art, photography, film and on the Internet. It
+                is a factor in adult entertainment of various types.
+                Especially gratuitous fanservice anime shows tend to show their (usually female) characters frequently
+                without any clothes, though often hiding genitals through the means of additions like steam.
+                Source: wiki
+            </description>
+            <picurl>60576.jpg</picurl>
+        </tag>
+        <tag id="2799" parentid="2609" infobox="true" weight="0" localspoiler="false" globalspoiler="false"
+             verified="true" update="2019-08-13">
+            <name>novel</name>
+            <description>A novel is a relatively long work of narrative fiction, normally written in prose form, and
+                which is typically published as a book. Manga, comics, or visual novels do not fit this description and
+                are not considered novels; including a small number of illustrations, however, is still permissible,
+                which means that light novels are considered novels.
+            </description>
+        </tag>
+        <tag id="2839" parentid="2628" infobox="true" weight="400" localspoiler="false" globalspoiler="false"
+             verified="true" update="2019-02-05">
+            <name>virtual world</name>
+            <description>A virtual world is a place where the character interacts with a computer (or some other
+                device)-simulated environment, be it real or imagined. The condition for a virtual reality to exist is
+                the existence of an originating "real" (source/anchor) world for the character. In some cases, a virtual
+                reality where characters can get harmed physically is depicted.
+            </description>
+        </tag>
+        <tag id="2841" parentid="2611" infobox="true" weight="600" localspoiler="false" globalspoiler="false"
+             verified="true" update="2017-12-26">
+            <name>action</name>
+            <description>Action anime usually involve a fairly straightforward story of good guys versus bad guys, where
+                most disputes are resolved by using physical force. It often contains a lot of shooting, explosions and
+                fighting.
+            </description>
+            <picurl>211261.jpg</picurl>
+        </tag>
+        <tag id="2846" parentid="7050" infobox="true" weight="500" localspoiler="false" globalspoiler="false"
+             verified="true" update="2018-10-04">
+            <name>science fiction</name>
+            <description>Science fiction stories usually focus on how situations could be different in the future when
+                we are more technologically advanced; due to either our own achievements or having met with other
+                civilizations whom we have learned from.
+            </description>
+            <picurl>212180.jpg</picurl>
+        </tag>
+        <tag id="3013" parentid="55" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2011-12-10">
+            <name>Newtype Anime Award</name>
+            <description>This anime has won 1 or more Newtype Anime Award(s)</description>
+        </tag>
+        <tag id="3040" parentid="6230" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2018-11-01">
+            <name>male protagonist</name>
+            <description>This anime has a male protagonist.</description>
+        </tag>
+        <tag id="5851" parentid="6230" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2018-11-01">
+            <name>female protagonist</name>
+            <description>The anime has a female protagonist.</description>
+        </tag>
+        <tag id="6151" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2014-09-10">
+            <name>technical aspects</name>
+            <description>It may sometimes be useful to know about technical aspects of a show, such as information about
+                its broadcasting or censorship. Such information can be found here.
+            </description>
+        </tag>
+        <tag id="6230" parentid="2605" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2014-10-20">
+            <name>cast</name>
+        </tag>
+        <tag id="7050" parentid="2611" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2019-04-18">
+            <name>speculative fiction</name>
+            <description>Speculative fiction is an umbrella genre encompassing fiction with certain elements that do not
+                exist in the real world, often in the context of supernatural, futuristic or other imaginative themes.
+                This includes, but is not limited to, science fiction, fantasy, superhero fiction, horror, utopian and
+                dystopian fiction, fairytale fantasy, supernatural fiction, as well as combinations thereof.
+                Source: Wikipedia
+            </description>
+        </tag>
+    </tags>
+    <characters>
+        <character id="37272" type="appears in" update="2014-04-05">
+            <rating votes="560">6.90</rating>
+            <name>Asuna</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>A friend of Kirito and is a sub-leader of the guild Knights of Blood (KoB), a medium-sized
+                guild of about thirty player, also called the strongest guild in Aincrad. Being one of the few many
+                girls that play SAO, and even more so that she`s extremely pretty, she receives many invitations and
+                proposals. She is a skilled player earning the Title "Flash" for her extraordinary sword skill. The KoB
+                has assigned her two bodyguards, one of whom despises Kirito. Her game alias is the same as her Real
+                World name. She later on falls in love with Kirito, eventually leading to them being married.
+            </description>
+            <picture>83185.jpg</picture>
+            <seiyuu id="5" picture="233827.jpg">Tomatsu Haruka</seiyuu>
+        </character>
+        <character id="37273" type="appears in" update="2014-04-05">
+            <rating votes="469">6.16</rating>
+            <name>Kirito</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>The main protagonist of the series. He is the protagonist and is a "solo" player, a player who
+                hasn`t joined a guild and usually works alone. When it is announced that the players of Sword Art Online
+                can no longer logout, he is surprised like everyone else, but unlike everyone else he quickly gets over
+                it and accepts it, to an extent. He mainly uses a one-handed sword and usually wears all black in game,
+                as it adds to stealth. He can also use two blades at once, a unique skill to him and he only uses it in
+                emergencies to avoid attention for being one out of the two people to have unique skills. His game alias
+                is Kirito, which is created by taking the syllables of the first and last Kanji of his real last and
+                first names respectively: (Kirigaya Kazuto). In the real world, he lives with his mother and younger
+                sister in a family of 3.
+            </description>
+            <picture>83186.jpg</picture>
+        </character>
+        <character id="43412" type="appears in" update="2014-04-05">
+            <rating votes="39">3.47</rating>
+            <name>Kayaba Akihiko</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Kayaba Akihiko is the Director and creator of the Nerve Gear and Sword Art Online, as well as
+                the main antagonist of the Sword Art Online arc. He traps all the players within Sword Art Online by
+                using the Nerve Gear to cease sending signals to the users` body. Any in-game death or attempt at
+                removal of the Nerve Gear would result in the real life death of the user. Later, it is discovered that
+                he has been masquerading as Heathcliff, the leader of the Knights of the Blood Oath. Although he has the
+                admin powers to make his avatar immortal, he is shown to be a powerful player even without his in-game
+                immortality due to his intimate understanding of the SAO game mechanics which he himself had designed.
+                He is defeated by Kirito at the end SAO arc, and at the end of ALO arc, leaves behind a program that
+                grants Kirito the World Seed. His death was his own doing since he had also rigged his own Nerve Gear
+                device to fry his brain when he was defeated and transferring his soul into a digital form.
+                Source: Wiki
+            </description>
+            <picture>85680.jpg</picture>
+            <seiyuu id="380" picture="158572.jpg">Yamadera Kouichi</seiyuu>
+        </character>
+        <character id="47349" type="appears in" update="2014-04-09">
+            <rating votes="33">7.95</rating>
+            <name>Pina</name>
+            <gender>unknown</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>A blue Feather Dragon befriended by Silica. As her familiar Pina posses healing and scanning
+                abilities.
+            </description>
+            <picture>91654.jpg</picture>
+            <seiyuu id="10410" picture="223211.jpg">Izawa Shiori</seiyuu>
+        </character>
+        <character id="49827" type="secondary cast in" update="2015-02-25">
+            <rating votes="108">6.02</rating>
+            <name>Yui</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Yui as shown in ALO as a Private Navigation Pixie.</description>
+            <picture>169437.jpg</picture>
+            <seiyuu id="1443" picture="23192.jpg">Itou Kanae</seiyuu>
+        </character>
+        <character id="49983" type="appears in" update="2014-04-05">
+            <rating votes="22">2.51</rating>
+            <name>Recon</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Recon (Nagata Shin`ichi in real world) is Suguha`s classmate. He introduced ALO to Suguha who
+                asked him about VRMMO. In ALO, he is a Sylph dagger wielder and dark mage. He also displays an obvious
+                romantic interest in Suguha, although the feelings are not mutual.
+                Source: Wiki
+            </description>
+            <picture>127064.jpg</picture>
+            <seiyuu id="30656" picture="153750.jpg">Murase Ayumu</seiyuu>
+        </character>
+        <character id="49986" type="appears in" update="2014-04-05">
+            <rating votes="39">6.88</rating>
+            <name>Sakuya</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Sakuya is the leader of Sylph in ALO. During a meeting with the Cait Sith, she is attacked by
+                Salamanders led by General Eugene. At the same moment, Kirito flies in to challenge the general to a
+                duel. After Kirito wins the battle, she attempts to seduce him along with Alicia Rue. Leafa smothers
+                their attempt, saying that she is accompanying him to the World Tree. At the end of the arc, Lady Sakuya
+                leads a combined force of Cait Sith and Sylph against the World Tree`s Guardians in an attempt to aid
+                Kirito with the battle. After Kirito reached the top of the World Tree, she ordered her forces to pull
+                back.
+                Source: Wiki
+            </description>
+            <picture>127067.jpg</picture>
+            <seiyuu id="89" picture="148709.jpg">Yahagi Sayuri</seiyuu>
+        </character>
+        <character id="49987" type="appears in" update="2014-04-05">
+            <rating votes="36">6.49</rating>
+            <name>Alicia Luu</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Alicia Luu is the leader of Cait Sith in ALO.</description>
+            <picture>127068.jpg</picture>
+            <seiyuu id="305" picture="37148.jpg">Saitou Chiwa</seiyuu>
+        </character>
+        <character id="50685" type="appears in" update="2014-04-05">
+            <rating votes="15">4.52</rating>
+            <name>Eugene</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Eugene is second in command of Salamanders in ALO as well as brother of their leader. He is
+                considered strongest fighter in ALO, but is defeated by Kirito using his SAO Dual Wield skill.
+            </description>
+            <picture>128248.jpg</picture>
+            <seiyuu id="178" picture="228660.jpg">Miyake Kenta</seiyuu>
+        </character>
+        <character id="51590" type="appears in" update="2016-06-15">
+            <rating votes="22">3.81</rating>
+            <name>Agil</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Agil`s avatar in Alfheim Online.</description>
+            <picture>148012.jpg</picture>
+            <seiyuu id="64" picture="173421.jpg">Yasumoto Hiroki</seiyuu>
+        </character>
+        <character id="62759" type="secondary cast in" update="2014-01-02">
+            <rating votes="36">3.40</rating>
+            <name>Kikuoka Seijirou</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Kikuoka Seijirou is a member of the Ministry of Internal Affairs and Communications,
+                Technology, Second Separated Advanced Network Division, or Virtual Division.
+                Source: SAO wikia
+            </description>
+            <picture>147999.jpg</picture>
+            <seiyuu id="341" picture="52370.jpg">Morikawa Toshiyuki</seiyuu>
+        </character>
+        <character id="68616" type="appears in" update="2014-07-12">
+            <rating votes="6">4.54</rating>
+            <name>Dyne</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>157978.jpg</picture>
+            <seiyuu id="3141" picture="65575.jpg">Tsuruoka Satoshi</seiyuu>
+        </character>
+        <character id="68621" type="appears in" update="2014-07-12">
+            <rating votes="6">4.54</rating>
+            <name>Behemoth</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>157990.jpg</picture>
+            <seiyuu id="2488" picture="186147.jpg">Matsuda Ken`ichirou</seiyuu>
+        </character>
+        <character id="70580" type="appears in" update="2015-01-20">
+            <rating votes="24">7.84</rating>
+            <name>Sinon</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Sinon`s avatar in Alfheim Online.</description>
+            <picture>167713.jpg</picture>
+            <seiyuu id="38" picture="171532.jpg">Sawashiro Miyuki</seiyuu>
+        </character>
+        <character id="71585" type="appears in" update="2014-11-22">
+            <rating votes="8">4.33</rating>
+            <name>Siune</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>164594.jpg</picture>
+            <seiyuu id="3198" picture="249039.jpg">Shimamura Yuu</seiyuu>
+        </character>
+        <character id="71887" type="appears in" update="2014-12-06">
+            <rating votes="6">4.54</rating>
+            <name>Kurahashi</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>165555.jpg</picture>
+            <seiyuu id="280" picture="170840.jpg">Kiuchi Hidenobu</seiyuu>
+        </character>
+        <character id="80926" type="main character in" update="2016-10-02">
+            <rating votes="16">7.19</rating>
+            <name>Kirito</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192160.jpg</picture>
+            <seiyuu id="20249" picture="186289.jpg">Matsuoka Yoshitsugu</seiyuu>
+        </character>
+        <character id="80927" type="main character in" update="2016-10-02">
+            <rating votes="18">7.94</rating>
+            <name>Asuna</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192164.jpg</picture>
+            <seiyuu id="5" picture="233827.jpg">Tomatsu Haruka</seiyuu>
+        </character>
+        <character id="81286" type="secondary cast in" update="2016-10-02">
+            <rating votes="5">6.78</rating>
+            <name>Klein</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192165.jpg</picture>
+            <seiyuu id="323" picture="211661.jpg">Hirata Hiroaki</seiyuu>
+        </character>
+        <character id="81287" type="secondary cast in" update="2016-10-02">
+            <rating votes="11">7.45</rating>
+            <name>Sinon</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192161.jpg</picture>
+            <seiyuu id="38" picture="171532.jpg">Sawashiro Miyuki</seiyuu>
+        </character>
+        <character id="81288" type="secondary cast in" update="2016-10-02">
+            <rating votes="10">6.38</rating>
+            <name>Silica</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192163.jpg</picture>
+            <seiyuu id="430" picture="246278.jpg">Hidaka Rina</seiyuu>
+        </character>
+        <character id="81289" type="secondary cast in" update="2016-10-02">
+            <rating votes="6">6.36</rating>
+            <name>Lisbeth</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192162.jpg</picture>
+            <seiyuu id="411" picture="17475.jpg">Takagaki Ayahi</seiyuu>
+        </character>
+        <character id="85263" type="secondary cast in" update="2016-10-02">
+            <rating votes="8">5.48</rating>
+            <name>Leafa</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192166.jpg</picture>
+            <seiyuu id="590" picture="242467.jpg">Taketatsu Ayana</seiyuu>
+        </character>
+        <character id="85264" type="secondary cast in" update="2016-10-02">
+            <rating votes="4">7.32</rating>
+            <name>Agil</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>192167.jpg</picture>
+            <seiyuu id="64" picture="173421.jpg">Yasumoto Hiroki</seiyuu>
+        </character>
+        <character id="85265" type="secondary cast in" update="2017-01-15">
+            <rating votes="5">2.16</rating>
+            <name>Shigemura-kyouju</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>196980.jpg</picture>
+            <seiyuu id="40459" picture="158442.jpg">Kaga Takeshi</seiyuu>
+        </character>
+        <character id="85266" type="secondary cast in" update="2017-01-15">
+            <rating votes="6">2.38</rating>
+            <name>Eiji</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>196979.jpg</picture>
+            <seiyuu id="48398" picture="196981.jpg">Inoue Yoshio</seiyuu>
+        </character>
+        <character id="85267" type="secondary cast in" update="2017-01-15">
+            <rating votes="6">5.10</rating>
+            <name>Yuna</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>196978.jpg</picture>
+            <seiyuu id="33251" picture="204767.jpg">Kanda Sayaka</seiyuu>
+        </character>
+    </characters>
+    <episodes>
+        <episode id="172367" update="2015-10-05">
+            <epno type="4">T1</epno>
+            <length>2</length>
+            <airdate>2015-10-04</airdate>
+            <title xml:lang="ja">劇場版『ソードアート・オンライン』制作決定PV</title>
+            <title xml:lang="en">PV 1 (1:13): Production Decision PV</title>
+            <title xml:lang="x-jat">Gekijouban "Sword Art Online" Seisaku Kettei PV</title>
+        </episode>
+        <episode id="176056" update="2016-03-13">
+            <epno type="4">T2</epno>
+            <length>1</length>
+            <airdate>2016-03-12</airdate>
+            <title xml:lang="ja">2017年全国ロードショー「劇場版 ソードアートオンライン -オーディナル・スケール-」特報 1</title>
+            <title xml:lang="en">PV 2 (0:53): Special Report 1</title>
+            <title xml:lang="x-jat">2017-nen Zenkoku Roadshow "Gekijouban Sword Art Online - Ordinal Scale -" Tokuhou
+                1
+            </title>
+        </episode>
+        <episode id="178937" update="2017-01-24">
+            <epno type="1">1</epno>
+            <length>120</length>
+            <airdate>2017-02-18</airdate>
+            <rating votes="11">6.27</rating>
+            <title xml:lang="en">Complete Movie</title>
+        </episode>
+        <episode id="179336" update="2016-08-02">
+            <epno type="4">T3</epno>
+            <length>1</length>
+            <airdate>2016-07-02</airdate>
+            <title xml:lang="ja">「劇場版 ソードアートオンライン -オーディナル・スケール-」特報第1弾</title>
+            <title xml:lang="en">PV 3 (1:03): Theatrical Trailer</title>
+            <title xml:lang="x-jat">"Gekijouban Sword Art Online - Ordinal Scale -" Tokuhou Dai 1 Dan</title>
+        </episode>
+        <episode id="181646" update="2016-10-31">
+            <epno type="4">T4</epno>
+            <length>2</length>
+            <airdate>2016-10-02</airdate>
+            <title xml:lang="ja">「劇場版 ソードアートオンライン -オーディナル・スケール-」特報第2弾</title>
+            <title xml:lang="en">PV 4 (1:46)</title>
+            <title xml:lang="x-jat">"Gekijouban Sword Art Online - Ordinal Scale -" Tokuhou Dai 2 Dan</title>
+        </episode>
+        <episode id="185514" update="2017-03-12">
+            <epno type="4">T5</epno>
+            <length>25</length>
+            <airdate>2016-12-29</airdate>
+            <title xml:lang="ja">「劇場版 ソードアート・オンライン -オーディナル・スケール-」公開記念特番</title>
+            <title xml:lang="en">PV 5 (24:00): Public Anniversary Special</title>
+            <title xml:lang="x-jat">"Gekijouban Sword Art Online - Ordinal Scale -" Koukai Kinen Tokuban</title>
+        </episode>
+        <episode id="185558" update="2017-03-13">
+            <epno type="4">T6</epno>
+            <length>15</length>
+            <airdate>2017-02-10</airdate>
+            <title xml:lang="en">PV 6 (12:03): 12 Minute Preview</title>
+        </episode>
+        <episode id="191364" update="2017-10-03">
+            <epno type="2">S1</epno>
+            <length>15</length>
+            <airdate>2017-09-27</airdate>
+            <rating votes="6">2.35</rating>
+            <title xml:lang="ja">川原礫黙認「そーどあーと・おふらいん -おーでぃなる・すけーる-」</title>
+            <title xml:lang="en">Sword Art Offline: Ordinal Scale</title>
+            <title xml:lang="x-jat">Kawahara Reki Mokunin "Sword Art Offline -Ordinal Scale-"</title>
+        </episode>
+    </episodes>
+</anime>
