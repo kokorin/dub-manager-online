@@ -2,6 +2,8 @@ package dmo.server.service;
 
 import dmo.server.domain.Anime;
 import dmo.server.event.AnimeListUpdated;
+import dmo.server.event.AnimeRequested;
+import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,5 +51,10 @@ public class AnimeUpdater {
         }
 
         log.info("Got: {}, inserted: {}, updated: {}", animeList.size(), inserted, updated);
+    }
+
+    @EventListener
+    public AnimeUpdateScheduled onAnimeRequested(AnimeRequested event) {
+        return null;
     }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = "titles")
+@ToString(of = {"id", "type"})
 public class Anime {
     @Id
     private Long id;

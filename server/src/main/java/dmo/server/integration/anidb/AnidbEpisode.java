@@ -20,11 +20,16 @@ public class AnidbEpisode {
     @XmlElement(name = "airdate")
     public LocalDate airDate;
 
-    @XmlAttribute(name = "update")
-    public LocalDate updateDate;
-
     @XmlElement(name = "title")
     public List<AnidbEpisodeTitle> titles;
+
+    public Type getType() {
+        return epno.getType();
+    }
+
+    public Long getNumber() {
+        return epno.getNumber();
+    }
 
     public static class EpNo {
         @XmlAttribute(name = "type")

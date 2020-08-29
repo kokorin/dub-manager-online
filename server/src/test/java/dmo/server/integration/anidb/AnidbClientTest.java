@@ -16,7 +16,7 @@ class AnidbClientTest {
 
     @Test
     void getAnimeList() throws Exception {
-        try (InputStream input = AnidbUpdateTrackerTest.class.getResourceAsStream("anime-titles.xml.gz")) {
+        try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-titles.xml.gz")) {
             AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
@@ -47,7 +47,7 @@ class AnidbClientTest {
 
     @Test
     void getAnime() throws Exception {
-        try (InputStream input = AnidbUpdateTrackerTest.class.getResourceAsStream("anime-979.xml")) {
+        try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-979.xml")) {
             AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
@@ -66,7 +66,7 @@ class AnidbClientTest {
 
     @Test
     void getAnimeStrangeEpisodeNumbers() throws Exception {
-        try (InputStream input = AnidbUpdateTrackerTest.class.getResourceAsStream("anime-11681.xml")) {
+        try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-11681.xml")) {
             AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
@@ -90,7 +90,7 @@ class AnidbClientTest {
         assertEquals("Anime titles should be parsed", Collections.emptyList(), nonParsedTitles);
 
         List<AnidbEpisode> nonParsedEpisodes = anime.episodes.stream()
-                .filter(e -> isEmpty(e.id) || isEmpty(e.length) || isEmpty(e.epno) || isEmpty(e.updateDate)
+                .filter(e -> isEmpty(e.id) || isEmpty(e.length) || isEmpty(e.epno)
                     || isEmpty(e.epno.getNumber()) || isEmpty(e.epno.getType()))
                 .collect(Collectors.toList());
         assertEquals("Anime episodes should be parsed", Collections.emptyList(), nonParsedEpisodes);

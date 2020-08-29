@@ -2,12 +2,13 @@ package dmo.server.integration.anidb;
 
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
+import dmo.server.domain.Episode;
 import org.mapstruct.*;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
-public interface AnidbAnimeLightMapper {
+public interface AnidbAnimeMapper {
     @Mapping(target = "type", ignore = true)
     @Mapping(target = "episodeCount", ignore = true)
     @Mapping(target = "startDate", ignore = true)
@@ -30,4 +31,11 @@ public interface AnidbAnimeLightMapper {
     }
 
     List<Anime> toAnimeList(List<AnidbAnimeLight> anidbAnimeLight);
+
+    Anime toAnime(AnidbAnime anidbAnime);
+
+    @Mapping(target = "anime", ignore = true)
+    Episode toEpisode(AnidbEpisode anidbEpisode);
+
+    List<Episode> toEpisodeList(List<AnidbEpisode> anidbEpisodes);
 }

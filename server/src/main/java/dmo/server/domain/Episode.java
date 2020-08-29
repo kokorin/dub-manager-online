@@ -14,6 +14,10 @@ public class Episode {
     @Id
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
+
     @Column(nullable = false)
     private Long number;
 
@@ -21,18 +25,12 @@ public class Episode {
     @CollectionTable(name = "episode_title")
     private List<EpisodeTitle> titles;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Type type;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Anime anime;
 
     private Long length;
 
     private LocalDate airDate;
-
-    private LocalDate updateDate;
 
     public enum Type {
         REGULAR,

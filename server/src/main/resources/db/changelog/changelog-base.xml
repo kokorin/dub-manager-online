@@ -186,7 +186,6 @@
             </column>
             <column name="length" type="BIGINT"/>
             <column name="air_date" type="DATE"/>
-            <column name="update_date" type="DATE"/>
         </createTable>
     </changeSet>
 
