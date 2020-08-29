@@ -1,21 +1,24 @@
 package dmo.server.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Embeddable
-@Getter
-@Setter
-@ToString
+@Data
 public class AnimeTitle {
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Type type;
+
+    @Column(nullable = false)
     private String lang;
+
+    @Column(nullable = false)
     private String text;
 
     public enum Type {

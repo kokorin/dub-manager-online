@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -48,9 +49,9 @@ public class AnidbUpdateTrackerTest {
         Assert.assertEquals(Long.valueOf(1L), anime.getId());
         Assert.assertEquals(10, anime.getTitles().size());
 
-        AnimeTitle title = anime.getTitles().get(0);
+        /*AnimeTitle title = anime.getTitles().get(0);
         Assert.assertEquals(AnimeTitle.Type.SHORT, title.getType());
-        Assert.assertEquals("en", title.getLang());
+        Assert.assertEquals("en", title.getLang());*/
 
         List<Anime> nonParsedAnimeList = animeListUpdated.getAnimeList().stream()
                 .filter(a -> a.getId() == null || CollectionUtils.isEmpty(a.getTitles()))
@@ -59,7 +60,7 @@ public class AnidbUpdateTrackerTest {
 
         List<AnimeTitle> nonParsedAnimeTitleList = animeListUpdated.getAnimeList().stream()
                 .map(Anime::getTitles)
-                .flatMap(List::stream)
+                .flatMap(Collection::stream)
                 .filter(t -> t.getType() == null || StringUtils.isEmpty(t.getLang()) || StringUtils.isEmpty(t.getText()))
                 .collect(Collectors.toList());
         Assert.assertEquals("Anime titles should be parsed", Collections.emptyList(), nonParsedAnimeTitleList);

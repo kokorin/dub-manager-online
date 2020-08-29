@@ -66,6 +66,9 @@
             <column name="type" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
+            <column name="episode_count" type="BIGINT"/>
+            <column name="start_date" type="DATE"/>
+            <column name="end_date" type="DATE"/>
         </createTable>
     </changeSet>
 
@@ -126,7 +129,7 @@
     </changeSet>
 
     <changeSet author="kokorin" id="1598587149590">
-        <addForeignKeyConstraint constraintName="fk_anime_title_to_anime_id"
+        <addForeignKeyConstraint constraintName="fk_anime_title_to_anime"
                                  baseTableName="anime_title" baseColumnNames="anime_id"
                                  referencedTableName="anime" referencedColumnNames="id"/>
     </changeSet>
@@ -175,20 +178,20 @@
             <column name="number" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
             <column name="type" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
             <column name="anime_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="length" type="BIGINT"/>
+            <column name="air_date" type="DATE"/>
+            <column name="update_date" type="DATE"/>
         </createTable>
     </changeSet>
 
     <changeSet author="kokorin" id="1598542460021">
-        <addForeignKeyConstraint constraintName="fk_episode_to_anime_id"
+        <addForeignKeyConstraint constraintName="fk_episode_to_anime"
                                  baseTableName="episode" baseColumnNames="anime_id"
                                  referencedTableName="anime" referencedColumnNames="id"/>
     </changeSet>
@@ -197,5 +200,26 @@
         <addForeignKeyConstraint constraintName="fk_episode_to_episode_type"
                                  baseTableName="episode" baseColumnNames="type"
                                  referencedTableName="episode_type" referencedColumnNames="type"/>
+    </changeSet>
+
+
+    <changeSet author="kokorin" id="1598643661106">
+        <createTable tableName="episode_title">
+            <column name="lang" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="episode_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kokorin" id="1598542461584">
+        <addForeignKeyConstraint constraintName="fk_episode_title_to_episode"
+                                 baseTableName="episode_title" baseColumnNames="episode_id"
+                                 referencedTableName="episode" referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog> 

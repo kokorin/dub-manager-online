@@ -5,22 +5,30 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "titles")
 public class Anime {
     @Id
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
+
+    public Long episodeCount;
+
+    public LocalDate startDate;
+
+    public LocalDate endDate;
+
     @ElementCollection
     @CollectionTable(name = "anime_title")
-    private List<AnimeTitle> titles;
-
-    @Enumerated(EnumType.STRING)
-    private Type type;
+    private Set<AnimeTitle> titles;
 
     public enum Type {
         MOVIE,

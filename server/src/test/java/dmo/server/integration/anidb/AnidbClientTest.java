@@ -90,7 +90,7 @@ class AnidbClientTest {
         assertEquals("Anime titles should be parsed", Collections.emptyList(), nonParsedTitles);
 
         List<AnidbEpisode> nonParsedEpisodes = anime.episodes.stream()
-                .filter(e -> isEmpty(e.id) || isEmpty(e.length) || isEmpty(e.epno) || isEmpty(e.update)
+                .filter(e -> isEmpty(e.id) || isEmpty(e.length) || isEmpty(e.epno) || isEmpty(e.updateDate)
                     || isEmpty(e.epno.getNumber()) || isEmpty(e.epno.getType()))
                 .collect(Collectors.toList());
         assertEquals("Anime episodes should be parsed", Collections.emptyList(), nonParsedEpisodes);

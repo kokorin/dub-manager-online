@@ -2,21 +2,18 @@ package dmo.server.integration.anidb;
 
 import lombok.ToString;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @XmlRootElement
-@ToString
+@ToString(exclude = {"titles", "episodes"})
 public class AnidbAnime {
     @XmlAttribute
     public Long id;
 
     @XmlElement
-    public String type;
+    public Type type;
 
     @XmlElement(name = "episodecount")
     public Long episodeCount;
@@ -35,5 +32,23 @@ public class AnidbAnime {
     @XmlElement(name = "episode")
     public List<AnidbEpisode> episodes;
 
-
+    @XmlType(name = "AnidbAnimeType")
+    public enum Type {
+        @XmlEnumValue("Movie")
+        MOVIE,
+        @XmlEnumValue("OVA")
+        OVA,
+        @XmlEnumValue("TV Series")
+        TV_SERIES,
+        @XmlEnumValue("TV Special")
+        TV_SPECIAL,
+        @XmlEnumValue("Web")
+        WEB,
+        @XmlEnumValue("Music Video")
+        MUSIC_VIDEO,
+        @XmlEnumValue("Other")
+        OTHER,
+        @XmlEnumValue("unknown")
+        UNKNOWN;
+    }
 }

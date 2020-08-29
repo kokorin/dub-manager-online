@@ -6,22 +6,22 @@ import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@ToString
+@ToString(exclude = "titles")
 public class AnidbEpisode {
-    @XmlAttribute
+    @XmlAttribute(name = "id")
     public Long id;
 
-    @XmlAttribute
-    public LocalDate update;
-
-    @XmlElement
+    @XmlElement(name = "epno")
     public EpNo epno;
 
-    @XmlElement
+    @XmlElement(name = "length")
     public Long length;
 
     @XmlElement(name = "airdate")
     public LocalDate airDate;
+
+    @XmlAttribute(name = "update")
+    public LocalDate updateDate;
 
     @XmlElement(name = "title")
     public List<AnidbEpisodeTitle> titles;

@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
-@ToString
+@ToString(exclude = "titles")
 public class AnidbAnimeLight {
     @XmlAttribute(name = "aid")
     public Long id;

@@ -1,13 +1,11 @@
 package dmo.server.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,15 +14,25 @@ public class Episode {
     @Id
     private Long id;
 
+    @Column(nullable = false)
     private Long number;
 
-    private String title;
+    @ElementCollection
+    @CollectionTable(name = "episode_title")
+    private List<EpisodeTitle> titles;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Type type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Anime anime;
+
+    private Long length;
+
+    private LocalDate airDate;
+
+    private LocalDate updateDate;
 
     public enum Type {
         REGULAR,

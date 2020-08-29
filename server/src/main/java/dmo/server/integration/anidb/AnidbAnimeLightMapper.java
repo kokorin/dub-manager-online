@@ -9,6 +9,9 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AnidbAnimeLightMapper {
     @Mapping(target = "type", ignore = true)
+    @Mapping(target = "episodeCount", ignore = true)
+    @Mapping(target = "startDate", ignore = true)
+    @Mapping(target = "endDate", ignore = true)
     Anime toAnime(AnidbAnimeLight anidbAnimeLight);
 
     @Mapping(target = "type", ignore = true)
