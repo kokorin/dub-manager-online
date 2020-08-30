@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@XmlRootElement
+@XmlRootElement(name = "anime")
 @ToString(exclude = {"titles", "episodes"})
-public class AnidbAnime {
+public class AnidbAnime implements AnidbApiResponse {
     @XmlAttribute
     public Long id;
 

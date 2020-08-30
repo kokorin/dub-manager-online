@@ -221,4 +221,15 @@
                                  baseTableName="episode_title" baseColumnNames="episode_id"
                                  referencedTableName="episode" referencedColumnNames="id"/>
     </changeSet>
+
+    <changeSet author="kokorin" id="1598760081735">
+        <createTable tableName="anime_update">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="last_updated" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog> 

@@ -3,6 +3,7 @@ package dmo.server.integration.anidb;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
 import dmo.server.domain.Episode;
+import dmo.server.event.AnimeListUpdateScheduled;
 import dmo.server.event.AnimeListUpdated;
 import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.event.AnimeUpdated;
@@ -41,7 +42,7 @@ public class AnidbAnimeUpdaterTest {
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
             AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(new AnidbProperties(), anidbClient, eventPublisher, anidbAnimeMapper);
-            tracking.updateAnimeList();
+            tracking.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
         }
 
         Object event = eventRef.get();

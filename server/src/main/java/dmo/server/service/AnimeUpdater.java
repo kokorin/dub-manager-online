@@ -1,19 +1,26 @@
 package dmo.server.service;
 
 import dmo.server.domain.Anime;
-import dmo.server.event.AnimeListUpdated;
-import dmo.server.event.AnimeRequested;
-import dmo.server.event.AnimeUpdateScheduled;
+import dmo.server.domain.AnimeUpdate;
+import dmo.server.event.*;
 import dmo.server.repository.AnimeRepository;
+import dmo.server.repository.AnimeUpdateRepository;
+import dmo.server.repository.EpisodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -22,6 +29,26 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AnimeUpdater {
     private final AnimeRepository animeRepository;
+    private final EpisodeRepository episodeRepository;
+    private final AnimeUpdateRepository animeUpdateRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
+    private final AtomicReference<Instant> lastUpdateInstant = new AtomicReference<>(Instant.now());
+
+    private final static Duration ANIME_UPDATE_PERIOD = Duration.ofDays(1);
+    private final static Duration ANIME_LIST_UPDATE_PERIOD = Duration.ofDays(1);
+
+    @Scheduled(initialDelay = 10_000L, fixedDelay = 600_000L)
+    public void scheduleAnimeListUpdate() {
+        long animeCount = animeRepository.count();
+        boolean timeToUpdate = lastUpdateInstant.get().isBefore(Instant.now().minus(ANIME_LIST_UPDATE_PERIOD));
+
+        if (animeCount == 0 || timeToUpdate) {
+            log.info("Anime list update scheduled");
+            eventPublisher.publishEvent(new AnimeListUpdateScheduled());
+            lastUpdateInstant.set(Instant.now());
+        }
+    }
 
     @EventListener
     @Transactional
@@ -53,8 +80,38 @@ public class AnimeUpdater {
         log.info("Got: {}, inserted: {}, updated: {}", animeList.size(), inserted, updated);
     }
 
+    @Async
     @EventListener
-    public AnimeUpdateScheduled onAnimeRequested(AnimeRequested event) {
-        return null;
+    public void onAnimeRequested(AnimeRequested event) {
+        var anime = event.getAnime();
+        Instant animeLastUpdated = animeUpdateRepository.findByAnime(anime)
+                .map(AnimeUpdate::getLastUpdated)
+                .orElse(Instant.EPOCH);
+
+        // TODO improve update strategy to update old anime rarely (not once per day)
+        // May be we can target anime episode air date to schedule smart updates
+        if (animeLastUpdated.isBefore(Instant.now().minus(ANIME_UPDATE_PERIOD))) {
+            log.info("Anime update scheduled: {}", anime);
+            var updateScheduled = new AnimeUpdateScheduled(anime);
+            eventPublisher.publishEvent(updateScheduled);
+        }
+    }
+
+    @EventListener
+    @Transactional
+    public void onAnimeUpdated(AnimeUpdated event) {
+        var anime = event.getAnime();
+        var episodes = event.getEpisodes();
+
+        var savedAnime = animeRepository.save(anime);
+
+        episodes.forEach(e -> e.setAnime(savedAnime));
+        episodeRepository.saveAll(episodes);
+
+        var animeUpdate = new AnimeUpdate();
+        animeUpdate.setId(savedAnime.getId());
+        animeUpdate.setAnime(savedAnime);
+        animeUpdate.setLastUpdated(Instant.now());
+        animeUpdateRepository.save(animeUpdate);
     }
 }

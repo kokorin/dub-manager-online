@@ -8,8 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 class AnidbClientTest {
@@ -48,11 +47,13 @@ class AnidbClientTest {
     @Test
     void getAnime() throws Exception {
         try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-979.xml")) {
-            AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
+            var anidbConfig = new AnidbConfigMock("application/gzip", input);
 
-            AnidbClient anidbClient = anidbConfig.anidbClient();
-            AnidbAnime anime = anidbClient.getAnime(979L, "mock", "mock").execute().body();
+            var anidbClient = anidbConfig.anidbClient();
+            var apiResponse = anidbClient.getAnime(979L, "mock", "mock").execute().body();
+            assertTrue(apiResponse instanceof AnidbAnime);
 
+            var anime = (AnidbAnime) apiResponse;
             assertNotNull(anime);
             assertEquals((Long) 979L, anime.id);
             assertEquals(LocalDate.of(2003, 10, 4), anime.startDate);
@@ -67,10 +68,13 @@ class AnidbClientTest {
     @Test
     void getAnimeStrangeEpisodeNumbers() throws Exception {
         try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-11681.xml")) {
-            AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
+            var anidbConfig = new AnidbConfigMock("application/gzip", input);
 
-            AnidbClient anidbClient = anidbConfig.anidbClient();
-            AnidbAnime anime = anidbClient.getAnime(11681L, "mock", "mock").execute().body();
+            var anidbClient = anidbConfig.anidbClient();
+            var apiResponse = anidbClient.getAnime(11681L, "mock", "mock").execute().body();
+            assertTrue(apiResponse instanceof AnidbAnime);
+
+            var anime = (AnidbAnime) apiResponse;
 
             assertNotNull(anime);
             assertEquals((Long) 11681L, anime.id);
@@ -80,6 +84,22 @@ class AnidbClientTest {
             assertEquals(10, anime.titles.size());
 
             validateTitlesAndEpisodes(anime);
+        }
+    }
+
+    @Test
+    void getErrorCodeAndMessage() throws Exception {
+        try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("api-error.xml")) {
+            var anidbConfig = new AnidbConfigMock("application/gzip", input);
+
+            var anidbClient = anidbConfig.anidbClient();
+            var apiResponse = anidbClient.getAnime(42L, "mock", "mock").execute().body();
+
+            assertTrue(apiResponse instanceof AnidbError);
+            var error = (AnidbError) apiResponse;
+
+            assertEquals((Integer) 302, error.code);
+            assertEquals("client version missing or invalid", error.message);
         }
     }
 

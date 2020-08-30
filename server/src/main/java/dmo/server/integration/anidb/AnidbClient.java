@@ -13,7 +13,7 @@ public interface AnidbClient {
     Call<AnidbAnimeLightList> getAnimeList();
 
     @GET("http://api.anidb.net:9001/httpapi?request=anime&protover=1")
-    Call<AnidbAnime> getAnime(@Query("aid") Long id,
+    Call<AnidbApiResponse> getAnime(@Query("aid") Long id,
                               @Query("client") String client,
                               @Query("clientver") String clientver);
 }

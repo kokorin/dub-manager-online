@@ -20,11 +20,11 @@ public class Anime {
     @Column(nullable = false)
     private Type type;
 
-    public Long episodeCount;
+    private Long episodeCount;
 
-    public LocalDate startDate;
+    private LocalDate startDate;
 
-    public LocalDate endDate;
+    private LocalDate endDate;
 
     @ElementCollection
     @CollectionTable(name = "anime_title")
