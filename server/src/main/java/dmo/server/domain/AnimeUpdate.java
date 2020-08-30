@@ -11,7 +11,6 @@ import java.time.Instant;
 @Setter
 public class AnimeUpdate {
     @Id
-    @GeneratedValue
     private Long id;
 
     @OneToOne(optional = false)

@@ -7,6 +7,8 @@ import dmo.server.api.v1.dto.PageDto;
 import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.Anime;
 import dmo.server.service.AnimeService;
+import dmo.server.service.EpisodeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,10 +20,10 @@ import javax.validation.constraints.Min;
 @RestController
 @RequestMapping("api/v1/anime")
 @Validated
+@RequiredArgsConstructor
 public class AnimeController {
-
-    @Autowired
-    private AnimeService animeService;
+    private final AnimeService animeService;
+    private final EpisodeService episodeService;
 
     @Autowired
     private AnimeMapper animeMapper;
@@ -29,22 +31,24 @@ public class AnimeController {
     @GetMapping
     public PageDto<AnimeLightDto> findAll(@RequestParam("page") int page,
                                           @RequestParam("size") @Min(1) int size) {
-        PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Anime> result = animeService.findAll(pageRequest);
-        return animeMapper.toPageDto(result);
+        var pageRequest = PageRequest.of(page, size);
+        var result = animeService.findAll(pageRequest);
+        return animeMapper.toAnimePageDto(result);
     }
 
     @GetMapping("{id}")
     public AnimeDto getAnime(@PathVariable("id") Long id) {
         // TODO return 404 if no anime
         Anime result = animeService.findById(id).orElse(null);
-        return animeMapper.toDto(result);
+        return animeMapper.toAnimeDto(result);
     }
 
     @GetMapping("{id}/episodes")
     public PageDto<EpisodeDto> getEpisodes(@PathVariable("id") Long id,
                                            @RequestParam("page") int page,
                                            @RequestParam("size") @Min(1) int size) {
-        return null;
+        var pageRequest = PageRequest.of(page, size);
+        var result = episodeService.findAll(pageRequest, id);
+        return animeMapper.toEpisodePageDto(result);
     }
 }

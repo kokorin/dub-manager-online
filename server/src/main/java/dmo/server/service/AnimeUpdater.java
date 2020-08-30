@@ -109,7 +109,7 @@ public class AnimeUpdater {
         episodeRepository.saveAll(episodes);
 
         var animeUpdate = new AnimeUpdate();
-        animeUpdate.setId(savedAnime.getId());
+        // No need to set animeUpdate.id
         animeUpdate.setAnime(savedAnime);
         animeUpdate.setLastUpdated(Instant.now());
         animeUpdateRepository.save(animeUpdate);

@@ -19,8 +19,6 @@ public class EpisodeDto {
 
     private LocalDate airDate;
 
-    private LocalDate updateDate;
-
     public enum Type {
         REGULAR,
         SPECIAL,
