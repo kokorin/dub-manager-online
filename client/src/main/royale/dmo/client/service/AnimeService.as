@@ -1,7 +1,9 @@
 package dmo.client.service {
+import mx.logging.ILogger;
+import mx.logging.Log;
+
 import org.apache.royale.events.Event;
 import org.apache.royale.events.IEventDispatcher;
-import org.apache.royale.jewel.Alert;
 import org.apache.royale.net.HTTPConstants;
 import org.apache.royale.net.HTTPService;
 
@@ -9,12 +11,15 @@ public class AnimeService {
     [Dispatcher]
     public var dispatcher:IEventDispatcher;
 
+    private static const LOGGER:ILogger = Log.getLogger("dmo.client.service.AnimeService");
+
     public function AnimeService() {
     }
 
     public function loadAnime(id:Number):void {
         function completeHandler(event:Event):void {
-            Alert.show("loadAnime");
+            trace("HUI: !");
+            LOGGER.error("loadAnime");
         }
 
         const httpService:HTTPService = new HTTPService();
@@ -26,7 +31,8 @@ public class AnimeService {
 
     public function loadAnimeList():void {
         function completeHandler(event:Event):void {
-            Alert.show("loadAnimeList");
+            trace("HUI: !");
+            LOGGER.error("loadAnime");
         }
 
         const httpService:HTTPService = new HTTPService();

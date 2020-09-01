@@ -2,7 +2,24 @@
 <js:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
                 xmlns:js="library://ns.apache.org/royale/basic"
                 xmlns:crux="library://ns.apache.org/royale/crux" xmlns:config="dmo.client.config.*"
-                xmlns:view="dmo.client.view.*">
+                xmlns:view="dmo.client.view.*"
+                applicationComplete="onInit()">
+    <fx:Script><![CDATA[
+        import mx.logging.Log;
+        import mx.logging.LogEventLevel;
+        import mx.logging.targets.TraceTarget;
+
+        private function onInit():void {
+            // We must initialize TraceTarget because in Royale initialized method isn't invoked
+            // (despite from Flex) so TraceTarget can't be registered automatically if declared in <Declaration> block
+            const traceTarget:TraceTarget = new TraceTarget();
+            traceTarget.includeLevel = true;
+            traceTarget.includeTime = true;
+            traceTarget.includeCategory = true;
+            traceTarget.level = LogEventLevel.ALL;
+            Log.addTarget(traceTarget);
+        }
+        ]]></fx:Script>
 
     <js:beads>
         <!-- support for simulated stage events in javascript (needed for Crux view processing)-->

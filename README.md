@@ -4,15 +4,14 @@ docker run -t -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_DATABASE=dmo -e MYSQL_U
 
 # Running locally
 
-1. Add following ENV variables server configuration (or property file):
+Add following ENV variables server configuration (or property file):
 ```properties
 # anidb.net integration configuration
 dmo.anidb.client=${ANIDB_CLIENT_ID}
 dmo.anidb.client-version=${ANIDB_CLIENT_VERSION}
-# configure Spring Boot to serve static files compiles by client module
-spring.resources.static-locations=${PROJECT_PATH}/client/target/javascript/bin/js-debug
+# configure Spring Boot to serve static files compiles by client module (and source files for source maps)
+spring.resources.static-locations=${PROJECT_PATH}/client/target/javascript/bin/js-debug,${PROJECT_PATH}/client/
 ```
-2. 
 
 # Setting up Intellij IDEA for development with Apache Royale
 
@@ -24,7 +23,7 @@ spring.resources.static-locations=${PROJECT_PATH}/client/target/javascript/bin/j
 
 3. Download latest Apache Royale SDK
 
-4. Add all SWC files from ${ROYALE_FOLDER}\royale-asjs\frameworks\js\libs as AS3 global library
+4. Add all SWC files from ${ROYALE_FOLDER}/royale-asjs/frameworks/js/libs as AS3 global library
 
 5. Add the library from the previous step as client project dependency
 
