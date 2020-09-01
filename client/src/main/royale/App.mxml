@@ -16,7 +16,6 @@
             <crux:config>
                 <!-- eventPackages value tells Crux the path to your Event classes, viewPackages is an optional value that speeds up processing of display classes. -->
                 <crux:CruxConfig
-
                         eventPackages="dmo.client.event.*"
                         viewPackages="dmo.client.view.*"/>
             </crux:config>
@@ -28,6 +27,6 @@
     </js:valuesImpl>
 
     <js:initialView>
-        <view:MainContent id="mainContent"/>
+        <view:MainView id="mainContent"/>
     </js:initialView>
 </js:Application>
