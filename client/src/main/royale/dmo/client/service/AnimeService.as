@@ -18,7 +18,6 @@ public class AnimeService {
 
     public function loadAnime(id:Number):void {
         function completeHandler(event:Event):void {
-            trace("HUI: !");
             LOGGER.error("loadAnime");
         }
 
@@ -31,7 +30,6 @@ public class AnimeService {
 
     public function loadAnimeList():void {
         function completeHandler(event:Event):void {
-            trace("HUI: !");
             LOGGER.error("loadAnime");
         }
 

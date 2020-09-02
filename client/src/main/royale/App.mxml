@@ -3,13 +3,22 @@
                 xmlns:js="library://ns.apache.org/royale/basic"
                 xmlns:crux="library://ns.apache.org/royale/crux" xmlns:config="dmo.client.config.*"
                 xmlns:view="dmo.client.view.*"
-                applicationComplete="onInit()">
+                applicationComplete="onAppComplete()">
+
     <fx:Script><![CDATA[
         import mx.logging.Log;
         import mx.logging.LogEventLevel;
         import mx.logging.targets.TraceTarget;
 
-        private function onInit():void {
+        TEST::enabled {
+            import dmo.client.test.AlertTestListener;
+            import dmo.client.test.MappingUtilTest;
+
+            import org.apache.royale.test.RoyaleUnitCore;
+            import org.apache.royale.test.listeners.TraceListener;
+        }
+
+        private function initLogTraceTarget():void {
             // We must initialize TraceTarget because in Royale initialized method isn't invoked
             // (despite from Flex) so TraceTarget can't be registered automatically if declared in <Declaration> block
             const traceTarget:TraceTarget = new TraceTarget();
@@ -18,6 +27,20 @@
             traceTarget.includeCategory = true;
             traceTarget.level = LogEventLevel.ALL;
             Log.addTarget(traceTarget);
+        }
+
+        private function runTests():void {
+            TEST::enabled {
+                const core:RoyaleUnitCore = new RoyaleUnitCore();
+                core.addListener(new TraceListener());
+                core.addListener(new AlertTestListener());
+                core.runClasses(MappingUtilTest);
+            }
+        }
+
+        private function onAppComplete():void {
+            initLogTraceTarget();
+            runTests();
         }
         ]]></fx:Script>
 
