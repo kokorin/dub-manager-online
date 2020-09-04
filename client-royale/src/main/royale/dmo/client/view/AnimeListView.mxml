@@ -11,10 +11,18 @@
 		<![CDATA[
         import dmo.client.controller.AnimeListController;
 
+        [Bindable]
         [Inject]
         public var animeListController:AnimeListController;
         ]]>
 	</fx:Script>
 
-    <js:TextButton text="Save" click="{animeListController.onClick()}" width="200" height="100"/>
+    <js:DataGrid dataProvider="{animeListController.page.content}" width="100%" height="100%">
+        <js:columns>
+            <js:DataGridColumn dataField="id" label="ID" columnWidth="50"/>
+            <js:DataGridColumn dataField="type" label="TYPE" columnWidth="300"/>
+        </js:columns>
+    </js:DataGrid>
+
+    <js:TextButton text="Save" click="{animeListController.loadAnimeList()}" width="400" height="50"/>
 </js:Group>

@@ -1,6 +1,7 @@
 package dmo.client.domain {
 import mx.collections.ArrayCollection;
 
+[Bindable]
 public class PageDtoOfAnimeLightDto {
     public var number:Number = 0;
     public var numberOfElements:Number = 0;

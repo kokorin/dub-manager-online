@@ -28,6 +28,7 @@
     <properties>
         <compiler.debug>true</compiler.debug>
         <royale.version>0.9.7</royale.version>
+        <skip>true</skip>
     </properties>
 
     <dependencies>
