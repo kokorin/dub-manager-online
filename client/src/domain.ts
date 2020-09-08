@@ -1,3 +1,12 @@
+export class AnimeTitle {
+    constructor(
+        public lang: string = "",
+        public type: string = "",
+        public text: string = ""
+    ) {
+    }
+}
+
 export class Anime {
     constructor(
         public id: number = 0,
@@ -8,11 +17,20 @@ export class Anime {
     }
 }
 
-export class AnimeTitle {
+export class EpisodeTitle {
     constructor(
         public lang: string = "",
-        public type: string = "",
         public text: string = ""
+    ) {
+    }
+}
+
+export class Episode {
+    constructor(
+        public id:number = 0,
+        public type:string = "",
+        public number:number = 0,
+        public titles:Array<EpisodeTitle> = []
     ) {
     }
 }

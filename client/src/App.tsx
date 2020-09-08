@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import {AnimeTableContainer} from "./AnimeTable";
+import AnimeViewContainer from "./AnimeView";
 
 
 class App extends React.Component {
     render() {
         return (
-            <AnimeTableContainer/>
+            <AnimeViewContainer animeId={1}/>
         );
     }
 }

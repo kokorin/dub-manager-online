@@ -77,7 +77,7 @@ interface AnimeTableProps {
 
 }
 
-export default class AnimeTable extends React.Component<AnimeTableProps> {
+class AnimeTable extends React.Component<AnimeTableProps> {
     state = new AnimeTableState();
 
     private handleChangePage = (event:any, newPage:number) => {
@@ -101,7 +101,7 @@ export default class AnimeTable extends React.Component<AnimeTableProps> {
 
         return (<Paper>
             <TableContainer>
-                <Table aria-label="simple table">
+                <Table stickyHeader={true} aria-label="simple table">
                     <TableHead>
                         <TableRow>
                             <TableCell>ID</TableCell>
