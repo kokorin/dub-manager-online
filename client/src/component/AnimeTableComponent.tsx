@@ -1,14 +1,19 @@
 import React from 'react';
-import './App.css';
 import {Paper, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import Table from "@material-ui/core/Table";
 import TableFooter from "@material-ui/core/TableFooter";
-import {Anime, Page} from "./domain";
+import Page from "../domain/Page";
+import Anime from "../domain/Anime";
 
-import axios from "axios";
+export interface AnimeTableComponentProps {
+    page:Page<Anime>;
+    onChangePage: (newPage: number) => void;
+    onChangeRowsPerPage: (newRowsPerPage:number) => void;
 
-class AnimeTableState {
+}
+
+class AnimeTableComponentState {
     constructor(
         public isLoading: boolean = false,
         public page: Page<Anime> = new Page<Anime>(),
@@ -17,68 +22,8 @@ class AnimeTableState {
     }
 }
 
-function isNonNegative(value?:number) {
-    return typeof value === "number" && value >=0;
-}
-
-export class AnimeTableContainer extends React.Component {
-    state = {
-        isLoading: false
-    }
-
-    page = new Page<Anime>();
-
-
-    private handleChangePage = (newPage:number) => {
-        this.fetchData({page:newPage});
-    }
-
-    private handleChangeRowsPerPage = (newRowsPerPage:number) => {
-        this.fetchData({page: 0, size: newRowsPerPage});
-    }
-
-    private fetchData = (fetchParams: { page?: number, size?: number }) => {
-        this.setState({isLoading: true});
-
-        let params = {
-            "page": isNonNegative(fetchParams.page) ? fetchParams.page : this.page.number,
-            "size": fetchParams.size || this.page.size
-        };
-
-        let self = this;
-        axios.get("/api/v1/anime", {params: params}).then(
-            res => {
-                this.page = res.data;
-                self.setState({
-                    isLoading: false
-                });
-            }
-        )
-    }
-
-    componentDidMount = () => {
-        console.log("AnimeTableContainer DID MOUNT");
-        this.fetchData({page: 0, size: 10});
-    }
-
-    render() {
-        return (<AnimeTable page={this.page}
-                            onChangePage={this.handleChangePage}
-                            onChangeRowsPerPage={this.handleChangeRowsPerPage}/>);
-    }
-}
-
-interface AnimeTableProps {
-    page:Page<Anime>;
-
-    onChangePage: (newPage: number) => void;
-
-    onChangeRowsPerPage: (newRowsPerPage:number) => void;
-
-}
-
-class AnimeTable extends React.Component<AnimeTableProps> {
-    state = new AnimeTableState();
+export default class AnimeTableComponent extends React.Component<AnimeTableComponentProps, AnimeTableComponentState> {
+    state = new AnimeTableComponentState();
 
     private handleChangePage = (event:any, newPage:number) => {
         this.props.onChangePage(newPage);

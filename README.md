@@ -14,6 +14,9 @@ dmo.anidb.client-version=${ANIDB_CLIENT_VERSION}
 
 # TODO
 
+0. React routing
+
+0. TypeScript REST client generation
 
 1. Smart Anime polling (take into account anime end date, do not refresh old anime every day)
 
