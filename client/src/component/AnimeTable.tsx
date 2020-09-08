@@ -11,18 +11,27 @@ function nonNegativeOrDefault(value: number | any, defValue: number): number {
     return defValue;
 }
 
-class AnimeTableState {
-    constructor(
-        public isLoading:boolean = false
-    ) {
-    }
+interface AnimeTableState {
+    isLoading: boolean;
+    page: Page<Anime>
 }
 
 export default class AnimeTable extends React.Component<any, AnimeTableState> {
-    state = new AnimeTableState();
 
-    page = new Page<Anime>();
-
+    constructor(props: Readonly<any>) {
+        super(props);
+        this.state = {
+            isLoading: false,
+            page: {
+                number: 0,
+                size: 10,
+                numberOfElements: 0,
+                totalElements: 0,
+                totalPages: 0,
+                content: []
+            }
+        };
+    }
 
     private handleChangePage = (newPage: number) => {
         this.fetchData({page: newPage});
@@ -32,23 +41,20 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
         this.fetchData({page: 0, size: newRowsPerPage});
     }
 
-    private fetchData = (fetchParams: { page?: number, size?: number }) => {
+    private fetchData = async (fetchParams: { page?: number, size?: number }) => {
         this.setState({isLoading: true});
 
-        let params = {
-            "page": nonNegativeOrDefault(fetchParams.page, this.page.number),
-            "size": fetchParams.size || this.page.size
+        const params = {
+            "page": nonNegativeOrDefault(fetchParams.page, this.state.page.number),
+            "size": fetchParams.size || this.state.page.size
         };
 
-        let self = this;
-        axios.get("/api/v1/anime", {params: params}).then(
-            res => {
-                this.page = res.data;
-                self.setState({
-                    isLoading: false
-                });
-            }
-        )
+        const res = await axios.get("/api/v1/anime", {params: params});
+        this.setState({
+            ...this.state,
+            isLoading: false,
+            page: res.data
+        });
     }
 
     componentDidMount = () => {
@@ -56,8 +62,10 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
     }
 
     render() {
-        return (<AnimeTableComponent page={this.page}
-                                     onChangePage={this.handleChangePage}
-                                     onChangeRowsPerPage={this.handleChangeRowsPerPage}/>);
+        return (
+            <AnimeTableComponent page={this.state.page}
+                                 onChangePage={this.handleChangePage}
+                                 onChangeRowsPerPage={this.handleChangeRowsPerPage}/>
+        );
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import AnimeViewContainer from "./AnimeView";
+import AnimeViewContainer from "./component/AnimeView";
 
 
 class App extends React.Component {

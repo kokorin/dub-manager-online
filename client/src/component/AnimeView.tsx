@@ -1,15 +1,15 @@
 import React from "react";
 import {Paper} from "@material-ui/core";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
-import AnimeDetails from "./component/AnimeDetails";
-import EpisodeTable from "./component/EpisodeTable";
+import AnimeDetails from "./AnimeDetails";
+import EpisodeTable from "./EpisodeTable";
 
 interface AnimeViewProps {
     animeId: number;
 }
 
-class AnimeViewState {
-    selectedTab: AnimeViewTabType = AnimeViewTabType.DETAILS;
+interface AnimeViewState {
+    selectedTab: AnimeViewTabType;
 }
 
 enum AnimeViewTabType {
@@ -18,10 +18,21 @@ enum AnimeViewTabType {
 }
 
 export default class AnimeViewContainer extends React.Component<AnimeViewProps, AnimeViewState> {
-    state = new AnimeViewState();
+    constructor(props: Readonly<AnimeViewProps>) {
+        super(props);
+        this.state = {
+            selectedTab: AnimeViewTabType.DETAILS
+        }
+    }
 
     private handleTabChange = (tab: AnimeViewTabType) => {
-        this.setState({...this.state, selectedTab: tab});
+        if (tab !== null) {
+            this.setState({
+                    ...this.state,
+                    selectedTab: tab
+                }
+            );
+        }
     }
 
     render() {
@@ -55,6 +66,7 @@ class AnimeViewTabbar extends React.Component<AnimeViewTabbarProps, any> {
 
     render() {
         return <ToggleButtonGroup exclusive
+                                  size="large"
                                   value={this.props.selectedTab}
                                   onChange={this.handleChange}>
             <ToggleButton value={AnimeViewTabType.DETAILS}>Details</ToggleButton>

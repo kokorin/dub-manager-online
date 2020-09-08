@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 import {Paper, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
-import TablePagination from "@material-ui/core/TablePagination";
 import Table from "@material-ui/core/Table";
 import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
+import Episode from "../domain/Episode";
 import Page from "../domain/Page";
-import Anime from "../domain/Anime";
 
-export interface AnimeTableComponentProps {
-    page: Page<Anime>;
+interface EpisodeTableComponentProps {
+    page: Page<Episode>;
     onChangePage: (newPage: number) => void;
     onChangeRowsPerPage: (newRowsPerPage: number) => void;
 }
 
-export default class AnimeTableComponent extends React.Component<AnimeTableComponentProps, any> {
+export default class EpisodeTableComponent extends React.Component<EpisodeTableComponentProps, any> {
 
     private handleChangePage = (event: any, newPage: number) => {
         this.props.onChangePage(newPage);
@@ -24,11 +24,12 @@ export default class AnimeTableComponent extends React.Component<AnimeTableCompo
     }
 
     render() {
-        const rows = this.props.page.content.map(anime => (
-            <TableRow key={anime.id}>
-                <TableCell component="th" scope="row">{anime.id}</TableCell>
-                <TableCell align="center">{anime.type}</TableCell>
-                <TableCell align="center">{anime.titles[0].text}</TableCell>
+        let rows = this.props.page?.content?.map(episode => (
+            <TableRow key={episode.id}>
+                <TableCell component="th" scope="row">{episode.id}</TableCell>
+                <TableCell align="center">{episode.number}</TableCell>
+                <TableCell align="center">{episode.type}</TableCell>
+                <TableCell align="center">{episode.titles[0].text}</TableCell>
             </TableRow>
         ));
 
@@ -39,6 +40,7 @@ export default class AnimeTableComponent extends React.Component<AnimeTableCompo
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
+                                <TableCell align="center">NUMBER</TableCell>
                                 <TableCell align="center">TYPE</TableCell>
                                 <TableCell align="center">TITLE</TableCell>
                             </TableRow>
@@ -46,17 +48,18 @@ export default class AnimeTableComponent extends React.Component<AnimeTableCompo
                         <TableBody>
                             {rows}
                         </TableBody>
-                        <TableFooter>
+                        {<TableFooter>
                             <TableRow>
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25]}
-                                    count={this.props.page.totalElements}
-                                    rowsPerPage={this.props.page.size}
-                                    page={this.props.page.number}
+                                    count={this.props.page?.totalElements}
+                                    rowsPerPage={this.props.page?.size}
+                                    page={this.props.page?.number}
                                     onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}/>
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                />
                             </TableRow>
-                        </TableFooter>
+                        </TableFooter>}
                     </Table>
                 </TableContainer>
             </Paper>

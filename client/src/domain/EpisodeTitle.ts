@@ -1,7 +1,4 @@
-export default class EpisodeTitle {
-    constructor(
-        public lang: string = "",
-        public text: string = ""
-    ) {
-    }
+export default interface EpisodeTitle {
+    lang: string;
+    text: string;
 }
