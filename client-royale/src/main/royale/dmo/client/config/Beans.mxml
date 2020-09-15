@@ -1,8 +1,0 @@
-<crux:BeanProvider
-        xmlns:fx="http://ns.adobe.com/mxml/2009"
-        xmlns:crux="library://ns.apache.org/royale/crux" xmlns:service="dmo.client.service.*"
-        xmlns:controller="dmo.client.controller.*">
-
-    <service:AnimeService id="animeService"/>
-    <controller:AnimeListController id="animeListController"/>
-</crux:BeanProvider>
