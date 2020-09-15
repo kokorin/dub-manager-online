@@ -25,6 +25,9 @@ public interface AnidbAnimeMapper {
         if (anidbTitle.type == AnidbAnimeTitle.Type.SYN) {
             type = AnidbAnimeTitle.Type.SYNONYM;
         }
+        if (anidbTitle.type == null) {
+            type = AnidbAnimeTitle.Type.SYNONYM;
+        }
 
         AnimeTitle.Type targetType = AnimeTitle.Type.valueOf(type.name());
         title.setType(targetType);

@@ -22,7 +22,7 @@ dmo.anidb.client-version=${ANIDB_CLIENT_VERSION}
 
 2. Add scheduled task to pull random anime without episodes (once every minute or 5 minutes)
 
-3. Implement anidn API back off policy - don't send new requests if API responds with <error>banned</error> 
+3. Implement anidb API back off policy - don't send new requests if API responds with <error>banned</error> 
 
 4. Integrate Google OAuth
 

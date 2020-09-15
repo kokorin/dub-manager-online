@@ -5,6 +5,7 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import Episode from "../domain/Episode";
 import Page from "../domain/Page";
+import EpisodeTitleLabel from "./EpisodeTitleLabel";
 
 interface EpisodeTableComponentProps {
     page: Page<Episode>;
@@ -29,7 +30,9 @@ export default class EpisodeTableComponent extends React.Component<EpisodeTableC
                 <TableCell component="th" scope="row">{episode.id}</TableCell>
                 <TableCell align="center">{episode.number}</TableCell>
                 <TableCell align="center">{episode.type}</TableCell>
-                <TableCell align="center">{episode.titles[0].text}</TableCell>
+                <TableCell align="center">
+                    <EpisodeTitleLabel episodeTitles={episode.titles}/>
+                </TableCell>
             </TableRow>
         ));
 

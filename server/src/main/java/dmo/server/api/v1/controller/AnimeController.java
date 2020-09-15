@@ -10,11 +10,12 @@ import dmo.server.service.AnimeService;
 import dmo.server.service.EpisodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 @RestController
@@ -29,9 +30,9 @@ public class AnimeController {
     private AnimeMapper animeMapper;
 
     @GetMapping
-    public PageDto<AnimeLightDto> findAll(@RequestParam("page") int page,
-                                          @RequestParam("size") @Min(1) int size) {
-        var pageRequest = PageRequest.of(page, size);
+    public PageDto<AnimeLightDto> findAll(@RequestParam("page") @Min(0) int page,
+                                          @RequestParam("size") @Min(1) @Max(100) int size) {
+        var pageRequest = PageRequest.of(page, size, Sort.by("id"));
         var result = animeService.findAll(pageRequest);
         return animeMapper.toAnimePageDto(result);
     }
@@ -45,9 +46,9 @@ public class AnimeController {
 
     @GetMapping("{id}/episodes")
     public PageDto<EpisodeDto> getEpisodes(@PathVariable("id") Long id,
-                                           @RequestParam("page") int page,
-                                           @RequestParam("size") @Min(1) int size) {
-        var pageRequest = PageRequest.of(page, size);
+                                           @RequestParam("page") @Min(0) int page,
+                                           @RequestParam("size") @Min(1) @Max(100) int size) {
+        var pageRequest = PageRequest.of(page, size, Sort.by("type", "number"));
         var result = episodeService.findAll(pageRequest, id);
         return animeMapper.toEpisodePageDto(result);
     }

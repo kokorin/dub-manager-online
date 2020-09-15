@@ -8,7 +8,6 @@ import java.time.Instant;
 
 @Entity
 @Getter
-@Setter
 public class AnimeUpdate {
     @Id
     private Long id;
@@ -16,8 +15,10 @@ public class AnimeUpdate {
     @OneToOne(optional = false)
     @JoinColumn(name = "id")
     @MapsId
+    @Setter
     private Anime anime;
 
     @Column(nullable = false)
+    @Setter
     private Instant lastUpdated;
 }
