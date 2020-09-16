@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -30,5 +32,18 @@ public class AnimeService {
 
     public Page<Anime> findAll(Pageable page) {
         return animeRepository.findAll(page);
+    }
+
+    @Transactional
+    public Page<Anime> findByTitle(String title, Pageable page) {
+        var ids = animeRepository.findIdByTitle(title, page);
+        var content = animeRepository.findAllWithTitles(ids, page.getSort());
+        var total = animeRepository.countByTitle(title);
+
+        return new PageImpl<>(
+                content,
+                page,
+                total
+        );
     }
 }
