@@ -1,9 +1,12 @@
 package dmo.server.repository;
 
 import dmo.server.domain.Anime;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,28 +14,21 @@ import java.util.List;
 @Repository
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
-    @Query("FROM Anime a JOIN a.titles t")
+    @Query("FROM Anime a")
     @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths = "titles")
     List<Anime> findAllWithTitles();
 
-    /* TODO add anime search by title with pagination:
+    @Query("FROM Anime a WHERE a.id IN (:ids)")
+    @EntityGraph(type = EntityGraph.EntityGraphType.LOAD, attributePaths = "titles")
+    List<Anime> findAllWithTitles(@Param("ids") List<Long> ids, Sort sort);
 
-    select a.*, t.* from anime_title t
-    join (select a.*
-     from anime a
-     where a.id in (
-         select t.anime_id
-         from anime_title t
-         where match(t.text) against('Sword Art Online Alici' in boolean mode )
-     )
-     order by id
-     limit 10 offset 10
-    ) a on a.id = t.anime_id
-    order by a.id;
+    @Query(value = "SELECT a.id FROM anime a WHERE a.id IN (" +
+            "           SELECT t.anime_id FROM anime_title t" +
+            "           WHERE MATCH(t.text) AGAINST(:title)" +
+            "       )", nativeQuery = true)
+    List<Long> findIdByTitle(@Param("title") String title, Pageable pageable);
 
-    select count(distinct t.anime_id)
-    from anime_title t
-    where match(t.text) against('+Sword +Art +Online Alici')
-
-     */
+    @Query(value = "SELECT COUNT(distinct t.anime_id) FROM anime_title t" +
+            "       WHERE MATCH(t.text) AGAINST(:title)", nativeQuery = true)
+    Long countByTitle(@Param("title") String title);
 }

@@ -10,8 +10,10 @@ import dmo.server.service.AnimeService;
 import dmo.server.service.EpisodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +32,19 @@ public class AnimeController {
     private AnimeMapper animeMapper;
 
     @GetMapping
-    public PageDto<AnimeLightDto> findAll(@RequestParam("page") @Min(0) int page,
+    public PageDto<AnimeLightDto> findAll(@RequestParam(value = "title", defaultValue = "") String title,
+                                          @RequestParam("page") @Min(0) int page,
                                           @RequestParam("size") @Min(1) @Max(100) int size) {
         var pageRequest = PageRequest.of(page, size, Sort.by("id"));
-        var result = animeService.findAll(pageRequest);
+
+        // TODO require title
+        final Page<Anime> result;
+        if (StringUtils.isEmpty(title)) {
+            result = animeService.findAll(pageRequest);
+        } else {
+            result = animeService.findByTitle(title, pageRequest);
+        }
+
         return animeMapper.toAnimePageDto(result);
     }
 
