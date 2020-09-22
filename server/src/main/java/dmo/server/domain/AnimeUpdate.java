@@ -8,17 +8,20 @@ import java.time.Instant;
 
 @Entity
 @Getter
+@Setter
 public class AnimeUpdate {
     @Id
-    private Long id;
+    private Long animeId;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "id")
     @MapsId
-    @Setter
     private Anime anime;
 
     @Column(nullable = false)
-    @Setter
     private Instant lastUpdated;
+
+    // Suppress Lombok setter generation
+    private void setId(Long animeId) {
+        this.animeId = animeId;
+    }
 }

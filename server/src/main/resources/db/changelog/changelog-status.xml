@@ -1,0 +1,55 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd"
+                   logicalFilePath="changelog-base.xml">
+
+    <changeSet id="1600322706643" author="kokorin">
+        <createTable tableName="dub_user">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(64)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1600322425891" author="kokorin">
+        <createTable tableName="anime_status_enum">
+            <column name="status" type="VARCHAR(32)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="1600322529438" author="kokorin">
+        <insert tableName="anime_status_enum">
+            <column name="status" value="NOT_STARTED"/>
+        </insert>
+        <insert tableName="anime_status_enum">
+            <column name="status" value="IN_PROGRESS"/>
+        </insert>
+        <insert tableName="anime_status_enum">
+            <column name="status" value="COMPLETED"/>
+        </insert>
+    </changeSet>
+    
+    <changeSet id="1600322592713" author="kokorin">
+        <createTable tableName="anime_status">
+            <column name="anime_id" type="BIGINT">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_anime_status_to_anime"
+                             referencedTableName="anime" referencedColumnNames="id"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_anime_status_to_user"
+                             referencedTableName="dub_user" referencedColumnNames="id"/>
+            </column>
+            <column name="status" type="VARCHAR(32)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_anime_status_to_anime_status_enum"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog> 

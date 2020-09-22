@@ -3,6 +3,7 @@ import './App.css';
 import {Route, Switch} from "react-router-dom";
 import AnimeTable from "./component/AnimeTable";
 import AnimeView from "./component/AnimeView";
+import LoginComponent from "./component/LoginComponent";
 
 interface AnimeViewRouteProps {
     match: {
@@ -27,6 +28,7 @@ class App extends React.Component {
             <main>
                 <Switch>
                     <Route path="/" component={AnimeTable} exact/>
+                    <Route path="/login" component={LoginComponent} exact/>
                     <Route path="/anime/:animeId" component={AnimeViewRoute}/>
                 </Switch>
             </main>
