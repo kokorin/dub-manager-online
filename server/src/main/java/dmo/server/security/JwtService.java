@@ -42,7 +42,7 @@ public class JwtService {
                 .build();
     }
 
-    public String toJwt(SimpleUserDetails userDetails) {
+    public String toJwt(DubUserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
@@ -57,7 +57,7 @@ public class JwtService {
                 .compact();
     }
 
-    public SimpleUserDetails fromJwt(String jwt) {
+    public DubUserDetails fromJwt(String jwt) {
         Claims claims;
 
         try {
@@ -69,9 +69,8 @@ public class JwtService {
         }
 
         @SuppressWarnings("unchecked")
-        SimpleUserDetails result = new SimpleUserDetails(
+        DubUserDetails result = new DubUserDetails(
                 claims.getSubject(),
-                "N/A",
                 ((List<String>) claims.get(AUTHORITIES_CLAIM, List.class)).stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList()),

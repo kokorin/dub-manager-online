@@ -6,22 +6,21 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsChecker;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
+@RequiredArgsConstructor
 public class GoogleAuthenticationProvider implements AuthenticationProvider, InitializingBean {
 
     private GoogleIdTokenVerifier tokenVerifier;
@@ -29,6 +28,7 @@ public class GoogleAuthenticationProvider implements AuthenticationProvider, Ini
     @Value("${google.client_id}")
     private String clientId;
 
+    private final DubUserDetailsService userDetailsService;
     private final UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
 
     @Override
@@ -77,12 +77,7 @@ public class GoogleAuthenticationProvider implements AuthenticationProvider, Ini
         String familyName = (String) payload.get("family_name");
         String givenName = (String) payload.get("given_name");
 
-        UserDetails ud = new SimpleUserDetails(
-                email,
-                null,
-                AuthorityUtils.createAuthorityList("ROLE_USER"),
-                Instant.now().plus(1, ChronoUnit.DAYS)
-        );
+        UserDetails ud = userDetailsService.loadOrCreateUserByEmail(email);
 
         userDetailsChecker.check(ud);
 

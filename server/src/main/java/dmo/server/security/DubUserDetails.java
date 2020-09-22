@@ -6,27 +6,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.Instant;
 import java.util.List;
 
-public class SimpleUserDetails implements UserDetails {
-    private final String username;
-    private final String password;
+public class DubUserDetails implements UserDetails {
+    private final String email;
     private final List<? extends GrantedAuthority> authorities;
     private final Instant expiresAfter;
 
-    public SimpleUserDetails(String username, String password, List<? extends GrantedAuthority> authorities, Instant expiresAfter) {
-        this.username = username;
-        this.password = password;
+    public DubUserDetails(String email,
+                          List<? extends GrantedAuthority> authorities,
+                          Instant expiresAfter) {
+        this.email = email;
         this.authorities = authorities;
         this.expiresAfter = expiresAfter;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return "N/A";
     }
 
     @Override

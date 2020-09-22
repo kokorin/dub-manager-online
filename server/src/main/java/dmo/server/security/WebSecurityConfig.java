@@ -22,6 +22,7 @@ import javax.servlet.Filter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
     private final JwtAuthenticationUserDetailsService preAuthenticatedUserDetailsService;
+    private final DubUserDetailsService dubUserDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -61,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider googleAuthenticationProvider() {
-        GoogleAuthenticationProvider provider = new GoogleAuthenticationProvider();
+        GoogleAuthenticationProvider provider = new GoogleAuthenticationProvider(dubUserDetailsService);
         return provider;
     }
 

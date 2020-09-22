@@ -25,7 +25,7 @@ public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
-        SimpleUserDetails userDetails = (SimpleUserDetails) authentication.getPrincipal();
+        DubUserDetails userDetails = (DubUserDetails) authentication.getPrincipal();
         String jwt = jwtService.toJwt(userDetails);
 
         long expiresIn = Duration.between(Instant.now(), userDetails.getExpiresAfter()).toMillis();
