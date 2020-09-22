@@ -8,6 +8,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,6 +35,12 @@ public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHan
                 "}\n";
 
         httpServletResponse.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+        Cookie accessTokenCookie = new Cookie("access_token", jwt);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setPath("/api/");
+        httpServletResponse.addCookie(accessTokenCookie);
+
         httpServletResponse.getWriter()
                 .append(response)
                 .flush();
