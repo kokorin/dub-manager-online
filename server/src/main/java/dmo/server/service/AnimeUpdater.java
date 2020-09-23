@@ -45,6 +45,7 @@ public class AnimeUpdater {
 
         if (animeCount == 0 || timeToUpdate) {
             log.info("Anime list update scheduled");
+            // TODO add AnimeListUpdateSuccess event
             eventPublisher.publishEvent(new AnimeListUpdateScheduled());
             lastUpdateInstant.set(Instant.now());
         }
@@ -53,7 +54,6 @@ public class AnimeUpdater {
     @EventListener
     @Transactional
     public void onAnimeListUpdate(AnimeListUpdated animeListUpdated) {
-        //animeService.saveAll(animeListUpdated.getAnimeList());
         List<Anime> animeList = animeListUpdated.getAnimeList();
         List<Anime> persistedList = animeRepository.findAllWithTitles();
 

@@ -8,6 +8,16 @@ import java.util.List;
 public class AnimeDto {
     private Long id;
     private List<AnimeTitleDto> titles;
-    // TODO make it enum
-    private String type;
+    private Type type;
+
+    public enum Type {
+        MOVIE,
+        OVA,
+        TV_SERIES,
+        TV_SPECIAL,
+        WEB,
+        MUSIC_VIDEO,
+        OTHER,
+        UNKNOWN;
+    }
 }

@@ -22,10 +22,13 @@ public class DubUserDetailsService {
                     User result = new User();
                     result.setEmail(email);
                     userRepository.save(result);
+                    // Flushing to get user ID
+                    userRepository.flush();
                     return result;
                 });
 
         return new DubUserDetails(
+                user.getId(),
                 user.getEmail(),
                 AuthorityUtils.createAuthorityList("ROLE_USER"),
                 Instant.now().plus(1, ChronoUnit.DAYS)

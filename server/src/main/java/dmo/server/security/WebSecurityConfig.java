@@ -20,6 +20,7 @@ import javax.servlet.Filter;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final GoogleAuthenticationService googleAuthenticationService;
     private final JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
     private final JwtAuthenticationUserDetailsService preAuthenticatedUserDetailsService;
     private final DubUserDetailsService dubUserDetailsService;
@@ -62,7 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider googleAuthenticationProvider() {
-        GoogleAuthenticationProvider provider = new GoogleAuthenticationProvider(dubUserDetailsService);
+        GoogleAuthenticationProvider provider = new GoogleAuthenticationProvider(
+                googleAuthenticationService,
+                dubUserDetailsService
+        );
         return provider;
     }
 

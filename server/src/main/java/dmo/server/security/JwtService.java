@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -27,6 +28,7 @@ public class JwtService {
 
     private JwtParser jwtParser;
 
+    private static final String USER_ID_CLAIM = "user_id";
     private static final String AUTHORITIES_CLAIM = "authorities";
 
     @PostConstruct
@@ -44,9 +46,11 @@ public class JwtService {
 
     public String toJwt(DubUserDetails userDetails) {
         return Jwts.builder()
+                .setId(UUID.randomUUID().toString())
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(userDetails.getExpiresAfter()))
+                .claim(USER_ID_CLAIM, userDetails.getId())
                 .claim(
                         AUTHORITIES_CLAIM,
                         userDetails.getAuthorities().stream()
@@ -70,6 +74,7 @@ public class JwtService {
 
         @SuppressWarnings("unchecked")
         DubUserDetails result = new DubUserDetails(
+                claims.get(USER_ID_CLAIM, Long.class),
                 claims.getSubject(),
                 ((List<String>) claims.get(AUTHORITIES_CLAIM, List.class)).stream()
                         .map(SimpleGrantedAuthority::new)

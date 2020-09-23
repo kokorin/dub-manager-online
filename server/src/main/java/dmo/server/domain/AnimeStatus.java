@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -21,11 +22,29 @@ public class AnimeStatus {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
 
     // Suppress Lombok setter generation
     private void setId(AnimeStatusId id) {
         this.id = id;
+    }
+
+    public void setAnime(Anime anime) {
+        this.anime = anime;
+        updateId();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        updateId();
+    }
+
+    private void updateId() {
+        setId(new AnimeStatusId(
+                Optional.ofNullable(anime).map(Anime::getId).orElse(null),
+                Optional.ofNullable(user).map(User::getId).orElse(null)
+        ));
     }
 
     public enum Status {

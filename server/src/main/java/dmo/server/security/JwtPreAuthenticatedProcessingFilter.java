@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class JwtPreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedProcessingFilter {
     @Override
@@ -22,13 +23,12 @@ public class JwtPreAuthenticatedProcessingFilter extends AbstractPreAuthenticate
             return typeAndValue[1];
         }
 
-        String authCookieValue = Arrays.stream(request.getCookies())
+        return Optional.ofNullable(request.getCookies()).stream()
+                .flatMap(Arrays::stream)
                 .filter(cookie -> "access_token".equals(cookie.getName()))
                 .findAny()
                 .map(Cookie::getValue)
                 .orElse(null);
-
-        return authCookieValue;
     }
 
     @Override

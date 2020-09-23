@@ -28,7 +28,7 @@ public class AnidbAnimeUpdaterTest {
     private AnidbAnimeMapper anidbAnimeMapper = Mappers.getMapper(AnidbAnimeMapper.class);
 
     @Test
-    void testUpdateAnimeList() throws Exception {
+    void updateAnimeList() throws Exception {
         AtomicReference<Object> eventRef = new AtomicReference<>();
         ApplicationEventPublisher eventPublisher = new ApplicationEventPublisher() {
             @Override

@@ -9,7 +9,6 @@ import dmo.server.domain.Anime;
 import dmo.server.service.AnimeService;
 import dmo.server.service.EpisodeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,9 +26,7 @@ import javax.validation.constraints.Min;
 public class AnimeController {
     private final AnimeService animeService;
     private final EpisodeService episodeService;
-
-    @Autowired
-    private AnimeMapper animeMapper;
+    private final AnimeMapper animeMapper;
 
     @GetMapping
     public PageDto<AnimeLightDto> findAll(@RequestParam(value = "title", defaultValue = "") String title,
@@ -50,8 +47,7 @@ public class AnimeController {
 
     @GetMapping("{id}")
     public AnimeDto getAnime(@PathVariable("id") Long id) {
-        // TODO return 404 if no anime
-        Anime result = animeService.findById(id).orElse(null);
+        Anime result = animeService.findById(id);
         return animeMapper.toAnimeDto(result);
     }
 

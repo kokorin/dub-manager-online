@@ -1,45 +1,25 @@
 package dmo.server.security;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.List;
 
+@RequiredArgsConstructor
+@Getter
 public class DubUserDetails implements UserDetails {
+    private final Long id;
     private final String email;
     private final List<? extends GrantedAuthority> authorities;
     private final Instant expiresAfter;
-
-    public DubUserDetails(String email,
-                          List<? extends GrantedAuthority> authorities,
-                          Instant expiresAfter) {
-        this.email = email;
-        this.authorities = authorities;
-        this.expiresAfter = expiresAfter;
-    }
+    private final String password = "N/A";
 
     @Override
     public String getUsername() {
         return email;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return "N/A";
-    }
-
-    @Override
-    public List<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    public Instant getExpiresAfter() {
-        return expiresAfter;
     }
 
     @Override
