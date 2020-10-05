@@ -30,16 +30,8 @@ public class AnimeStatus {
         this.id = id;
     }
 
-    public void setAnime(Anime anime) {
-        this.anime = anime;
-        updateId();
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-        updateId();
-    }
-
+    @PrePersist
+    @PreUpdate
     private void updateId() {
         setId(new AnimeStatusId(
                 Optional.ofNullable(anime).map(Anime::getId).orElse(null),

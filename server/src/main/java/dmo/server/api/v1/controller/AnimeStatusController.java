@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("api/v1/anime_status")
@@ -33,13 +34,14 @@ public class AnimeStatusController {
         return animeMapper.toAnimeStatusPageDto(result);
     }
 
-    @PostMapping
+    @PostMapping("{animeId}")
     public AnimeStatusDto updateStatus(@AuthenticationPrincipal DubUserDetails userDetails,
+                                       @PathVariable("animeId") @NotNull Long animeId,
                                        @RequestBody UpdateAnimeStatusDto updateAnimeStatusDto) {
         var status = animeMapper.fromAnimeStatusDtoEnum(updateAnimeStatusDto.getStatus());
         var animeStatus = animeStatusService.updateAnimeStatus(
                 userDetails.getId(),
-                updateAnimeStatusDto.getAnimeId(),
+                animeId,
                 status
         );
 

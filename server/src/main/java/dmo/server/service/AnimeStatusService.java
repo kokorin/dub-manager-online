@@ -48,6 +48,7 @@ public class AnimeStatusService {
                 });
 
         animeStatus.setStatus(status);
+        // If AnimeStatus was created we have to save it
         animeStatusRepository.save(animeStatus);
 
         return animeStatus;

@@ -30,14 +30,14 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
     @NonNull
     List<Anime> findAllWithTitles(@NonNull @Param("ids") List<Long> ids, @NonNull Sort sort);
 
-    @Query(value = "SELECT a.id FROM anime a WHERE a.id IN (" +
+    @Query(value = "SELECT DISTINCT a.id FROM anime a WHERE a.id IN (" +
             "           SELECT t.anime_id FROM anime_title t" +
             "           WHERE MATCH(t.text) AGAINST(:title)" +
             "       )", nativeQuery = true)
     @NonNull
     List<Long> findIdByTitle(@NonNull @Param("title") String title, @NonNull Pageable pageable);
 
-    @Query(value = "SELECT COUNT(distinct t.anime_id) FROM anime_title t" +
+    @Query(value = "SELECT COUNT(DISTINCT t.anime_id) FROM anime_title t" +
             "       WHERE MATCH(t.text) AGAINST(:title)", nativeQuery = true)
     @NonNull
     Long countByTitle(@NonNull @Param("title") String title);

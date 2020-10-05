@@ -14,16 +14,16 @@ dmo.anidb.client-version=${ANIDB_CLIENT_VERSION}
 
 # TODO
 
-0. React routing
+0. <s>React routing</s>
 
 0. TypeScript REST client generation
 
-1. Smart Anime polling (take into account anime end date, do not refresh old anime every day)
+0. Smart Anime polling (take into account anime end date, do not refresh old anime every day)
 
-2. Add scheduled task to pull random anime without episodes (once every minute or 5 minutes)
+0. Add scheduled task to pull random anime without episodes (once every minute or 5 minutes)
 
-3. Implement anidb API back off policy - don't send new requests if API responds with <error>banned</error> 
+0. Implement anidb API back off policy - don't send new requests if API responds with <error>banned</error> 
 
-4. Integrate Google OAuth
+0. <s>Integrate Google OAuth</s>
 
-5. Redoc - OpenAPI/Swagger-generated API Reference Documentation
+0. Redoc - OpenAPI/Swagger-generated API Reference Documentation

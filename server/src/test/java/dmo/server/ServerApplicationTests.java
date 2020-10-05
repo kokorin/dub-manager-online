@@ -12,6 +12,7 @@ import dmo.server.repository.AnimeStatusRepository;
 import dmo.server.repository.UserRepository;
 import dmo.server.security.DubUserDetails;
 import dmo.server.security.GoogleAuthenticationService;
+import dmo.server.security.JwtService;
 import dmo.server.service.AnimeUpdater;
 import lombok.Data;
 import org.junit.Assert;
@@ -77,6 +78,9 @@ class ServerApplicationTests {
     @SpyBean
     private GoogleAuthenticationService googleAuthenticationService;
 
+    @Autowired
+    private JwtService jwtService;
+
     @Container
     public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>()
             .withReuse(true)
@@ -114,10 +118,10 @@ class ServerApplicationTests {
         Assert.assertNotNull(jwtResponse.getAccessToken());
         Assert.assertNotNull(jwtResponse.getExpiresIn());
 
-        var user = userRepository.findByEmail(jwtResponse.getEmail());
+        var user = userRepository.findByEmail(jwtResponse.getUserDetails().getEmail());
         Assert.assertTrue(user.isPresent());
         Assert.assertNotNull(user.get().getId());
-        Assert.assertEquals(jwtResponse.getEmail(), user.get().getEmail());
+        Assert.assertEquals(jwtResponse.getUserDetails().getEmail(), user.get().getEmail());
     }
 
     @Test
@@ -186,11 +190,11 @@ class ServerApplicationTests {
     @Test
     void animeStatusUpdateRequiresAuthenticationViaApi() {
         var request = new UpdateAnimeStatusDto();
-        request.setAnimeId(1L);
         request.setStatus(AnimeStatusDto.Status.IN_PROGRESS);
+        var animeId = 1L;
 
         var response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status",
+                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
                 request,
                 String.class
         );
@@ -213,34 +217,38 @@ class ServerApplicationTests {
         var headers = new HttpHeaders();
         headers.setBearerAuth(jwtResponse.getAccessToken());
 
+        var animeId = 1L;
         var request = new UpdateAnimeStatusDto();
-        request.setAnimeId(1L);
         request.setStatus(AnimeStatusDto.Status.IN_PROGRESS);
 
         var httpEntity = new HttpEntity<>(request, headers);
 
         var response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status",
+                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
                 httpEntity,
                 AnimeStatusDto.class
-        ).getBody();
+        );
 
-        Assert.assertEquals((Long) 1L, response.getId());
-        Assert.assertEquals(2, response.getTitles().size());
-        Assert.assertEquals(AnimeDto.Type.UNKNOWN, response.getType());
-        Assert.assertEquals(AnimeStatusDto.Status.IN_PROGRESS, response.getStatus());
+        Assert.assertEquals(response.toString() ,HttpStatus.OK, response.getStatusCode());
+
+        var animeStatus = response.getBody();
+
+        Assert.assertEquals((Long) animeId, animeStatus.getId());
+        Assert.assertEquals(2, animeStatus.getTitles().size());
+        Assert.assertEquals(AnimeDto.Type.UNKNOWN, animeStatus.getType());
+        Assert.assertEquals(AnimeStatusDto.Status.IN_PROGRESS, animeStatus.getStatus());
 
         request.setStatus(AnimeStatusDto.Status.COMPLETED);
-        response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status",
+        animeStatus = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
                 httpEntity,
                 AnimeStatusDto.class
         ).getBody();
 
-        Assert.assertEquals((Long) 1L, response.getId());
-        Assert.assertEquals(2, response.getTitles().size());
-        Assert.assertEquals(AnimeDto.Type.UNKNOWN, response.getType());
-        Assert.assertEquals(AnimeStatusDto.Status.COMPLETED, response.getStatus());
+        Assert.assertEquals((Long) animeId, animeStatus.getId());
+        Assert.assertEquals(2, animeStatus.getTitles().size());
+        Assert.assertEquals(AnimeDto.Type.UNKNOWN, animeStatus.getType());
+        Assert.assertEquals(AnimeStatusDto.Status.COMPLETED, animeStatus.getStatus());
     }
 
     private JwtResponse loginWithGoogleAuthenticationMock() {
@@ -265,7 +273,7 @@ class ServerApplicationTests {
         var request = new HttpEntity<>(body, headers);
 
         var result = restTemplate.postForObject(url, request, JwtResponse.class);
-        result.setEmail(email);
+        result.setUserDetails(jwtService.fromJwt(result.getAccessToken()));
 
         return result;
     }
@@ -279,7 +287,7 @@ class ServerApplicationTests {
         private Long expiresIn;
 
         @JsonIgnore
-        private String email;
+        private DubUserDetails userDetails;
     }
 
     private static Anime newAnime(Long id, Long episodeCount, String... titles) {
@@ -298,12 +306,12 @@ class ServerApplicationTests {
         return result;
     }
 
-    private static final String[] LANGS = {"ja", "en", "ru", "fr", "es"};
+    private static final String[] LANGUAGES = {"ja", "en", "ru", "fr", "es"};
 
     private static AnimeTitle newAnimeTitle(int index, String title) {
         var result = new AnimeTitle();
 
-        result.setLang(LANGS[index]);
+        result.setLang(LANGUAGES[index]);
         result.setText(title);
         result.setType(AnimeTitle.Type.OFFICIAL);
 

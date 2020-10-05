@@ -27,6 +27,7 @@ public class DubUserDetailsService {
                     return result;
                 });
 
+        // TODO probably it's better to return a User here and convert User to DubUserDetails somewhere else
         return new DubUserDetails(
                 user.getId(),
                 user.getEmail(),

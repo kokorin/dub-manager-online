@@ -283,7 +283,9 @@
             "description": "Not Found"
           }
         }
-      },
+      }
+    },
+    "/api/v1/anime_status/{animeId}": {
       "post": {
         "tags": [
           "anime-status-controller"
@@ -308,6 +310,14 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "animeId",
+            "in": "path",
+            "description": "animeId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           },
           {
             "name": "authorities[0].authority",
@@ -653,10 +663,6 @@
     "UpdateAnimeStatusDto": {
       "type": "object",
       "properties": {
-        "animeId": {
-          "type": "integer",
-          "format": "int64"
-        },
         "status": {
           "type": "string",
           "enum": [
