@@ -1,12 +1,8 @@
-import React from "react";
-import AnimeTitle, {AnimeTitleType} from "../domain/AnimeTitle";
-
-export interface AnimeTitleLabelProps {
-    animeTitles: AnimeTitle[]
-}
+import AnimeTitle, { AnimeTitleType } from "../domain/AnimeTitle";
+import EpisodeTitle from "../domain/EpisodeTitle";
 
 // TODO refactor
-const getLabel = (animeTitles: AnimeTitle[]) => {
+export const resolveAnimeTitle = (animeTitles: AnimeTitle[]) => {
     if (!animeTitles || !animeTitles.length) {
         return "N/A";
     }
@@ -30,15 +26,19 @@ const getLabel = (animeTitles: AnimeTitle[]) => {
     }
 
     return "[" + animeTitles[0].text + "]";
-}
+};
 
-export default class AnimeTitleLabel extends React.Component<AnimeTitleLabelProps, any> {
-
-    render() {
-        const label = getLabel(this.props.animeTitles);
-
-        return (
-            <>{label}</>
-        );
+// TODO refactor
+export const resolveEpisodeTitle = (episodeTitles: EpisodeTitle[]) => {
+    if (!episodeTitles || !episodeTitles.length) {
+        return "N/A";
     }
+
+    for (let title of episodeTitles) {
+        if (title.lang === "en") {
+            return title.text;
+        }
+    }
+
+    return "[" + episodeTitles[0].text + "]";
 }

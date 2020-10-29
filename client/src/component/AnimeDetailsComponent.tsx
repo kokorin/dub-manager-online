@@ -1,6 +1,6 @@
 import React from "react";
 import Anime from "../domain/Anime";
-import AnimeTitleLabel from "./AnimeTitleLabel";
+import { resolveAnimeTitle } from "../service";
 
 export interface AnimeDetailsComponentProps {
     anime: Anime;
@@ -15,9 +15,8 @@ export default class AnimeDetailsComponent extends React.Component<AnimeDetailsC
             <div>
                 <div>ID: {anime.id}</div>
                 <div>TYPE: {anime.type}</div>
-                <div>TITLE: <AnimeTitleLabel animeTitles={anime.titles}/></div>
+                <div>TITLE: {resolveAnimeTitle(anime.titles)}</div>
             </div>
         );
     }
-
 }

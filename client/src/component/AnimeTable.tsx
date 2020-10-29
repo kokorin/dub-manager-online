@@ -1,15 +1,11 @@
-import React from "react";
+import { TableCell, TableRow } from "@material-ui/core";
 import axios from "axios";
-import Page from "../domain/Page";
+import React, { ReactNode } from "react";
 import Anime from "../domain/Anime";
-import AnimeTableComponent from "./AnimeTableComponent";
-
-function nonNegativeOrDefault(value: number | any, defValue: number): number {
-    if (typeof value === "number" && value >= 0) {
-        return value;
-    }
-    return defValue;
-}
+import Page from "../domain/Page";
+import { nonNegativeOrDefault } from "../service";
+import { AnimeTableRows } from "./AnimeTableRows";
+import { Table } from "./Table";
 
 interface AnimeTableState {
     isLoading: boolean;
@@ -18,7 +14,7 @@ interface AnimeTableState {
 }
 
 export default class AnimeTable extends React.Component<any, AnimeTableState> {
-    searchTimeoutId: any = 0;
+    searchTimeoutId: number | undefined;
 
     constructor(props: Readonly<any>) {
         super(props);
@@ -37,26 +33,26 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
     }
 
     private handleChangeSearch = (newSearch: string) => {
-        if (this.searchTimeoutId) {
+        if (this.searchTimeoutId != null) {
             clearTimeout(this.searchTimeoutId);
         }
 
-        this.searchTimeoutId = setTimeout(() => {
-            this.fetchData({page: 0, search: newSearch});
+        this.searchTimeoutId = window.setTimeout(() => {
+            this.fetchData({ page: 0, search: newSearch });
             this.searchTimeoutId = 0;
         }, 1_500);
-    }
+    };
 
     private handleChangePage = (newPage: number) => {
-        this.fetchData({page: newPage});
-    }
+        this.fetchData({ page: newPage });
+    };
 
     private handleChangeRowsPerPage = (newRowsPerPage: number) => {
-        this.fetchData({page: 0, size: newRowsPerPage});
-    }
+        this.fetchData({ page: 0, size: newRowsPerPage });
+    };
 
     private fetchData = async (fetchParams: { page?: number, size?: number, search?: string }) => {
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
 
         const search = fetchParams.search || this.state.search;
 
@@ -66,32 +62,45 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
             title: search
         };
 
-        const res = await axios.get("/api/v1/anime", {params: params});
+        const res = await axios.get("/api/v1/anime", { params: params });
         this.setState({
             ...this.state,
             isLoading: false,
             page: res.data,
             search: search
         });
-    }
+    };
 
     componentDidMount = () => {
-        this.fetchData({page: 0, size: 10});
-    }
+        this.fetchData({ page: 0, size: 10 });
+    };
 
     componentWillUnmount() {
-        if (this.searchTimeoutId) {
-            clearTimeout(this.searchTimeoutId);
-        }
-        this.searchTimeoutId = 0;
+        clearTimeout(this.searchTimeoutId);
     }
 
     render() {
+        const { number, size, totalElements, content } = this.state.page;
+        const head: ReactNode = (
+            <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell align="center">TYPE</TableCell>
+                <TableCell align="center">TITLE</TableCell>
+            </TableRow>
+        );
+
         return (
-            <AnimeTableComponent page={this.state.page}
-                                 onChangeSearch={this.handleChangeSearch}
-                                 onChangePage={this.handleChangePage}
-                                 onChangeRowsPerPage={this.handleChangeRowsPerPage}/>
+            <Table
+                head={head}
+                number={number}
+                size={size}
+                totalElements={totalElements}
+                onChangeSearch={this.handleChangeSearch}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            >
+                <AnimeTableRows content={content} />
+            </Table>
         );
     }
 }
