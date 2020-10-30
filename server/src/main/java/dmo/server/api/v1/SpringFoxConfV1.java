@@ -3,6 +3,9 @@ package dmo.server.api.v1;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.core.Authentication;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.OAuth;
 import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
@@ -24,15 +27,15 @@ public class SpringFoxConfV1 {
                 .protocols(new HashSet<>(Arrays.asList("http", "https")))
                 .groupName("v1")
                 .securitySchemes(Collections.singletonList(
-                        new OAuth(
+                        /*new OAuth(
                                 "jwt",
                                 Collections.singletonList(new AuthorizationScope("default", "Default auth scope")),
                                 // TODO generate login URL based on incoming request protocol and port
                                 Collections.singletonList(new ResourceOwnerPasswordCredentialsGrant("/login"))
-                        )
-                        //new ApiKey("Bearer", "Authorization", "header")
+                        ),*/
+                        new ApiKey("Bearer", "Authorization", "header")
                 ))
-                //.ignoredParameterTypes(Authentication.class)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .select().paths(s -> s.startsWith("/api/v1")).build()
                 .forCodeGeneration(true);
     }

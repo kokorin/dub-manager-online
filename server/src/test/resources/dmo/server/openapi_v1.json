@@ -188,56 +188,6 @@
         ],
         "parameters": [
           {
-            "name": "accountNonExpired",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "accountNonLocked",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "authorities[0].authority",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "credentialsNonExpired",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "enabled",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "expiresAfter",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
             "name": "page",
             "in": "query",
             "description": "page",
@@ -246,24 +196,12 @@
             "format": "int32"
           },
           {
-            "name": "password",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "size",
             "in": "query",
             "description": "size",
             "required": true,
             "type": "integer",
             "format": "int32"
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
@@ -300,68 +238,12 @@
         ],
         "parameters": [
           {
-            "name": "accountNonExpired",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "accountNonLocked",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
             "name": "animeId",
             "in": "path",
             "description": "animeId",
             "required": true,
             "type": "integer",
             "format": "int64"
-          },
-          {
-            "name": "authorities[0].authority",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "credentialsNonExpired",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "enabled",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "expiresAfter",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "required": false,
-            "type": "string"
           },
           {
             "in": "body",
@@ -371,12 +253,6 @@
             "schema": {
               "$ref": "#/definitions/UpdateAnimeStatusDto"
             }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
@@ -403,13 +279,10 @@
     }
   },
   "securityDefinitions": {
-    "jwt": {
-      "type": "oauth2",
-      "tokenUrl": "/login",
-      "flow": "password",
-      "scopes": {
-        "default": "Default auth scope"
-      }
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   },
   "definitions": {
