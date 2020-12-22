@@ -11,6 +11,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AnimeMapper {
@@ -49,8 +50,13 @@ public interface AnimeMapper {
         );
     }
 
-    AnimeStatusDto.Status toAnimeStatusDtoEnum(AnimeStatus.Status entity);
-    AnimeStatus.Status fromAnimeStatusDtoEnum(AnimeStatusDto.Status dto);
+    default String toAnimeStatusDtoEnum(AnimeStatus.Status status) {
+        return Optional.ofNullable(status).map(AnimeStatus.Status::name).orElse(null);
+    }
+
+    default AnimeStatus.Status fromAnimeStatusDtoEnum(String status) {
+        return Optional.ofNullable(status).map(AnimeStatus.Status::valueOf).orElse(null);
+    }
 
     @Mapping(target = "status", ignore = true)
     void updateAnimeStatus(Anime entity, @MappingTarget AnimeStatusDto dto);

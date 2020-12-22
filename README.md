@@ -1,6 +1,31 @@
+
+Shell
 ```
-docker run -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_DATABASE=dmo -e MYSQL_USER=dmo -e MYSQL_PASSWORD=dmo -p 3306:3306 -d mariadb:10.3.6 --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --skip-character-set-client-handshake
+docker run -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
+           -e MYSQL_DATABASE=dmo \
+           -e MYSQL_USER=dmo \
+           -e MYSQL_PASSWORD=dmo \
+           -p 3306:3306 \
+           -d mariadb:10.3.6 \
+           --character-set-server=utf8mb4 \
+           --collation-server=utf8mb4_general_ci \
+           --skip-character-set-client-handshake
 ```
+
+PowerShell
+```
+docker run -e MYSQL_RANDOM_ROOT_PASSWORD=yes `
+           -e MYSQL_DATABASE=dmo `
+           -e MYSQL_USER=dmo `
+           -e MYSQL_PASSWORD=dmo `
+           -p 3306:3306 `
+           -d mariadb:10.3.6 `
+           --character-set-server=utf8mb4 `
+           --collation-server=utf8mb4_general_ci `
+           --skip-character-set-client-handshake
+```
+
+# JDK Version 11
 
 # Running locally
 

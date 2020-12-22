@@ -288,6 +288,11 @@
   "definitions": {
     "AnimeDto": {
       "type": "object",
+      "required": [
+        "id",
+        "titles",
+        "type"
+      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -317,6 +322,11 @@
     },
     "AnimeLightDto": {
       "type": "object",
+      "required": [
+        "id",
+        "titles",
+        "type"
+      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -329,13 +339,29 @@
           }
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "MOVIE",
+            "MUSIC_VIDEO",
+            "OTHER",
+            "OVA",
+            "TV_SERIES",
+            "TV_SPECIAL",
+            "UNKNOWN",
+            "WEB"
+          ]
         }
       },
       "title": "AnimeLightDto"
     },
     "AnimeStatusDto": {
       "type": "object",
+      "required": [
+        "id",
+        "status",
+        "titles",
+        "type"
+      ],
       "properties": {
         "id": {
           "type": "integer",
@@ -373,6 +399,11 @@
     },
     "AnimeTitleDto": {
       "type": "object",
+      "required": [
+        "lang",
+        "text",
+        "type"
+      ],
       "properties": {
         "lang": {
           "type": "string"
@@ -381,13 +412,29 @@
           "type": "string"
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "CARD",
+            "KANA",
+            "MAIN",
+            "OFFICIAL",
+            "SHORT",
+            "SYNONYM"
+          ]
         }
       },
       "title": "AnimeTitleDto"
     },
     "EpisodeDto": {
       "type": "object",
+      "required": [
+        "airDate",
+        "id",
+        "length",
+        "number",
+        "titles",
+        "type"
+      ],
       "properties": {
         "airDate": {
           "type": "string",
@@ -427,6 +474,10 @@
     },
     "EpisodeTitleDto": {
       "type": "object",
+      "required": [
+        "lang",
+        "text"
+      ],
       "properties": {
         "lang": {
           "type": "string"
@@ -439,6 +490,14 @@
     },
     "PageDtoOfAnimeLightDto": {
       "type": "object",
+      "required": [
+        "content",
+        "number",
+        "numberOfElements",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
       "properties": {
         "content": {
           "type": "array",
@@ -471,6 +530,14 @@
     },
     "PageDtoOfAnimeStatusDto": {
       "type": "object",
+      "required": [
+        "content",
+        "number",
+        "numberOfElements",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
       "properties": {
         "content": {
           "type": "array",
@@ -503,6 +570,14 @@
     },
     "PageDtoOfEpisodeDto": {
       "type": "object",
+      "required": [
+        "content",
+        "number",
+        "numberOfElements",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
       "properties": {
         "content": {
           "type": "array",
@@ -535,6 +610,9 @@
     },
     "UpdateAnimeStatusDto": {
       "type": "object",
+      "required": [
+        "status"
+      ],
       "properties": {
         "status": {
           "type": "string",

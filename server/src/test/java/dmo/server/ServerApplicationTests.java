@@ -190,7 +190,7 @@ class ServerApplicationTests {
     @Test
     void animeStatusUpdateRequiresAuthenticationViaApi() {
         var request = new UpdateAnimeStatusDto();
-        request.setStatus(AnimeStatusDto.Status.IN_PROGRESS);
+        request.setStatus("IN_PROGRESS");
         var animeId = 1L;
 
         var response = restTemplate.postForEntity(
@@ -219,7 +219,7 @@ class ServerApplicationTests {
 
         var animeId = 1L;
         var request = new UpdateAnimeStatusDto();
-        request.setStatus(AnimeStatusDto.Status.IN_PROGRESS);
+        request.setStatus("IN_PROGRESS");
 
         var httpEntity = new HttpEntity<>(request, headers);
 
@@ -235,10 +235,10 @@ class ServerApplicationTests {
 
         Assert.assertEquals((Long) animeId, animeStatus.getId());
         Assert.assertEquals(2, animeStatus.getTitles().size());
-        Assert.assertEquals(AnimeDto.Type.UNKNOWN, animeStatus.getType());
-        Assert.assertEquals(AnimeStatusDto.Status.IN_PROGRESS, animeStatus.getStatus());
+        Assert.assertEquals("UNKNOWN", animeStatus.getType());
+        Assert.assertEquals("IN_PROGRESS", animeStatus.getStatus());
 
-        request.setStatus(AnimeStatusDto.Status.COMPLETED);
+        request.setStatus("COMPLETED");
         animeStatus = restTemplate.postForEntity(
                 "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
                 httpEntity,
@@ -247,8 +247,8 @@ class ServerApplicationTests {
 
         Assert.assertEquals((Long) animeId, animeStatus.getId());
         Assert.assertEquals(2, animeStatus.getTitles().size());
-        Assert.assertEquals(AnimeDto.Type.UNKNOWN, animeStatus.getType());
-        Assert.assertEquals(AnimeStatusDto.Status.COMPLETED, animeStatus.getStatus());
+        Assert.assertEquals("UNKNOWN", animeStatus.getType());
+        Assert.assertEquals("COMPLETED", animeStatus.getStatus());
     }
 
     private JwtResponse loginWithGoogleAuthenticationMock() {

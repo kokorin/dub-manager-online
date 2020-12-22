@@ -1,15 +1,15 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import axios from "axios";
 import React, { ReactNode } from "react";
 import Anime from "../domain/Anime";
 import Page from "../domain/Page";
 import { nonNegativeOrDefault } from "../service";
 import { AnimeTableRows } from "./AnimeTableRows";
 import { Table } from "./Table";
+import {getAnimeList} from "../service/api/api";
 
 interface AnimeTableState {
     isLoading: boolean;
-    page: Page<Anime>;
+    data: Page<Anime>;
     search: string;
 }
 
@@ -20,7 +20,7 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
         super(props);
         this.state = {
             isLoading: false,
-            page: {
+            data: {
                 number: 0,
                 size: 10,
                 numberOfElements: 0,
@@ -54,20 +54,17 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
     private fetchData = async (fetchParams: { page?: number, size?: number, search?: string }) => {
         this.setState({ isLoading: true });
 
-        const search = fetchParams.search || this.state.search;
+        const page = nonNegativeOrDefault(fetchParams.page, this.state.data.number);
+        const size = fetchParams.size || this.state.data.size;
+        const title = fetchParams.search || this.state.search;
 
-        const params = {
-            page: nonNegativeOrDefault(fetchParams.page, this.state.page.number),
-            size: fetchParams.size || this.state.page.size,
-            title: search
-        };
+        const res = await getAnimeList(page, size, title);
 
-        const res = await axios.get("/api/v1/anime", { params: params });
         this.setState({
             ...this.state,
             isLoading: false,
-            page: res.data,
-            search: search
+            data: res,
+            search: title
         });
     };
 
@@ -80,7 +77,7 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
     }
 
     render() {
-        const { number, size, totalElements, content } = this.state.page;
+        const { number, size, totalElements, content } = this.state.data;
         const head: ReactNode = (
             <TableRow>
                 <TableCell>ID</TableCell>

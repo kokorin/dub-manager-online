@@ -1,6 +1,34 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Usage
+
+## REST Client Generation
+
+Shell
+```
+npx @openapitools/openapi-generator-cli generate \
+    -i ../server/src/test/resources/dmo/server/openapi_v1.json \
+    -g typescript-fetch \
+    --api-package api \
+    --model-package domain \
+    --invoker-package rootpackage \
+    --additional-properties=typescriptThreePlus=true \
+    -o src/service/api/generated
+``` 
+
+PowerShell
+```
+npx @openapitools/openapi-generator-cli generate `
+    -i ../server/src/test/resources/dmo/server/openapi_v1.json `
+    -g typescript-fetch `
+    --api-package api `
+    --model-package domain `
+    --invoker-package rootpackage `
+    --additional-properties=typescriptThreePlus=true `
+    -o src/service/api/generated
+``` 
+
+# Available Scripts
 
 
 In the project directory, you can run:

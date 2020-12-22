@@ -9,6 +9,6 @@ export enum AnimeTitleType {
 
 export default interface AnimeTitle {
     lang: string;
-    type: AnimeTitleType;
+    type: AnimeTitleType | string;
     text: string;
 }
