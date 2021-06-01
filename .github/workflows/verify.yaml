@@ -109,4 +109,30 @@ jobs:
         run: |
           cd server;
           docker pull testcontainersofficial/ryuk:0.3.0;
-          bash mvnw clean verify
+          bash mvnw clean verify;
+
+
+  client-test:
+    name: Client Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache Node Packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            client/node_modules
+          key: npm-${{ hashFiles('client/package.json') }}
+          restore-keys: npm
+
+      - name: Build & Test
+        run: |
+          cd client;
+          node -v;
+          npm -v;
+          npm clean-install;
+          npm run build --if-present;
+          npm test;
