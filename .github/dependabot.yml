@@ -1,0 +1,20 @@
+version: 2
+updates:
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    target-branch: master
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: maven
+    directory: "/server"
+    target-branch: master
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: npm
+    directory: "/client"
+    target-branch: master
+    schedule:
+      interval: "daily"
