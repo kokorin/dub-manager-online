@@ -11,7 +11,8 @@
 
     <groupId>dub-manager-online</groupId>
     <artifactId>server</artifactId>
-    <version>0.1</version>
+    <!--Version is controlled by maven-git-versioning-extension -->
+    <version>0</version>
     <name>server</name>
 
     <properties>

@@ -46,8 +46,10 @@ jobs:
         with:
           path: |
             ~/.m2/
-          key: m2-${{ hashFiles('**/pom.xml', '.mvn/*.xml') }}
-          restore-keys: m2
+          key: m2-codeql-${{ hashFiles('**/pom.xml', '.mvn/*.xml') }}
+          restore-keys: |
+            m2-codeql
+            m2
         if: matrix.language == 'java'
 
       - name: Cache Node Packages
@@ -55,8 +57,10 @@ jobs:
         with:
           path: |
             client/node_modules
-          key: npm-${{ hashFiles('client/package.json') }}
-          restore-keys: npm
+          key: npm-codeql-${{ hashFiles('client/package.json') }}
+          restore-keys: |
+            npm-codeql
+            npm
         if: matrix.language == 'javascript'
 
 
@@ -84,3 +88,25 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
+
+  server-test:
+    name: Server Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache Maven Packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/
+          key: m2-${{ hashFiles('**/pom.xml', '.mvn/*.xml') }}
+          restore-keys: m2
+
+      - name: Build & Test
+        run: |
+          cd server;
+          docker pull testcontainersofficial/ryuk:0.3.0;
+          bash mvnw clean verify
