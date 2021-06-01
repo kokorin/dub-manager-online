@@ -11,6 +11,8 @@ dmo.anidb.client=${ANIDB_CLIENT_ID}
 dmo.anidb.client-version=${ANIDB_CLIENT_VERSION}
 ```
 
+To get client ID and client version register on [anidb.net](https://anidb.net/) and add your
+[project and client](https://anidb.net/perl-bin/animedb.pl?show=client) 
 
 # TODO
 
