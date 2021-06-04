@@ -1,11 +1,10 @@
-import { TableCell, TableRow } from "@material-ui/core";
+import {TableCell, TableRow} from "@material-ui/core";
 import axios from "axios";
-import React, { ReactNode } from "react";
-import Episode from "../domain/Episode";
-import Page from "../domain/Page";
-import { nonNegativeOrDefault } from "../service";
-import { EpisodeTableRows } from "./EpisodeTableRows";
-import { Table } from "./Table";
+import {nonNegativeOrDefault} from "../service";
+import {EpisodeTableRows} from "./EpisodeTableRows";
+import {Table} from "./Table";
+import {Episode, Page} from "../domain";
+import React, {ReactNode} from "react";
 
 interface EpisodeTableProps {
     animeId: number;

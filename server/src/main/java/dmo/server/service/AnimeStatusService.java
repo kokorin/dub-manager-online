@@ -14,6 +14,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Consumer;
+
 @Service
 @RequiredArgsConstructor
 public class AnimeStatusService {
@@ -32,7 +34,7 @@ public class AnimeStatusService {
 
     @Secured("ROLE_USER")
     @Transactional
-    public AnimeStatus updateAnimeStatus(Long userId, Long animeId, AnimeStatus.Status status) {
+    public AnimeStatus updateAnimeStatus(Long userId, Long animeId, Consumer<AnimeStatus> updater) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
 
@@ -47,7 +49,7 @@ public class AnimeStatusService {
                     return result;
                 });
 
-        animeStatus.setStatus(status);
+        updater.accept(animeStatus);
         // If AnimeStatus was created we have to save it
         animeStatusRepository.save(animeStatus);
 

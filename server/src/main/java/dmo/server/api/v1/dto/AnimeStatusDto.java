@@ -8,16 +8,8 @@ import java.util.List;
 @Data
 public class AnimeStatusDto {
     @ApiModelProperty(required = true)
-    private Long id;
+    private AnimeDto anime;
 
     @ApiModelProperty(required = true)
-    private List<AnimeTitleDto> titles;
-
-    @ApiModelProperty(required = true,
-            allowableValues = "MOVIE, OVA, TV_SERIES, TV_SPECIAL, WEB, MUSIC_VIDEO, OTHER, UNKNOWN")
-    private String type;
-
-    @ApiModelProperty(required = true,
-            allowableValues = "NOT_STARTED, IN_PROGRESS, COMPLETED")
-    private String status;
+    private AnimeProgressDto progress;
 }

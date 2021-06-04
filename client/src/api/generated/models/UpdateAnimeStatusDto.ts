@@ -24,7 +24,7 @@ export interface UpdateAnimeStatusDto {
      * @type {string}
      * @memberof UpdateAnimeStatusDto
      */
-    status: UpdateAnimeStatusDtoStatusEnum;
+    progress: UpdateAnimeStatusDtoProgressEnum;
 }
 
 export function UpdateAnimeStatusDtoFromJSON(json: any): UpdateAnimeStatusDto {
@@ -37,7 +37,7 @@ export function UpdateAnimeStatusDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'status': json['status'],
+        'progress': json['progress'],
     };
 }
 
@@ -50,7 +50,7 @@ export function UpdateAnimeStatusDtoToJSON(value?: UpdateAnimeStatusDto | null):
     }
     return {
         
-        'status': value.status,
+        'progress': value.progress,
     };
 }
 
@@ -58,7 +58,7 @@ export function UpdateAnimeStatusDtoToJSON(value?: UpdateAnimeStatusDto | null):
 * @export
 * @enum {string}
 */
-export enum UpdateAnimeStatusDtoStatusEnum {
+export enum UpdateAnimeStatusDtoProgressEnum {
     COMPLETED = 'COMPLETED',
     INPROGRESS = 'IN_PROGRESS',
     NOTSTARTED = 'NOT_STARTED'

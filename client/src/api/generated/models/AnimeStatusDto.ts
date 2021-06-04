@@ -14,10 +14,10 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AnimeTitleDto,
-    AnimeTitleDtoFromJSON,
-    AnimeTitleDtoFromJSONTyped,
-    AnimeTitleDtoToJSON,
+    AnimeDto,
+    AnimeDtoFromJSON,
+    AnimeDtoFromJSONTyped,
+    AnimeDtoToJSON,
 } from './';
 
 /**
@@ -28,28 +28,16 @@ import {
 export interface AnimeStatusDto {
     /**
      * 
-     * @type {number}
+     * @type {AnimeDto}
      * @memberof AnimeStatusDto
      */
-    id: number;
+    anime: AnimeDto;
     /**
      * 
      * @type {string}
      * @memberof AnimeStatusDto
      */
-    status: AnimeStatusDtoStatusEnum;
-    /**
-     * 
-     * @type {Array<AnimeTitleDto>}
-     * @memberof AnimeStatusDto
-     */
-    titles: Array<AnimeTitleDto>;
-    /**
-     * 
-     * @type {string}
-     * @memberof AnimeStatusDto
-     */
-    type: AnimeStatusDtoTypeEnum;
+    progress: AnimeStatusDtoProgressEnum;
 }
 
 export function AnimeStatusDtoFromJSON(json: any): AnimeStatusDto {
@@ -62,10 +50,8 @@ export function AnimeStatusDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
-        'id': json['id'],
-        'status': json['status'],
-        'titles': ((json['titles'] as Array<any>).map(AnimeTitleDtoFromJSON)),
-        'type': json['type'],
+        'anime': AnimeDtoFromJSON(json['anime']),
+        'progress': json['progress'],
     };
 }
 
@@ -78,10 +64,8 @@ export function AnimeStatusDtoToJSON(value?: AnimeStatusDto | null): any {
     }
     return {
         
-        'id': value.id,
-        'status': value.status,
-        'titles': ((value.titles as Array<any>).map(AnimeTitleDtoToJSON)),
-        'type': value.type,
+        'anime': AnimeDtoToJSON(value.anime),
+        'progress': value.progress,
     };
 }
 
@@ -89,24 +73,10 @@ export function AnimeStatusDtoToJSON(value?: AnimeStatusDto | null): any {
 * @export
 * @enum {string}
 */
-export enum AnimeStatusDtoStatusEnum {
+export enum AnimeStatusDtoProgressEnum {
     COMPLETED = 'COMPLETED',
     INPROGRESS = 'IN_PROGRESS',
     NOTSTARTED = 'NOT_STARTED'
-}
-/**
-* @export
-* @enum {string}
-*/
-export enum AnimeStatusDtoTypeEnum {
-    MOVIE = 'MOVIE',
-    MUSICVIDEO = 'MUSIC_VIDEO',
-    OTHER = 'OTHER',
-    OVA = 'OVA',
-    TVSERIES = 'TV_SERIES',
-    TVSPECIAL = 'TV_SPECIAL',
-    UNKNOWN = 'UNKNOWN',
-    WEB = 'WEB'
 }
 
 

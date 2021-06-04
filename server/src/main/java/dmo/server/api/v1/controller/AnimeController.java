@@ -1,7 +1,6 @@
 package dmo.server.api.v1.controller;
 
 import dmo.server.api.v1.dto.AnimeDto;
-import dmo.server.api.v1.dto.AnimeLightDto;
 import dmo.server.api.v1.dto.EpisodeDto;
 import dmo.server.api.v1.dto.PageDto;
 import dmo.server.api.v1.mapper.AnimeMapper;
@@ -29,7 +28,7 @@ public class AnimeController {
     private final AnimeMapper animeMapper;
 
     @GetMapping
-    public PageDto<AnimeLightDto> findAll(@RequestParam(value = "title", defaultValue = "") String title,
+    public PageDto<AnimeDto> findAll(@RequestParam(value = "title", defaultValue = "") String title,
                                           @RequestParam("page") @Min(0) int page,
                                           @RequestParam("size") @Min(1) @Max(100) int size) {
         var pageRequest = PageRequest.of(page, size, Sort.by("id"));

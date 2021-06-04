@@ -1,6 +1,5 @@
 import {AnimeControllerApi, Configuration} from "./generated";
-import Page from "../../domain/Page";
-import Anime from "../../domain/Anime";
+import {Anime, Page} from "../domain";
 
 const animeControllerApi = new AnimeControllerApi(new Configuration({
     basePath: ""
@@ -8,4 +7,7 @@ const animeControllerApi = new AnimeControllerApi(new Configuration({
 
 export const getAnimeList = (page: number, size: number, title?: string): Promise<Page<Anime>> => {
     return animeControllerApi.findAllUsingGET({page, size, title})
+}
+export const getAnime = (id: number): Promise<Anime> => {
+    return animeControllerApi.getAnimeUsingGET({id})
 }

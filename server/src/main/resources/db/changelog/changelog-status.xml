@@ -15,22 +15,22 @@
     </changeSet>
 
     <changeSet id="1600322425891" author="kokorin">
-        <createTable tableName="anime_status_enum">
-            <column name="status" type="VARCHAR(32)">
+        <createTable tableName="anime_progress_enum">
+            <column name="progress" type="VARCHAR(32)">
                 <constraints primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
     
     <changeSet id="1600322529438" author="kokorin">
-        <insert tableName="anime_status_enum">
-            <column name="status" value="NOT_STARTED"/>
+        <insert tableName="anime_progress_enum">
+            <column name="progress" value="NOT_STARTED"/>
         </insert>
-        <insert tableName="anime_status_enum">
-            <column name="status" value="IN_PROGRESS"/>
+        <insert tableName="anime_progress_enum">
+            <column name="progress" value="IN_PROGRESS"/>
         </insert>
-        <insert tableName="anime_status_enum">
-            <column name="status" value="COMPLETED"/>
+        <insert tableName="anime_progress_enum">
+            <column name="progress" value="COMPLETED"/>
         </insert>
     </changeSet>
     
@@ -46,9 +46,10 @@
                              foreignKeyName="fk_anime_status_to_user"
                              referencedTableName="dub_user" referencedColumnNames="id"/>
             </column>
-            <column name="status" type="VARCHAR(32)">
+            <column name="progress" type="VARCHAR(32)">
                 <constraints nullable="false"
-                             foreignKeyName="fk_anime_status_to_anime_status_enum"/>
+                             foreignKeyName="fk_anime_status_to_anime_progress_enum"
+                             referencedTableName="anime_progress_enum" referencedColumnNames="progress"/>
             </column>
         </createTable>
     </changeSet>

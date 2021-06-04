@@ -18,9 +18,9 @@ import {
     AnimeDto,
     AnimeDtoFromJSON,
     AnimeDtoToJSON,
-    PageDtoOfAnimeLightDto,
-    PageDtoOfAnimeLightDtoFromJSON,
-    PageDtoOfAnimeLightDtoToJSON,
+    PageDtoOfAnimeDto,
+    PageDtoOfAnimeDtoFromJSON,
+    PageDtoOfAnimeDtoToJSON,
     PageDtoOfEpisodeDto,
     PageDtoOfEpisodeDtoFromJSON,
     PageDtoOfEpisodeDtoToJSON,
@@ -50,7 +50,7 @@ export class AnimeControllerApi extends runtime.BaseAPI {
     /**
      * findAll
      */
-    async findAllUsingGETRaw(requestParameters: FindAllUsingGETRequest): Promise<runtime.ApiResponse<PageDtoOfAnimeLightDto>> {
+    async findAllUsingGETRaw(requestParameters: FindAllUsingGETRequest): Promise<runtime.ApiResponse<PageDtoOfAnimeDto>> {
         if (requestParameters.page === null || requestParameters.page === undefined) {
             throw new runtime.RequiredError('page','Required parameter requestParameters.page was null or undefined when calling findAllUsingGET.');
         }
@@ -82,13 +82,13 @@ export class AnimeControllerApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => PageDtoOfAnimeLightDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PageDtoOfAnimeDtoFromJSON(jsonValue));
     }
 
     /**
      * findAll
      */
-    async findAllUsingGET(requestParameters: FindAllUsingGETRequest): Promise<PageDtoOfAnimeLightDto> {
+    async findAllUsingGET(requestParameters: FindAllUsingGETRequest): Promise<PageDtoOfAnimeDto> {
         const response = await this.findAllUsingGETRaw(requestParameters);
         return await response.value();
     }

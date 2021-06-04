@@ -13,7 +13,7 @@ npx @openapitools/openapi-generator-cli generate \
     --model-package domain \
     --invoker-package rootpackage \
     --additional-properties=typescriptThreePlus=true \
-    -o src/service/api/generated
+    -o src/api/generated
 ``` 
 
 PowerShell
@@ -25,7 +25,7 @@ npx @openapitools/openapi-generator-cli generate `
     --model-package domain `
     --invoker-package rootpackage `
     --additional-properties=typescriptThreePlus=true `
-    -o src/service/api/generated
+    -o src/api/generated
 ``` 
 
 # Available Scripts

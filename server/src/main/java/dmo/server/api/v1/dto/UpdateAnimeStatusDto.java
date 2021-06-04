@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UpdateAnimeStatusDto {
     @NotNull
-    @ApiModelProperty(required = true,
-            allowableValues = "NOT_STARTED, IN_PROGRESS, COMPLETED")
-    private String status;
+    @ApiModelProperty(required = true)
+    private AnimeProgressDto progress;
 }

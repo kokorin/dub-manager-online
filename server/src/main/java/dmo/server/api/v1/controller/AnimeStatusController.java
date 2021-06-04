@@ -4,6 +4,7 @@ import dmo.server.api.v1.dto.AnimeStatusDto;
 import dmo.server.api.v1.dto.PageDto;
 import dmo.server.api.v1.dto.UpdateAnimeStatusDto;
 import dmo.server.api.v1.mapper.AnimeMapper;
+import dmo.server.domain.AnimeStatus;
 import dmo.server.security.DubUserDetails;
 import dmo.server.service.AnimeStatusService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("api/v1/anime_status")
@@ -38,11 +40,12 @@ public class AnimeStatusController {
     public AnimeStatusDto updateStatus(@AuthenticationPrincipal DubUserDetails userDetails,
                                        @PathVariable("animeId") @NotNull Long animeId,
                                        @RequestBody UpdateAnimeStatusDto updateAnimeStatusDto) {
-        var status = animeMapper.fromAnimeStatusDtoEnum(updateAnimeStatusDto.getStatus());
+        Consumer<AnimeStatus> updater = animeStatus -> animeMapper.updateAnimeStatus(updateAnimeStatusDto, animeStatus);
+
         var animeStatus = animeStatusService.updateAnimeStatus(
                 userDetails.getId(),
                 animeId,
-                status
+                updater
         );
 
         return animeMapper.toAnimeStatusDto(animeStatus);

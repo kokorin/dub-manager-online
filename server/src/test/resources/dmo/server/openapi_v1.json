@@ -67,7 +67,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/PageDtoOfAnimeLightDto"
+              "$ref": "#/definitions/PageDtoOfAnimeDto"
             }
           },
           "401": {
@@ -320,78 +320,22 @@
       },
       "title": "AnimeDto"
     },
-    "AnimeLightDto": {
-      "type": "object",
-      "required": [
-        "id",
-        "titles",
-        "type"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "titles": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AnimeTitleDto"
-          }
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "MOVIE",
-            "MUSIC_VIDEO",
-            "OTHER",
-            "OVA",
-            "TV_SERIES",
-            "TV_SPECIAL",
-            "UNKNOWN",
-            "WEB"
-          ]
-        }
-      },
-      "title": "AnimeLightDto"
-    },
     "AnimeStatusDto": {
       "type": "object",
       "required": [
-        "id",
-        "status",
-        "titles",
-        "type"
+        "anime",
+        "progress"
       ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
+        "anime": {
+          "$ref": "#/definitions/AnimeDto"
         },
-        "status": {
+        "progress": {
           "type": "string",
           "enum": [
             "COMPLETED",
             "IN_PROGRESS",
             "NOT_STARTED"
-          ]
-        },
-        "titles": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AnimeTitleDto"
-          }
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "MOVIE",
-            "MUSIC_VIDEO",
-            "OTHER",
-            "OVA",
-            "TV_SERIES",
-            "TV_SPECIAL",
-            "UNKNOWN",
-            "WEB"
           ]
         }
       },
@@ -488,7 +432,7 @@
       },
       "title": "EpisodeTitleDto"
     },
-    "PageDtoOfAnimeLightDto": {
+    "PageDtoOfAnimeDto": {
       "type": "object",
       "required": [
         "content",
@@ -502,7 +446,7 @@
         "content": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/AnimeLightDto"
+            "$ref": "#/definitions/AnimeDto"
           }
         },
         "number": {
@@ -526,7 +470,7 @@
           "format": "int32"
         }
       },
-      "title": "PageDtoOfAnimeLightDto"
+      "title": "PageDtoOfAnimeDto"
     },
     "PageDtoOfAnimeStatusDto": {
       "type": "object",
@@ -611,10 +555,10 @@
     "UpdateAnimeStatusDto": {
       "type": "object",
       "required": [
-        "status"
+        "progress"
       ],
       "properties": {
-        "status": {
+        "progress": {
           "type": "string",
           "enum": [
             "COMPLETED",

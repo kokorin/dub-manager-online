@@ -1,7 +1,8 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import React, { FC } from "react";
-import Episode from "../../domain/Episode";
 import { resolveEpisodeTitle } from "../../service";
+import {Episode} from "../../domain";
+import {FC} from "react";
+import React from "react";
 
 interface OwnProps {
     content: Episode[];

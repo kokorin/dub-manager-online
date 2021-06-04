@@ -14,67 +14,67 @@
 
 import { exists, mapValues } from '../runtime';
 import {
-    AnimeLightDto,
-    AnimeLightDtoFromJSON,
-    AnimeLightDtoFromJSONTyped,
-    AnimeLightDtoToJSON,
+    AnimeDto,
+    AnimeDtoFromJSON,
+    AnimeDtoFromJSONTyped,
+    AnimeDtoToJSON,
 } from './';
 
 /**
  * 
  * @export
- * @interface PageDtoOfAnimeLightDto
+ * @interface PageDtoOfAnimeDto
  */
-export interface PageDtoOfAnimeLightDto {
+export interface PageDtoOfAnimeDto {
     /**
      * 
-     * @type {Array<AnimeLightDto>}
-     * @memberof PageDtoOfAnimeLightDto
+     * @type {Array<AnimeDto>}
+     * @memberof PageDtoOfAnimeDto
      */
-    content: Array<AnimeLightDto>;
+    content: Array<AnimeDto>;
     /**
      * 
      * @type {number}
-     * @memberof PageDtoOfAnimeLightDto
+     * @memberof PageDtoOfAnimeDto
      */
     number: number;
     /**
      * 
      * @type {number}
-     * @memberof PageDtoOfAnimeLightDto
+     * @memberof PageDtoOfAnimeDto
      */
     numberOfElements: number;
     /**
      * 
      * @type {number}
-     * @memberof PageDtoOfAnimeLightDto
+     * @memberof PageDtoOfAnimeDto
      */
     size: number;
     /**
      * 
      * @type {number}
-     * @memberof PageDtoOfAnimeLightDto
+     * @memberof PageDtoOfAnimeDto
      */
     totalElements: number;
     /**
      * 
      * @type {number}
-     * @memberof PageDtoOfAnimeLightDto
+     * @memberof PageDtoOfAnimeDto
      */
     totalPages: number;
 }
 
-export function PageDtoOfAnimeLightDtoFromJSON(json: any): PageDtoOfAnimeLightDto {
-    return PageDtoOfAnimeLightDtoFromJSONTyped(json, false);
+export function PageDtoOfAnimeDtoFromJSON(json: any): PageDtoOfAnimeDto {
+    return PageDtoOfAnimeDtoFromJSONTyped(json, false);
 }
 
-export function PageDtoOfAnimeLightDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageDtoOfAnimeLightDto {
+export function PageDtoOfAnimeDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageDtoOfAnimeDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'content': ((json['content'] as Array<any>).map(AnimeLightDtoFromJSON)),
+        'content': ((json['content'] as Array<any>).map(AnimeDtoFromJSON)),
         'number': json['number'],
         'numberOfElements': json['numberOfElements'],
         'size': json['size'],
@@ -83,7 +83,7 @@ export function PageDtoOfAnimeLightDtoFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function PageDtoOfAnimeLightDtoToJSON(value?: PageDtoOfAnimeLightDto | null): any {
+export function PageDtoOfAnimeDtoToJSON(value?: PageDtoOfAnimeDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -92,7 +92,7 @@ export function PageDtoOfAnimeLightDtoToJSON(value?: PageDtoOfAnimeLightDto | nu
     }
     return {
         
-        'content': ((value.content as Array<any>).map(AnimeLightDtoToJSON)),
+        'content': ((value.content as Array<any>).map(AnimeDtoToJSON)),
         'number': value.number,
         'numberOfElements': value.numberOfElements,
         'size': value.size,

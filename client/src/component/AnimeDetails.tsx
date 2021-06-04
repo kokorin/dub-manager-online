@@ -1,7 +1,7 @@
-import axios from "axios";
-import React from "react";
-import Anime from "../domain/Anime";
 import AnimeDetailsComponent from "./AnimeDetailsComponent";
+import {Anime, AnimeType} from "../domain";
+import React from "react";
+import {getAnime} from "../api";
 
 export interface AnimeDetailsProps {
     animeId: number
@@ -19,7 +19,7 @@ export default class AnimeDetails extends React.Component<AnimeDetailsProps, Ani
             isLoading: false,
             anime: {
                 id: 0,
-                type: "",
+                type: AnimeType.TVSERIES,
                 titles: []
             }
         };
@@ -28,11 +28,11 @@ export default class AnimeDetails extends React.Component<AnimeDetailsProps, Ani
     private fetchAnime = async () => {
         this.setState({isLoading: true});
 
-        const res = await axios.get(`/api/v1/anime/${this.props.animeId}`);
+        const anime = await getAnime(this.props.animeId);
         this.setState({
             ...this.state,
             isLoading: false,
-            anime: res.data
+            anime
         });
     }
 
