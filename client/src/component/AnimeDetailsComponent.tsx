@@ -1,6 +1,6 @@
+import {resolveAnimeTitle} from "../service";
+import {Anime} from "../domain";
 import React from "react";
-import Anime from "../domain/Anime";
-import { resolveAnimeTitle } from "../service";
 
 export interface AnimeDetailsComponentProps {
     anime: Anime;

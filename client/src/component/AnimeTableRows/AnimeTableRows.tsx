@@ -1,8 +1,8 @@
-import { TableCell, TableRow } from "@material-ui/core";
-import React, { FC } from "react";
-import { Link } from "react-router-dom";
-import Anime from "../../domain/Anime";
-import { resolveAnimeTitle } from "../../service";
+import {TableCell, TableRow} from "@material-ui/core";
+import {resolveAnimeTitle} from "../../service";
+import {Anime} from "../../domain";
+import React, {FC} from "react";
+import {Link} from "react-router-dom";
 
 interface OwnProps {
     content: Anime[];

@@ -1,5 +1,4 @@
-import AnimeTitle, { AnimeTitleType } from "../domain/AnimeTitle";
-import EpisodeTitle from "../domain/EpisodeTitle";
+import {AnimeTitle, AnimeTitleType, EpisodeTitle} from "../domain";
 
 // TODO refactor
 export const resolveAnimeTitle = (animeTitles: AnimeTitle[]) => {

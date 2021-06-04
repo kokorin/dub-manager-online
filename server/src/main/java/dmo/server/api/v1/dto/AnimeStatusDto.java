@@ -1,20 +1,15 @@
 package dmo.server.api.v1.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class AnimeStatusDto {
-    private Long id;
-    private List<AnimeTitleDto> titles;
-    private AnimeDto.Type type;
+    @ApiModelProperty(required = true)
+    private AnimeDto anime;
 
-    private Status status;
-
-    public enum Status {
-        NOT_STARTED,
-        IN_PROGRESS,
-        COMPLETED
-    }
+    @ApiModelProperty(required = true)
+    private AnimeProgressDto progress;
 }

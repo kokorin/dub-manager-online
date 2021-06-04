@@ -23,7 +23,7 @@ public class AnimeStatus {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private Progress progress;
 
     // Suppress Lombok setter generation
     private void setId(AnimeStatusId id) {
@@ -39,7 +39,7 @@ public class AnimeStatus {
         ));
     }
 
-    public enum Status {
+    public enum Progress {
         NOT_STARTED,
         IN_PROGRESS,
         COMPLETED

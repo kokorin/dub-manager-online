@@ -11,19 +11,16 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface AnimeMapper {
 
-    //Anime fromDto(AnimeDto dto);
-
-    AnimeLightDto toAnimeLightDto(Anime entity);
-
     AnimeDto toAnimeDto(Anime entity);
 
-    List<AnimeLightDto> toAnimeDtoList(List<Anime> entities);
+    List<AnimeDto> toAnimeDtoList(List<Anime> entities);
 
-    default PageDto<AnimeLightDto> toAnimePageDto(Page<Anime> page) {
+    default PageDto<AnimeDto> toAnimePageDto(Page<Anime> page) {
         return new PageDto<>(
                 page.getNumber(),
                 page.getSize(),
@@ -49,28 +46,7 @@ public interface AnimeMapper {
         );
     }
 
-    AnimeStatusDto.Status toAnimeStatusDtoEnum(AnimeStatus.Status entity);
-    AnimeStatus.Status fromAnimeStatusDtoEnum(AnimeStatusDto.Status dto);
-
-    @Mapping(target = "status", ignore = true)
-    void updateAnimeStatus(Anime entity, @MappingTarget AnimeStatusDto dto);
-
-    default void updateAnimeStatus(AnimeStatus entity, @MappingTarget AnimeStatusDto dto) {
-        var status = toAnimeStatusDtoEnum(entity.getStatus());
-        dto.setStatus(status);
-    }
-
-    default AnimeStatusDto toAnimeStatusDto(AnimeStatus entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        var result = new AnimeStatusDto();
-        updateAnimeStatus(entity.getAnime(), result);
-        updateAnimeStatus(entity, result);
-
-        return result;
-    }
+    AnimeStatusDto toAnimeStatusDto(AnimeStatus entity);
 
     List<AnimeStatusDto> toAnimeStatusDtoList(List<AnimeStatus> entities);
 
@@ -84,4 +60,8 @@ public interface AnimeMapper {
                 toAnimeStatusDtoList(page.getContent())
         );
     }
+
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "anime", ignore = true)
+    void updateAnimeStatus(UpdateAnimeStatusDto update, @MappingTarget AnimeStatus entity);
 }

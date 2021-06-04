@@ -1,4 +1,4 @@
-export default interface Page<T> {
+export interface Page<T> {
     number: number;
     size: number;
     numberOfElements: number;
