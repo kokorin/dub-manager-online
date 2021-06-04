@@ -27,6 +27,14 @@ docker run -e MYSQL_RANDOM_ROOT_PASSWORD=yes `
 
 # JDK Version 11
 
+# Build & configuration
+
+## IntelliJ IDEA
+
+This project uses [maven-git-versioning-extension](https://github.com/qoomon/maven-git-versioning-extension)
+to set project version automatically.
+Check its [intellij-setup](https://github.com/qoomon/maven-git-versioning-extension#intellij-setup) documentation.
+
 # Running locally
 
 Add following ENV variables server configuration (or property file):
