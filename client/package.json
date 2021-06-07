@@ -7,7 +7,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@testing-library/jest-dom": "^5.13.0",
-    "@testing-library/react": "^9.5.0",
+    "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^7.2.1",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.12.55",
