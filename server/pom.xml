@@ -21,7 +21,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <springfox.version>3.0.0</springfox.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <google.api.version>1.30.10</google.api.version>
+        <google.api.version>1.31.5</google.api.version>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +58,17 @@
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
             <version>${google.api.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.http-client</groupId>
+                    <artifactId>google-http-client-gson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson2</artifactId>
+            <version>1.39.2-sp.1</version>
         </dependency>
 
         <dependency>
