@@ -9,7 +9,6 @@
     "@testing-library/jest-dom": "^5.13.0",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "@types/jest": "^26.0.23",
     "@types/node": "^12.12.55",
     "@types/react": "^17.0.9",
     "@types/react-dom": "^16.9.8",
@@ -47,6 +46,6 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.1.13"
+    "@openapitools/openapi-generator-cli": "^2.3.3"
   }
 }

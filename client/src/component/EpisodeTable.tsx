@@ -1,10 +1,10 @@
 import {TableCell, TableRow} from "@material-ui/core";
-import axios from "axios";
 import {nonNegativeOrDefault} from "../service";
 import {EpisodeTableRows} from "./EpisodeTableRows";
 import {Table} from "./Table";
 import {Episode, Page} from "../domain";
 import React, {ReactNode} from "react";
+import {getEpisodeList} from "../api";
 
 interface EpisodeTableProps {
     animeId: number;
@@ -43,16 +43,15 @@ export default class EpisodeTable extends React.Component<EpisodeTableProps, Epi
     private fetchEpisodes = async (fetchParams: { page?: number, size?: number }) => {
         this.setState({ isLoading: true });
 
-        const params = {
-            "page": nonNegativeOrDefault(fetchParams.page, this.state.page.number),
-            "size": fetchParams.size || this.state.page.size
-        };
+        const animeId = this.props.animeId
+        const page = nonNegativeOrDefault(fetchParams.page, this.state.page.number)
+        const size = fetchParams.size || this.state.page.size
 
-        const res = await axios.get(`/api/v1/anime/${this.props.animeId}/episodes`, { params: params });
+        const result = await getEpisodeList(animeId, page, size)
         this.setState({
             ...this.state,
             isLoading: false,
-            page: res.data
+            page: result
         });
     };
 
