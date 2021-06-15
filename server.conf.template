@@ -1,0 +1,29 @@
+#Nginx configuration, placeholders are replaced with envsubst
+
+upstream app {
+    server ${UPSTREAM};
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name ${HOSTNAME};
+
+    location ^~ /api {
+        proxy_pass  http://app;
+    }
+
+    location ^~ /static {
+        proxy_pass  http://app;
+    }
+
+    location ~* \.(png|ico|txt)$ {
+        proxy_pass  http://app;
+    }
+
+    location / {
+        rewrite ^(.*)$ /index.html break;
+        proxy_pass  http://app;
+    }
+}
