@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    restart: on-failure
+    depends_on:
+      - mariadb
+    environment:
+      spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
+      spring_datasource_username: dmo
+      spring_datasource_password: dmo
+    ports:
+    - "8080:8080"
+
+  nginx:
+    image: nginx:alpine
+    restart: on-failure
+    depends_on:
+      - app
+    environment:
+      HOSTNAME: ${HOSTNAME:-localhost}
+      UPSTREAM: "app:8080"
+    volumes:
+      - ./server.conf.template:/etc/nginx/templates/default.conf.template
+    ports:
+      - "80:80"
+
+  mariadb:
+    image: yobasystems/alpine-mariadb
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: dmo
+      MYSQL_USER: dmo
+      MYSQL_PASSWORD: dmo
+      #MYSQL_ROOT_PASSWORD: specify the root password for Mariadb
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    volumes:
+      - maria_volume:/var/lib/mysql
+
+volumes:
+  maria_volume:

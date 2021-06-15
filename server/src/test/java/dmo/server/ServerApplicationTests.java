@@ -140,7 +140,8 @@ class ServerApplicationTests {
         long animeCount = animeRepository.count();
         assertEquals(3L, animeCount);
 
-        var anime = animeRepository.findById(2L).get();
+        var anime = animeRepository.findById(2L).orElse(null);
+        assertNotNull(anime);
         assertEquals((Long) 2L, anime.getId());
         assertEquals(Anime.Type.UNKNOWN, anime.getType());
         assertEquals(3, anime.getTitles().size());
@@ -153,7 +154,7 @@ class ServerApplicationTests {
                 String.class
         );
 
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
@@ -180,6 +181,7 @@ class ServerApplicationTests {
                 }
         ).getBody();
 
+        assertNotNull(page);
         assertEquals(0, page.getNumber());
         assertEquals(1, page.getTotalPages());
         assertEquals(100, page.getSize());
@@ -235,6 +237,7 @@ class ServerApplicationTests {
 
         var animeStatus = response.getBody();
 
+        assertNotNull(animeStatus);
         assertEquals((Long) animeId, animeStatus.getAnime().getId());
         assertEquals(2, animeStatus.getAnime().getTitles().size());
         assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
