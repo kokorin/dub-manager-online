@@ -30,6 +30,7 @@ export default class AnimeDetails extends React.Component<AnimeDetailsProps, Ani
 
         const anime = await getAnime(this.props.animeId);
         this.setState({
+            // TODO check if ...this.state is really needed
             ...this.state,
             isLoading: false,
             anime

@@ -1,13 +1,13 @@
-import React from "react";
+import React, {FC} from "react";
 import GoogleLogin, {GoogleLoginResponse, GoogleLoginResponseOffline} from "react-google-login";
 import axios from "axios";
 
 // TODO request from server
 const googleClientId = "242595272379-usrfmeccak59k76v3ghq1di30ogt2q0p.apps.googleusercontent.com";
 
-export default class LoginComponent extends React.Component<any, any> {
+const LoginComponent: FC = () => {
 
-    private successHandler = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+    const successHandler = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
         const tokenId = (response as GoogleLoginResponse)?.tokenId;
 
         // TODO do we need to use qs library to convert params object to url-form-encoded string?
@@ -15,19 +15,34 @@ export default class LoginComponent extends React.Component<any, any> {
         const res = await axios.post("/login/google", params);
 
         console.log("dmo response " + res);
+
+        let search = window.location.search
+        if (search.startsWith('?')) {
+            search = search.substring(1)
+        }
+        const redirect = search.split("&")
+            .map(kv => kv.split('=', 2))
+            .filter(([k, v]) => k === "redirect")
+            .map(([k, v]) => v)
+            .map(v => decodeURIComponent(v))
+            .pop()
+
+        if (redirect) {
+            window.location.href = redirect
+        }
     }
 
-    private failureHandler = (error:any) => {
+    const failureHandler = (error: any) => {
         console.log("login failure " + error);
     }
 
-    render() {
-        return (
-            <div>
-                <GoogleLogin clientId={googleClientId}
-                             onSuccess={this.successHandler}
-                             onFailure={this.failureHandler}/>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <GoogleLogin clientId={googleClientId}
+                         onSuccess={successHandler}
+                         onFailure={failureHandler}/>
+        </div>
+    );
 }
+
+export default LoginComponent

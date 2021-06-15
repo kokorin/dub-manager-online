@@ -3,6 +3,7 @@ package dmo.server.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 
@@ -21,7 +23,7 @@ import javax.servlet.Filter;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final GoogleAuthenticationService googleAuthenticationService;
-    private final JwtAuthenticationSuccessHandler jwtAuthenticationSuccessHandler;
+    private final LoginSuccessHandler loginSuccessHandler;
     private final JwtAuthenticationUserDetailsService preAuthenticatedUserDetailsService;
     private final DubUserDetailsService dubUserDetailsService;
 
@@ -47,7 +49,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/api/openapi").permitAll()
-                .antMatchers("/api/**").authenticated();
+                .anyRequest().authenticated()
+
+                .and()
+
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+        ;
     }
 
 
@@ -56,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Required, not injected automatically
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(jwtAuthenticationSuccessHandler);
+        filter.setAuthenticationSuccessHandler(loginSuccessHandler);
 
         return filter;
     }

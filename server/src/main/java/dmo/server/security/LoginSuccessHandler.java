@@ -17,7 +17,7 @@ import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
 
