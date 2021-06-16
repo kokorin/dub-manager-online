@@ -42,7 +42,7 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.3.3",
+    "@openapitools/openapi-generator-cli": "^2.3.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "react-scripts": "^4.0.3"
