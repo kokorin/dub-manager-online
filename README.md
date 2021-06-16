@@ -3,3 +3,29 @@
 The goal of this project is to provide anime fun dub community with anime dub tracking and new episode air date schedule.
 
 Anime-related date is took from [anidb.net API](https://wiki.anidb.net/API)
+
+# Running with docker-compose
+
+## Running on dev machine
+
+The following env variables must present:
+  1. ANIDB_CLIENT_ID 
+  2. ANIDB_CLIENT_VERSION
+  3. GOOGLE_CLIENT_ID
+
+```sh
+docker-compose -f docker-compose.yml up -d
+```
+## Running in production
+
+The following env variables must be present in addition to specified above:
+  1. HOSTNAME - hostname of your server
+  2. CERT_MAIL - email to use to issue let's encrypt certificate
+
+The following env variables may present for troubleshooting:
+  1. CERT_STAGING - use staging let's encrypt servers, results in not valid certificates, works faster
+  2. CERT_DEBUG - run nginx in debug mode
+
+```sh
+docker-compose -f docker-compose.yml -f docker-compose.hosting.yml up -d
+```
