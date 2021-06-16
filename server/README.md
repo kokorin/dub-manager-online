@@ -5,10 +5,10 @@ docker run -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
            -e MYSQL_DATABASE=dmo \
            -e MYSQL_USER=dmo \
            -e MYSQL_PASSWORD=dmo \
+           -e MYSQL_CHARSET=utf8mb4 \
+           -e MYSQL_COLLATION=utf8mb4_general_ci \
            -p 3306:3306 \
-           -d mariadb:10.3.6 \
-           --character-set-server=utf8mb4 \
-           --collation-server=utf8mb4_general_ci \
+           -d yobasystems/alpine-mariadb \
            --skip-character-set-client-handshake
 ```
 
@@ -18,10 +18,10 @@ docker run -e MYSQL_RANDOM_ROOT_PASSWORD=yes `
            -e MYSQL_DATABASE=dmo `
            -e MYSQL_USER=dmo `
            -e MYSQL_PASSWORD=dmo `
+           -e MYSQL_CHARSET=utf8mb4 `
+           -e MYSQL_COLLATION=utf8mb4_general_ci `
            -p 3306:3306 `
-           -d mariadb:10.3.6 `
-           --character-set-server=utf8mb4 `
-           --collation-server=utf8mb4_general_ci `
+           -d yobasystems/alpine-mariadb `
            --skip-character-set-client-handshake
 ```
 

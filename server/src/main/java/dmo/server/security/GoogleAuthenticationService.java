@@ -20,7 +20,7 @@ public class GoogleAuthenticationService implements InitializingBean {
 
     private GoogleIdTokenVerifier tokenVerifier;
 
-    @Value("${google.client_id}")
+    @Value("${google.client.id}")
     private String clientId;
 
     @Override
