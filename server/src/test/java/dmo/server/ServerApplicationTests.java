@@ -39,6 +39,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -52,7 +53,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitConfig
 @Testcontainers
 @TestPropertySource(properties = {
-        "logging.level.ROOT=INFO"
+        "logging.level.ROOT=INFO",
+        "dmo.anidb.client=test",
+        "dmo.anidb.client.version=1"
 })
 class ServerApplicationTests {
     @LocalServerPort
@@ -83,10 +86,15 @@ class ServerApplicationTests {
     @Autowired
     private JwtService jwtService;
 
+    private static final DockerImageName MARIA_ALPINE = DockerImageName
+            .parse("yobasystems/alpine-mariadb")
+            .asCompatibleSubstituteFor("mariadb");
+
     @Container
-    public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>()
+    public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>(MARIA_ALPINE)
             .withReuse(true)
-            .withConfigurationOverride("/dmo/server/maria_conf_d");
+            .withEnv("MYSQL_CHARSET", "utf8mb4")
+            .withEnv("MYSQL_COLLATION", "utf8mb4_general_ci");
 
     @DynamicPropertySource
     public static void updateConfig(DynamicPropertyRegistry registry) {
