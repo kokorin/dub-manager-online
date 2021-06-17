@@ -5,8 +5,8 @@ upstream app {
 }
 
 server {
-    listen ${PORT};
-    listen [::]:${PORT};
+    listen 80;
+    listen [::]:80;
 
     server_name ${HOSTNAME};
 

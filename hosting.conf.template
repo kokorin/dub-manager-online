@@ -1,0 +1,30 @@
+#Nginx configuration, placeholders are replaced with envsubst
+
+upstream app {
+    server ${UPSTREAM};
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    server_name ${HOSTNAME};
+
+    # Load the certificate files.
+    ssl_certificate         /etc/letsencrypt/live/dub-manager/fullchain.pem;
+    ssl_certificate_key     /etc/letsencrypt/live/dub-manager/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/dub-manager/chain.pem;
+
+    # Load the Diffie-Hellman parameter.
+    ssl_dhparam /etc/letsencrypt/dhparams/dhparam.pem;
+
+    location / {
+        root /usr/share/nginx/html;
+        try_files $uri /index.html;
+        index index.html;
+    }
+
+    location /api {
+        proxy_pass  http://app;
+    }
+}
