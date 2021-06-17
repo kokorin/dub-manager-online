@@ -29,10 +29,9 @@ services:
       - nginx-share
     environment:
       HOSTNAME: ${HOSTNAME:-localhost}
-      PORT: 80
       UPSTREAM: "app:8080"
     volumes:
-      - ./server.conf.template:/etc/nginx/templates/default.conf.template
+      - ./dev.conf.template:/etc/nginx/templates/default.conf.template
       - ngshare_volume:/usr/share/nginx
     ports:
       - "80:80"
