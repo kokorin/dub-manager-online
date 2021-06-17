@@ -9,6 +9,7 @@ services:
     restart: always
     environment:
       HOSTNAME: ${HOSTNAME}
+      PORT: "443 ssl"
       CERTBOT_EMAIL: ${CERT_MAIL}
       STAGING: ${CERT_STAGING:-0}
       DEBUG: ${CERT_DEBUG:-0}
