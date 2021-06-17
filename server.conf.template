@@ -10,20 +10,13 @@ server {
 
     server_name ${HOSTNAME};
 
-    location ^~ /api {
-        proxy_pass  http://app;
-    }
-
-    location ^~ /static {
-        proxy_pass  http://app;
-    }
-
-    location ~* \.(png|ico|txt)$ {
-        proxy_pass  http://app;
-    }
-
     location / {
-        rewrite ^(.*)$ /index.html break;
+        root /usr/share/nginx/html;
+        try_files $uri /index.html;
+        index index.html;
+    }
+
+    location /api {
         proxy_pass  http://app;
     }
 }
