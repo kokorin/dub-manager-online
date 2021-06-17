@@ -15,9 +15,8 @@ jobs:
       - name: Login to GitHub Registry
         uses: docker/login-action@v1
         with:
-          registry: docker.pkg.github.com
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: kokorin
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Detect release version
         id: get-version

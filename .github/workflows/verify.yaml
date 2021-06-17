@@ -145,13 +145,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Login to GitHub Registry
-        uses: docker/login-action@v1
-        with:
-          registry: docker.pkg.github.com
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Pull
         run: docker-compose -f docker-compose.yml pull
 

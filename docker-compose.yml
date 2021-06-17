@@ -3,7 +3,7 @@ version: "3"
 services:
   app:
     build: server
-    image: "docker.pkg.github.com/kokorin/dub-manager-online/dmo-app:${VERSION:-latest}"
+    image: "kokorin/dub-manager-online-app:${VERSION:-latest}"
     restart: on-failure
     depends_on:
       - mariadb
@@ -17,7 +17,7 @@ services:
 
   nginx-share:
     build: client
-    image: "docker.pkg.github.com/kokorin/dub-manager-online/dmo-nginx-share:${VERSION:-latest}"
+    image: "kokorin/dub-manager-online-nginx-share:${VERSION:-latest}"
     volumes:
     - ngshare_volume:/usr/share/nginx
 
