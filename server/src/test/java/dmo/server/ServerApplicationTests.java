@@ -39,6 +39,7 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -52,7 +53,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringJUnitConfig
 @Testcontainers
 @TestPropertySource(properties = {
-        "logging.level.ROOT=INFO"
+        "logging.level.ROOT=INFO",
+        "dmo.anidb.client=test",
+        "dmo.anidb.client.version=1"
 })
 class ServerApplicationTests {
     @LocalServerPort
@@ -83,10 +86,15 @@ class ServerApplicationTests {
     @Autowired
     private JwtService jwtService;
 
+    private static final DockerImageName MARIA_ALPINE = DockerImageName
+            .parse("yobasystems/alpine-mariadb")
+            .asCompatibleSubstituteFor("mariadb");
+
     @Container
-    public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>()
+    public static JdbcDatabaseContainer<?> database = new MariaDBContainer<>(MARIA_ALPINE)
             .withReuse(true)
-            .withConfigurationOverride("/dmo/server/maria_conf_d");
+            .withEnv("MYSQL_CHARSET", "utf8mb4")
+            .withEnv("MYSQL_COLLATION", "utf8mb4_general_ci");
 
     @DynamicPropertySource
     public static void updateConfig(DynamicPropertyRegistry registry) {
@@ -140,7 +148,8 @@ class ServerApplicationTests {
         long animeCount = animeRepository.count();
         assertEquals(3L, animeCount);
 
-        var anime = animeRepository.findById(2L).get();
+        var anime = animeRepository.findById(2L).orElse(null);
+        assertNotNull(anime);
         assertEquals((Long) 2L, anime.getId());
         assertEquals(Anime.Type.UNKNOWN, anime.getType());
         assertEquals(3, anime.getTitles().size());
@@ -153,7 +162,7 @@ class ServerApplicationTests {
                 String.class
         );
 
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
     @Test
@@ -180,6 +189,7 @@ class ServerApplicationTests {
                 }
         ).getBody();
 
+        assertNotNull(page);
         assertEquals(0, page.getNumber());
         assertEquals(1, page.getTotalPages());
         assertEquals(100, page.getSize());
@@ -235,6 +245,7 @@ class ServerApplicationTests {
 
         var animeStatus = response.getBody();
 
+        assertNotNull(animeStatus);
         assertEquals((Long) animeId, animeStatus.getAnime().getId());
         assertEquals(2, animeStatus.getAnime().getTitles().size());
         assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());

@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "Verify"
 
 on:
   push:
@@ -136,3 +136,24 @@ jobs:
           npm clean-install;
           npm run build --if-present;
           npm test;
+
+  docker-test:
+    name: Docker Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Login to GitHub Registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull
+        run: docker-compose -f docker-compose.yml pull
+
+      - name: Build
+        run: docker-compose -f docker-compose.yml build

@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  app:
+    build: server
+    image: "docker.pkg.github.com/kokorin/dub-manager-online/dmo-app:${VERSION:-latest}"
+    restart: on-failure
+    depends_on:
+      - mariadb
+    environment:
+      dmo_anidb_client: ${ANIDB_CLIENT_ID}
+      dmo_anidb_client_version: ${ANIDB_CLIENT_VERSION}
+      google_client_id: ${GOOGLE_CLIENT_ID}
+      spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
+      spring_datasource_username: dmo
+      spring_datasource_password: dmo
+
+  nginx-share:
+    build: client
+    image: "docker.pkg.github.com/kokorin/dub-manager-online/dmo-nginx-share:${VERSION:-latest}"
+    volumes:
+    - ngshare_volume:/usr/share/nginx
+
+  nginx:
+    image: nginx:alpine
+    restart: on-failure
+    depends_on:
+      - app
+      - nginx-share
+    environment:
+      HOSTNAME: ${HOSTNAME:-localhost}
+      UPSTREAM: "app:8080"
+    volumes:
+      - ./server.conf.template:/etc/nginx/templates/default.conf.template
+      - ngshare_volume:/usr/share/nginx
+    ports:
+      - "80:80"
+
+  mariadb:
+    image: yobasystems/alpine-mariadb
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: dmo
+      MYSQL_USER: dmo
+      MYSQL_PASSWORD: dmo
+      #MYSQL_ROOT_PASSWORD: specify the root password for Mariadb
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_general_ci
+    volumes:
+      - maria_volume:/var/lib/mysql
+
+volumes:
+  maria_volume:
+  ngshare_volume:
