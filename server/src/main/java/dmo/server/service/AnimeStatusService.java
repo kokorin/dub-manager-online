@@ -7,6 +7,7 @@ import dmo.server.exception.UserNotFoundException;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
 import dmo.server.repository.UserRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +20,11 @@ import java.util.function.Consumer;
 @Service
 @RequiredArgsConstructor
 public class AnimeStatusService {
+    @NonNull
     private final UserRepository userRepository;
+    @NonNull
     private final AnimeRepository animeRepository;
+    @NonNull
     private final AnimeStatusRepository animeStatusRepository;
 
     @Secured("ROLE_USER")

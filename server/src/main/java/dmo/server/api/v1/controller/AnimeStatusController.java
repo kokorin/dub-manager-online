@@ -7,6 +7,7 @@ import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.AnimeStatus;
 import dmo.server.security.DubUserDetails;
 import dmo.server.service.AnimeStatusService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,7 +24,9 @@ import java.util.function.Consumer;
 @Validated
 @RequiredArgsConstructor
 public class AnimeStatusController {
+    @NonNull
     private final AnimeStatusService animeStatusService;
+    @NonNull
     private final AnimeMapper animeMapper;
 
     @GetMapping

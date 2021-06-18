@@ -6,6 +6,7 @@ import dmo.server.event.AnimeListUpdated;
 import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.event.AnimeUpdated;
 import dmo.server.prop.AnidbProperties;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,9 +23,13 @@ import java.util.concurrent.PriorityBlockingQueue;
 @Slf4j
 @RequiredArgsConstructor
 public class AnidbAnimeUpdater {
+    @NonNull
     private final AnidbProperties anidbProperties;
+    @NonNull
     private final AnidbClient anidbClient;
+    @NonNull
     private final ApplicationEventPublisher publisher;
+    @NonNull
     private final AnidbAnimeMapper anidbAnimeMapper;
 
     private final Queue<Anime> updateQueue = new PriorityBlockingQueue<>(11, ANIME_COMPARATOR);

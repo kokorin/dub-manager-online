@@ -7,7 +7,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import dmo.server.prop.GoogleOAuthProperties;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,7 +21,9 @@ import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GoogleAuthenticationService implements InitializingBean {
+    @NonNull
     private final GoogleOAuthProperties googleOAuthProperties;
 
     private GoogleIdTokenVerifier tokenVerifier;
@@ -45,10 +49,12 @@ public class GoogleAuthenticationService implements InitializingBean {
         }
 
         if (idToken == null) {
+            log.warn("Parsed token is null");
             return null;
         }
 
         GoogleIdToken.Payload payload = idToken.getPayload();
+        log.debug("Parsed payload: {}", payload);
 
         // Print user identifier
         String userId = payload.getSubject();

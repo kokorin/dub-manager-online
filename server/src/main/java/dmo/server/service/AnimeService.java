@@ -4,6 +4,7 @@ import dmo.server.domain.Anime;
 import dmo.server.event.AnimeRequested;
 import dmo.server.exception.AnimeNotFoundException;
 import dmo.server.repository.AnimeRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,7 +21,9 @@ import javax.transaction.Transactional;
 @Slf4j
 public class AnimeService {
 
+    @NonNull
     private final AnimeRepository animeRepository;
+    @NonNull
     private final ApplicationEventPublisher eventPublisher;
 
     @Secured("ROLE_USER")

@@ -6,6 +6,7 @@ import dmo.server.event.*;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeUpdateRepository;
 import dmo.server.repository.EpisodeRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,9 +29,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class AnimeUpdater {
+    @NonNull
     private final AnimeRepository animeRepository;
+    @NonNull
     private final EpisodeRepository episodeRepository;
+    @NonNull
     private final AnimeUpdateRepository animeUpdateRepository;
+    @NonNull
     private final ApplicationEventPublisher eventPublisher;
 
     private final AtomicReference<Instant> lastUpdateInstant = new AtomicReference<>(Instant.now());
