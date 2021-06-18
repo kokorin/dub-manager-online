@@ -45,6 +45,7 @@ public class JwtService {
     }
 
     public String toJwt(DubUserDetails userDetails) {
+        log.debug("Generation JWT: {}", userDetails);
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
                 .setSubject(userDetails.getUsername())
@@ -65,6 +66,7 @@ public class JwtService {
         Claims claims;
 
         try {
+            log.debug("Parsing JWT");
             claims = jwtParser.parseClaimsJws(jwt).getBody();
         } catch (ExpiredJwtException e) {
             throw new CredentialsExpiredException("User credentials have expired", e);
@@ -81,6 +83,7 @@ public class JwtService {
                         .collect(Collectors.toList()),
                 claims.getExpiration().toInstant()
         );
+        log.debug("Parsed JWT: {}", result);
 
         return result;
     }

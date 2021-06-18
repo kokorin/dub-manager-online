@@ -41,4 +41,11 @@ public class DubUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "DubUserDetails{" +
+                "id=" + id +
+                '}';
+    }
 }
