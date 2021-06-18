@@ -11,7 +11,7 @@ Anime-related date is took from [anidb.net API](https://wiki.anidb.net/API)
 The following variables must present either as ENV variables or in `.env` file in project root:
   1. ANIDB_CLIENT_ID 
   2. ANIDB_CLIENT_VERSION
-  3. GOOGLE_CLIENT_ID
+  3. GOOGLE_OAUTH_CLIENT_ID
 
 ```sh
 docker-compose -f docker-compose.yml up -d

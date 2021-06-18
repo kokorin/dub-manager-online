@@ -7,7 +7,7 @@ import dmo.server.event.AnimeListUpdateScheduled;
 import dmo.server.event.AnimeListUpdated;
 import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.event.AnimeUpdated;
-import org.junit.Assert;
+import dmo.server.prop.AnidbProperties;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 public class AnidbAnimeUpdaterTest {
     private AnidbAnimeMapper anidbAnimeMapper = Mappers.getMapper(AnidbAnimeMapper.class);
+    private AnidbProperties anidbProperties = new AnidbProperties("", "");
 
     @Test
     void updateAnimeList() throws Exception {
@@ -41,13 +41,13 @@ public class AnidbAnimeUpdaterTest {
             AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
-            AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(new AnidbProperties(), anidbClient, eventPublisher, anidbAnimeMapper);
+            AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
             tracking.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
         }
 
         Object event = eventRef.get();
         assertNotNull(event);
-        Assert.assertFalse(!(event instanceof AnimeListUpdated));
+        assertTrue(event instanceof AnimeListUpdated);
 
         AnimeListUpdated animeListUpdated = (AnimeListUpdated) event;
         assertEquals(4, animeListUpdated.getAnimeList().size());
@@ -59,14 +59,14 @@ public class AnidbAnimeUpdaterTest {
         List<Anime> nonParsedAnimeList = animeListUpdated.getAnimeList().stream()
                 .filter(a -> a.getId() == null || CollectionUtils.isEmpty(a.getTitles()))
                 .collect(Collectors.toList());
-        assertEquals("Anime should be parsed", Collections.emptyList(), nonParsedAnimeList);
+        assertEquals(Collections.emptyList(), nonParsedAnimeList, "Anime should be parsed");
 
         List<AnimeTitle> nonParsedAnimeTitleList = animeListUpdated.getAnimeList().stream()
                 .map(Anime::getTitles)
                 .flatMap(Collection::stream)
                 .filter(t -> t.getType() == null || isEmpty(t.getLang()) || isEmpty(t.getText()))
                 .collect(Collectors.toList());
-        assertEquals("Anime titles should be parsed", Collections.emptyList(), nonParsedAnimeTitleList);
+        assertEquals(Collections.emptyList(), nonParsedAnimeTitleList, "Anime titles should be parsed");
 
     }
 
@@ -84,7 +84,7 @@ public class AnidbAnimeUpdaterTest {
             AnidbConfig anidbConfig = new AnidbConfigMock("application/xml", input);
 
             AnidbClient anidbClient = anidbConfig.anidbClient();
-            AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(new AnidbProperties(), anidbClient, eventPublisher, anidbAnimeMapper);
+            AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
 
             var anime = new Anime();
             anime.setId(979L);
@@ -94,7 +94,7 @@ public class AnidbAnimeUpdaterTest {
 
         Object event = eventRef.get();
         assertNotNull(event);
-        Assert.assertTrue(event instanceof AnimeUpdated);
+        assertTrue(event instanceof AnimeUpdated);
 
         var updatedEvent = (AnimeUpdated) event;
         var updated = updatedEvent.getAnime();

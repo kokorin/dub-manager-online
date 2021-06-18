@@ -1,6 +1,7 @@
 export * from './AnimeDto';
 export * from './AnimeStatusDto';
 export * from './AnimeTitleDto';
+export * from './ConfigurationDto';
 export * from './EpisodeDto';
 export * from './EpisodeTitleDto';
 export * from './PageDtoOfAnimeDto';

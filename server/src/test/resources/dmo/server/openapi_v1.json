@@ -21,6 +21,10 @@
     {
       "name": "anime-status-controller",
       "description": "Anime Status Controller"
+    },
+    {
+      "name": "configuration-controller",
+      "description": "Configuration Controller"
     }
   ],
   "schemes": [
@@ -276,6 +280,35 @@
           }
         }
       }
+    },
+    "/api/v1/conf": {
+      "get": {
+        "tags": [
+          "configuration-controller"
+        ],
+        "summary": "getConfiguration",
+        "operationId": "getConfigurationUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ConfigurationDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {
@@ -368,6 +401,15 @@
         }
       },
       "title": "AnimeTitleDto"
+    },
+    "ConfigurationDto": {
+      "type": "object",
+      "properties": {
+        "googleOAuthClientId": {
+          "type": "string"
+        }
+      },
+      "title": "ConfigurationDto"
     },
     "EpisodeDto": {
       "type": "object",
