@@ -2,6 +2,7 @@ package dmo.server.security;
 
 import dmo.server.domain.User;
 import dmo.server.repository.UserRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 @Component
 @RequiredArgsConstructor
 public class DubUserDetailsService {
+    @NonNull
     private final UserRepository userRepository;
 
     @Transactional

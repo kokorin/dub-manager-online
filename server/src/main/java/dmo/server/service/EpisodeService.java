@@ -4,6 +4,7 @@ import dmo.server.domain.Episode;
 import dmo.server.exception.AnimeNotFoundException;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.EpisodeRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class EpisodeService {
+    @NonNull
     private final AnimeRepository animeRepository;
+    @NonNull
     private final EpisodeRepository episodeRepository;
 
     @Secured("ROLE_USER")

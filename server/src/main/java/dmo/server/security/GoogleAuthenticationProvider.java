@@ -1,5 +1,6 @@
 package dmo.server.security;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsChecker;
 @RequiredArgsConstructor
 public class GoogleAuthenticationProvider implements AuthenticationProvider {
 
+    @NonNull
     private final GoogleAuthenticationService googleAuthenticationService;
+    @NonNull
     private final DubUserDetailsService userDetailsService;
     private final UserDetailsChecker userDetailsChecker = new AccountStatusUserDetailsChecker();
 

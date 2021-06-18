@@ -7,6 +7,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import dmo.server.prop.GoogleOAuthProperties;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import java.util.Collections;
 @Component
 @RequiredArgsConstructor
 public class GoogleAuthenticationService implements InitializingBean {
+    @NonNull
     private final GoogleOAuthProperties googleOAuthProperties;
 
     private GoogleIdTokenVerifier tokenVerifier;

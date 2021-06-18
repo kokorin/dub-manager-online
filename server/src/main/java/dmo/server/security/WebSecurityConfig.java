@@ -1,5 +1,6 @@
 package dmo.server.security;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +23,13 @@ import javax.servlet.Filter;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @NonNull
     private final GoogleAuthenticationService googleAuthenticationService;
+    @NonNull
     private final LoginSuccessHandler loginSuccessHandler;
+    @NonNull
     private final JwtAuthenticationUserDetailsService preAuthenticatedUserDetailsService;
+    @NonNull
     private final DubUserDetailsService dubUserDetailsService;
 
     @Override

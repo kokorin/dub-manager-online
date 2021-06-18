@@ -11,15 +11,20 @@ services:
       dmo_anidb_client: ${ANIDB_CLIENT_ID}
       dmo_anidb_client_version: ${ANIDB_CLIENT_VERSION}
       google_oauth_client_id: ${GOOGLE_OAUTH_CLIENT_ID}
+
       spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
       spring_datasource_username: dmo
       spring_datasource_password: dmo
+
+      jwt_key: ${JWT_KEY:-}
+    ports:
+      - "8080:8080"
 
   nginx-share:
     build: client
     image: "kokorin/dub-manager-online-nginx-share:${VERSION:-latest}"
     volumes:
-    - ngshare_volume:/usr/share/nginx
+      - ngshare_volume:/usr/share/nginx
 
   nginx:
     image: nginx:alpine
@@ -49,6 +54,8 @@ services:
       MYSQL_COLLATION: utf8mb4_general_ci
     volumes:
       - maria_volume:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
 volumes:
   maria_volume:

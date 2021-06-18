@@ -1,11 +1,13 @@
 package dmo.server.security;
 
+import lombok.NonNull;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
 public class GoogleIdAuthenticationToken extends AbstractAuthenticationToken {
+    @NonNull
     private final Object principal;
 
     public GoogleIdAuthenticationToken(String idToken) {

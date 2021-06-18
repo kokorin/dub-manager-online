@@ -7,6 +7,7 @@ import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.Anime;
 import dmo.server.service.AnimeService;
 import dmo.server.service.EpisodeService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,8 +24,11 @@ import javax.validation.constraints.Min;
 @Validated
 @RequiredArgsConstructor
 public class AnimeController {
+    @NonNull
     private final AnimeService animeService;
+    @NonNull
     private final EpisodeService episodeService;
+    @NonNull
     private final AnimeMapper animeMapper;
 
     @GetMapping
