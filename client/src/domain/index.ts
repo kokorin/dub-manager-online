@@ -3,6 +3,7 @@ import {
     AnimeDtoTypeEnum,
     AnimeTitleDto,
     AnimeTitleDtoTypeEnum,
+    ConfigurationDto,
     EpisodeDto,
     EpisodeDtoTypeEnum,
     EpisodeTitleDto
@@ -16,5 +17,7 @@ export const AnimeTitleType = AnimeTitleDtoTypeEnum
 export type Episode = EpisodeDto
 export const EpisodeType = EpisodeDtoTypeEnum
 export type EpisodeTitle = EpisodeTitleDto
+
+export type Config = ConfigurationDto
 
 export * from "./Page"

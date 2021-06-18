@@ -6,6 +6,8 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import dmo.server.prop.GoogleOAuthProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -16,12 +18,11 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 @Component
+@RequiredArgsConstructor
 public class GoogleAuthenticationService implements InitializingBean {
+    private final GoogleOAuthProperties googleOAuthProperties;
 
     private GoogleIdTokenVerifier tokenVerifier;
-
-    @Value("${google.client.id}")
-    private String clientId;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -30,7 +31,7 @@ public class GoogleAuthenticationService implements InitializingBean {
         JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 
         tokenVerifier = new GoogleIdTokenVerifier.Builder(httpTransport, jsonFactory)
-                .setAudience(Collections.singletonList(clientId))
+                .setAudience(Collections.singletonList(googleOAuthProperties.clientId))
                 .build();
     }
 

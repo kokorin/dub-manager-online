@@ -5,6 +5,7 @@ import dmo.server.event.AnimeListUpdateScheduled;
 import dmo.server.event.AnimeListUpdated;
 import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.event.AnimeUpdated;
+import dmo.server.prop.AnidbProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -67,7 +68,7 @@ public class AnidbAnimeUpdater {
             log.info("Will update anime: {}", anime);
 
             var call = anidbClient.getAnime(anime.getId(),
-                    anidbProperties.getClient(), anidbProperties.getClientVersion());
+                    anidbProperties.client, anidbProperties.clientVersion);
             var response = call.execute();
             if (!response.isSuccessful()) {
                 log.warn("Failed to get anime: {}, code:{}, message: {}", anime, response.code(), response.message());

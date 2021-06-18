@@ -1,11 +1,17 @@
-import React, {FC} from "react";
+import React, {FC, useEffect, useState} from "react";
 import GoogleLogin, {GoogleLoginResponse, GoogleLoginResponseOffline} from "react-google-login";
 import axios from "axios";
-
-// TODO request from server
-const googleClientId = "242595272379-usrfmeccak59k76v3ghq1di30ogt2q0p.apps.googleusercontent.com";
+import {getConfig} from "../api";
 
 const LoginComponent: FC = () => {
+
+    const [conf, setConf] = useState({googleOAuthClientId: ""});
+    useEffect(() => {
+        // run once
+        getConfig().then(res => setConf({
+            googleOAuthClientId: res.googleOAuthClientId || ""
+        }));
+    }, [])
 
     const successHandler = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
         const tokenId = (response as GoogleLoginResponse)?.tokenId;
@@ -36,9 +42,13 @@ const LoginComponent: FC = () => {
         console.log("login failure " + error);
     }
 
+    if (!conf.googleOAuthClientId) {
+        return <div/>;
+    }
+
     return (
         <div>
-            <GoogleLogin clientId={googleClientId}
+            <GoogleLogin clientId={conf.googleOAuthClientId}
                          onSuccess={successHandler}
                          onFailure={failureHandler}/>
         </div>

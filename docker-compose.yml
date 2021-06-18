@@ -10,7 +10,7 @@ services:
     environment:
       dmo_anidb_client: ${ANIDB_CLIENT_ID}
       dmo_anidb_client_version: ${ANIDB_CLIENT_VERSION}
-      google_client_id: ${GOOGLE_CLIENT_ID}
+      google_oauth_client_id: ${GOOGLE_OAUTH_CLIENT_ID}
       spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
       spring_datasource_username: dmo
       spring_datasource_password: dmo

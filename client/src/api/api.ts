@@ -1,5 +1,5 @@
-import {AnimeControllerApi, Configuration} from "./generated";
-import {Anime, Episode, Page} from "../domain";
+import {AnimeControllerApi, Configuration, ConfigurationControllerApi} from "./generated";
+import {Anime, Config, Episode, Page} from "../domain";
 
 const catchError = (response: Response): any => {
     console.log("error: " + response)
@@ -10,9 +10,13 @@ const catchError = (response: Response): any => {
     //show "something happened
 }
 
-const animeControllerApi = new AnimeControllerApi(new Configuration({
+// openapi description specifies 8080 port
+// this configuration overrides port
+const controllerConfiguration = new Configuration({
     basePath: ""
-}))
+})
+
+const animeControllerApi = new AnimeControllerApi(controllerConfiguration)
 
 /**
  * @param page 0-based page number
@@ -37,4 +41,10 @@ export const getAnime = (id: number): Promise<Anime> => {
  */
 export const getEpisodeList = (id: number, page: number, size: number): Promise<Page<Episode>> => {
     return animeControllerApi.getEpisodesUsingGET({id, page, size}).catch(catchError)
+}
+
+const confControllerApi = new ConfigurationControllerApi(controllerConfiguration)
+
+export const getConfig = (): Promise<Config> => {
+    return confControllerApi.getConfigurationUsingGET();
 }

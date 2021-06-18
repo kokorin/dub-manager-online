@@ -55,7 +55,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(properties = {
         "logging.level.ROOT=INFO",
         "dmo.anidb.client=test",
-        "dmo.anidb.client.version=1"
+        "dmo.anidb.client.version=1",
+        "google.oauth.client.id=123"
 })
 class ServerApplicationTests {
     @LocalServerPort
@@ -117,7 +118,7 @@ class ServerApplicationTests {
                     .replaceAll("\\s*\\r?\\n?$", " ");
         }
 
-        JSONAssert.assertEquals(expected, content, true);
+        JSONAssert.assertEquals("Actual:\n" + content, expected, content, true);
     }
 
     @Test
@@ -212,6 +213,20 @@ class ServerApplicationTests {
         );
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    void clientConfigurationDoesntRequireAuthentication() {
+        var response = restTemplate.getForEntity(
+                "http://localhost:" + port + "/api/v1/conf",
+                ConfigurationDto.class
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        var config = response.getBody();
+        assertNotNull(config);
+        assertEquals("123", config.getGoogleOAuthClientId());
     }
 
     @Test
