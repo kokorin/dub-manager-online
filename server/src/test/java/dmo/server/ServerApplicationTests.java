@@ -6,16 +6,19 @@ import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
 import dmo.server.event.AnimeListUpdated;
+import dmo.server.integration.anidb.AnidbAnimeLightList;
+import dmo.server.integration.anidb.AnidbAnimeUpdater;
 import dmo.server.integration.anidb.AnidbClient;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
+import dmo.server.repository.AnimeUpdateRepository;
 import dmo.server.repository.UserRepository;
 import dmo.server.security.DubUserDetails;
 import dmo.server.security.GoogleAuthenticationService;
 import dmo.server.security.JwtService;
 import dmo.server.service.AnimeUpdater;
 import lombok.Data;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -40,12 +43,11 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import retrofit2.mock.Calls;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,10 +71,16 @@ class ServerApplicationTests {
     private UserRepository userRepository;
 
     @Autowired
+    private AnimeStatusRepository animeStatusRepository;
+
+    @Autowired
+    private AnimeUpdateRepository animeUpdateRepository;
+
+    @Autowired
     private AnimeRepository animeRepository;
 
     @Autowired
-    private AnimeStatusRepository animeStatusRepository;
+    private AnidbAnimeUpdater anidbAnimeUpdater;
 
     // Disable Anidb Integration
     @MockBean
@@ -102,6 +110,13 @@ class ServerApplicationTests {
         registry.add("spring.datasource.url", database::getJdbcUrl);
         registry.add("spring.datasource.username", database::getUsername);
         registry.add("spring.datasource.password", database::getPassword);
+    }
+
+    @BeforeEach
+    public void clearAnimeTable() {
+        animeStatusRepository.deleteAll();
+        animeUpdateRepository.deleteAll();
+        animeRepository.deleteAll();
     }
 
     @Test
@@ -277,6 +292,32 @@ class ServerApplicationTests {
         assertEquals(2, animeStatus.getAnime().getTitles().size());
         assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
         assertEquals(AnimeProgressDto.COMPLETED, animeStatus.getProgress());
+    }
+
+    @Test
+    public void scheduleAnimeListUpdate() {
+        var call = Calls.response(new AnidbAnimeLightList());
+        Mockito.when(anidbClient.getAnimeList()).thenReturn(call);
+
+        animeUpdater.scheduleAnimeListUpdate();
+
+        Mockito.verify(anidbClient).getAnimeList();
+        Mockito.verifyNoMoreInteractions(anidbClient);
+    }
+
+    @Test
+    public void scheduleAnimeUpdate() {
+        animeRepository.saveAllAndFlush(List.of(
+                newAnime(3L, null, "To be updated first"),
+                newAnime(2L, null, "Should not be updated"),
+                newAnime(1L, null, "Should not be updated too")
+        ));
+
+        animeUpdater.scheduleAnimeUpdate();
+        anidbAnimeUpdater.scheduledUpdateAnime();
+
+        Mockito.verify(anidbClient).getAnime(Mockito.eq(3L), Mockito.anyString(), Mockito.anyString());
+        Mockito.verifyNoMoreInteractions(anidbClient);
     }
 
     private JwtResponse loginWithGoogleAuthenticationMock() {

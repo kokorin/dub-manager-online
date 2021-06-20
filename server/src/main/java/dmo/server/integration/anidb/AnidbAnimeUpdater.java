@@ -16,8 +16,13 @@ import org.springframework.stereotype.Component;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 @Slf4j
@@ -32,8 +37,14 @@ public class AnidbAnimeUpdater {
     @NonNull
     private final AnidbAnimeMapper anidbAnimeMapper;
 
+    private final AtomicBoolean apiClientBanned = new AtomicBoolean();
+    private final AtomicInteger apiClientBannedTimes = new AtomicInteger();
+    private final AtomicReference<LocalDateTime> apiClientBanExpiresAfter = new AtomicReference<>(LocalDateTime.MIN);
+
     private final Queue<Anime> updateQueue = new PriorityBlockingQueue<>(11, ANIME_COMPARATOR);
     private static final Comparator<Anime> ANIME_COMPARATOR = Comparator.comparing(Anime::getId).reversed();
+    private static final Duration BAN_BACKOFF = Duration.ofMinutes(15);
+    private static final int BANNED_ERROR_CODE = 500;
 
     @EventListener
     public void onUpdateAnimeListScheduled(AnimeListUpdateScheduled event) throws IOException {
@@ -62,8 +73,13 @@ public class AnidbAnimeUpdater {
         log.info("Anime update scheduled: {}", anime);
     }
 
-    @Scheduled(initialDelay = 10_000L, fixedDelay = 3_000L)
-    public void updateAnime() {
+    @Scheduled(initialDelay = 10_000L, fixedDelay = 5_000L)
+    public void scheduledUpdateAnime() {
+        if (apiClientBanned.get() && LocalDateTime.now().isBefore(apiClientBanExpiresAfter.get())) {
+            log.info("Anidb banned client, expires: {}", apiClientBanExpiresAfter.get());
+            return;
+        }
+
         var anime = updateQueue.poll();
         if (anime == null) {
             return;
@@ -82,8 +98,15 @@ public class AnidbAnimeUpdater {
 
             var apiResponse = response.body();
 
-            if (!(apiResponse instanceof AnidbAnime)) {
+            if (apiResponse instanceof AnidbError) {
                 log.warn("Failed to get anime: {}, got: {}", anime, apiResponse);
+                var error = (AnidbError) apiResponse;
+                if (error.code == BANNED_ERROR_CODE) {
+                    apiClientBanned.set(true);
+                    var times = apiClientBannedTimes.incrementAndGet();
+                    var expires = LocalDateTime.now().plus(BAN_BACKOFF.multipliedBy(times));
+                    apiClientBanExpiresAfter.set(expires);
+                }
                 return;
             }
 
@@ -96,6 +119,10 @@ public class AnidbAnimeUpdater {
 
             // remove instances of the same anime from the queue
             updateQueue.removeIf(a -> a.getId().equals(anime.getId()));
+
+            // clean up banned status
+            apiClientBanned.set(false);
+            apiClientBannedTimes.set(0);
         } catch (Exception e) {
             log.warn("Failed to update anime: {}", anime, e);
         }

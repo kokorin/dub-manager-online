@@ -6,6 +6,12 @@ Anime-related date is took from [anidb.net API](https://wiki.anidb.net/API)
 
 # Running with docker-compose
 
+## Running DB only on dev machine:
+
+```sh
+docker-compose -f .\docker-compose.yml up -d mariadb
+```
+
 ## Running on dev machine
 
 The following variables must present either as ENV variables or in `.env` file in project root:
