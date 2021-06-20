@@ -19,4 +19,8 @@ server {
     location /api {
         proxy_pass  http://app;
     }
+
+    location ~* /login/.+ {
+        proxy_pass  http://app;
+    }
 }

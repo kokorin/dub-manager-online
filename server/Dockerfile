@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:jdk-11.0.11_9-alpine AS build
+FROM adoptopenjdk/openjdk11:alpine AS build
 
 WORKDIR server
 # Caching layers
@@ -14,7 +14,7 @@ COPY src /server/src
 RUN sh mvnw clean install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:11-jre
+FROM adoptopenjdk/openjdk11:alpine-jre
 ARG DEPENDENCY=/server/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF

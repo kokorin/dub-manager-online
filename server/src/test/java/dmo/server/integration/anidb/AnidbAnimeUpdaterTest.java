@@ -10,13 +10,16 @@ import dmo.server.event.AnimeUpdated;
 import dmo.server.prop.AnidbProperties;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.mockito.Mockito;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.CollectionUtils;
+import retrofit2.mock.Calls;
 
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -38,11 +41,11 @@ public class AnidbAnimeUpdaterTest {
         };
 
         try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-titles.xml.gz")) {
-            AnidbConfig anidbConfig = new AnidbConfigMock("application/gzip", input);
+            var anidbConfig = new AnidbConfigMock("application/gzip", input);
 
-            AnidbClient anidbClient = anidbConfig.anidbClient();
-            AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
-            tracking.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
+            var anidbClient = anidbConfig.anidbClient();
+            var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
+            anidbAnimeUpdater.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
         }
 
         Object event = eventRef.get();
@@ -80,16 +83,16 @@ public class AnidbAnimeUpdaterTest {
             }
         };
 
-        try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-979.xml")) {
-            AnidbConfig anidbConfig = new AnidbConfigMock("application/xml", input);
+        try (var input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-979.xml")) {
+            var anidbConfig = new AnidbConfigMock("application/xml", input);
 
-            AnidbClient anidbClient = anidbConfig.anidbClient();
-            AnidbAnimeUpdater tracking = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
+            var anidbClient = anidbConfig.anidbClient();
+            var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
 
             var anime = new Anime();
             anime.setId(979L);
-            tracking.onAnimeUpdateScheduled(new AnimeUpdateScheduled(anime));
-            tracking.updateAnime();
+            anidbAnimeUpdater.onAnimeUpdateScheduled(new AnimeUpdateScheduled(anime));
+            anidbAnimeUpdater.scheduledUpdateAnime();
         }
 
         Object event = eventRef.get();
@@ -109,5 +112,40 @@ public class AnidbAnimeUpdaterTest {
         assertEquals(141, episodes.size());
         var regularEpisodes = episodes.stream().filter(e -> e.getType() == Episode.Type.REGULAR).count();
         assertEquals(51, regularEpisodes);
+    }
+
+    @Test
+    public void animeIsNotRequestedIfBanned() throws InterruptedException {
+        var banned = new AnidbError();
+        banned.code = 500;
+        banned.message = "banned";
+
+        var anidbClient = Mockito.mock(AnidbClient.class);
+        Mockito.when(anidbClient.getAnime(47L, "", ""))
+                .thenReturn(Calls.response(banned));
+        Mockito.doThrow(RuntimeException.class)
+                .when(anidbClient).getAnime(Mockito.any(), Mockito.any(), Mockito.any());
+
+        var eventPublisher = Mockito.mock(ApplicationEventPublisher.class);
+        var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
+
+        anidbAnimeUpdater.onAnimeUpdateScheduled(animeUpdateScheduled(47L));
+        // should return banned
+        anidbAnimeUpdater.scheduledUpdateAnime();
+
+        // Should not call API
+        TimeUnit.SECONDS.sleep(1);
+        anidbAnimeUpdater.onAnimeUpdateScheduled(animeUpdateScheduled(48L));
+        anidbAnimeUpdater.scheduledUpdateAnime();
+        anidbAnimeUpdater.onAnimeUpdateScheduled(animeUpdateScheduled(49L));
+        anidbAnimeUpdater.scheduledUpdateAnime();
+        anidbAnimeUpdater.onAnimeUpdateScheduled(animeUpdateScheduled(50L));
+        anidbAnimeUpdater.scheduledUpdateAnime();
+    }
+
+    private static AnimeUpdateScheduled animeUpdateScheduled(Long animeId) {
+        var anime = new Anime();
+        anime.setId(animeId);
+        return new AnimeUpdateScheduled(anime);
     }
 }

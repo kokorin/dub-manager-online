@@ -18,9 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -56,9 +54,18 @@ public class AnimeUpdater {
         }
     }
 
+    @Scheduled(initialDelay = 20_000L, fixedDelay = 60_000L)
+    public void scheduleAnimeUpdate() {
+        var anime = animeRepository.findAnimeWithoutEpisodes();
+        var updateScheduled = new AnimeUpdateScheduled(anime);
+        eventPublisher.publishEvent(updateScheduled);
+        log.info("Scheduled Anime update: {}", anime.getId());
+    }
+
     @EventListener
     @Transactional
     public void onAnimeListUpdate(AnimeListUpdated animeListUpdated) {
+        log.info("Received Anime List update, persisting...");
         List<Anime> animeList = animeListUpdated.getAnimeList();
         List<Anime> persistedList = animeRepository.findAllWithTitles();
 
@@ -110,13 +117,16 @@ public class AnimeUpdater {
 
         var savedAnime = animeRepository.save(anime);
 
-        episodes.forEach(e -> e.setAnime(savedAnime));
-        episodeRepository.saveAll(episodes);
+        if (episodes != null) {
+            episodes.forEach(e -> e.setAnime(savedAnime));
+            episodeRepository.saveAll(episodes);
+        }
 
         var animeUpdate = new AnimeUpdate();
         // No need to set animeUpdate.id
         animeUpdate.setAnime(savedAnime);
         animeUpdate.setLastUpdated(Instant.now());
         animeUpdateRepository.save(animeUpdate);
+        log.info("Anime {} updated", anime.getId());
     }
 }

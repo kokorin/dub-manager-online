@@ -41,4 +41,8 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
             "       WHERE MATCH(t.text) AGAINST(:title)", nativeQuery = true)
     @NonNull
     Long countByTitle(@NonNull @Param("title") String title);
+
+    @Query("FROM Anime WHERE id = (SELECT MAX(id) FROM Anime WHERE episodeCount IS NULL)")
+    @NonNull
+    Anime findAnimeWithoutEpisodes();
 }
