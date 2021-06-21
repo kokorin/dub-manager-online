@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
+import dmo.server.event.AnimeDeleted;
 import dmo.server.event.AnimeListUpdated;
 import dmo.server.integration.anidb.AnidbAnimeLightList;
 import dmo.server.integration.anidb.AnidbAnimeUpdater;
@@ -45,10 +46,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import retrofit2.mock.Calls;
 
+import javax.transaction.Transactional;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.*;
 
+import static dmo.server.domain.Anime.Type.DELETED;
+import static dmo.server.domain.Anime.Type.UNKNOWN;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -169,6 +173,24 @@ class ServerApplicationTests {
         assertEquals((Long) 2L, anime.getId());
         assertEquals(Anime.Type.UNKNOWN, anime.getType());
         assertEquals(3, anime.getTitles().size());
+    }
+
+    @Test
+    @Transactional
+    public void animeIsMarkedDeletedIfAnimeDeletedEvent() {
+        var anime = new Anime();
+        anime.setId(777L);
+        anime.setType(Anime.Type.UNKNOWN);
+
+        animeRepository.saveAndFlush(anime);
+
+        animeUpdater.onAnimeDeleted(new AnimeDeleted(777L));
+
+        animeRepository.flush();
+        anime = animeRepository.getById(777L);
+
+        assertNotNull(anime);
+        assertEquals(DELETED, anime.getType());
     }
 
     @Test
@@ -295,7 +317,7 @@ class ServerApplicationTests {
     }
 
     @Test
-    public void scheduleAnimeListUpdate() {
+    public void scheduledAnimeListUpdate() {
         var call = Calls.response(new AnidbAnimeLightList());
         Mockito.when(anidbClient.getAnimeList()).thenReturn(call);
 
@@ -306,8 +328,9 @@ class ServerApplicationTests {
     }
 
     @Test
-    public void scheduleAnimeUpdate() {
+    public void scheduledAnimeUpdate() {
         animeRepository.saveAllAndFlush(List.of(
+                newAnime(4L, Anime.Type.DELETED, null, "Marked deleted, should be skipped"),
                 newAnime(3L, null, "To be updated first"),
                 newAnime(2L, null, "Should not be updated"),
                 newAnime(1L, null, "Should not be updated too")
@@ -360,11 +383,15 @@ class ServerApplicationTests {
     }
 
     private static Anime newAnime(Long id, Long episodeCount, String... titles) {
+        return newAnime(id, UNKNOWN, episodeCount, titles);
+    }
+
+    private static Anime newAnime(Long id, Anime.Type type, Long episodeCount, String... titles) {
         var result = new Anime();
 
         result.setId(id);
         result.setEpisodeCount(episodeCount);
-        result.setType(Anime.Type.UNKNOWN);
+        result.setType(type);
 
         var animeTitles = new HashSet<AnimeTitle>();
         for (int i = 0; i < titles.length; i++) {
