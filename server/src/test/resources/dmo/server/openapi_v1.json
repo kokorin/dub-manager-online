@@ -340,6 +340,7 @@
         "type": {
           "type": "string",
           "enum": [
+            "DELETED",
             "MOVIE",
             "MUSIC_VIDEO",
             "OTHER",

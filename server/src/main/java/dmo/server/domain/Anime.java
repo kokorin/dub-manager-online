@@ -38,7 +38,8 @@ public class Anime {
         WEB,
         MUSIC_VIDEO,
         OTHER,
-        UNKNOWN;
+        UNKNOWN,
+        DELETED;
     }
 
 }

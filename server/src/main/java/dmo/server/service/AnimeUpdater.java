@@ -54,7 +54,7 @@ public class AnimeUpdater {
         }
     }
 
-    @Scheduled(initialDelay = 20_000L, fixedDelay = 60_000L)
+    @Scheduled(initialDelay = 20_000L, fixedDelay = 300_000L)
     public void scheduleAnimeUpdate() {
         var anime = animeRepository.findAnimeWithoutEpisodes();
         var updateScheduled = new AnimeUpdateScheduled(anime);
@@ -81,6 +81,9 @@ public class AnimeUpdater {
                 if (!Objects.equals(persisted.getTitles(), anime.getTitles())) {
                     persisted.setTitles(anime.getTitles());
                     updated++;
+                }
+                if (Anime.Type.DELETED == persisted.getType()) {
+                    persisted.setType(Anime.Type.UNKNOWN);
                 }
             } else {
                 anime.setType(Anime.Type.UNKNOWN);
@@ -128,5 +131,12 @@ public class AnimeUpdater {
         animeUpdate.setLastUpdated(Instant.now());
         animeUpdateRepository.save(animeUpdate);
         log.info("Anime {} updated", anime.getId());
+    }
+
+    @EventListener
+    @Transactional
+    public void onAnimeDeleted(AnimeDeleted event) {
+        animeRepository.findById(event.getAnimeId())
+                .ifPresent(a -> a.setType(Anime.Type.DELETED));
     }
 }

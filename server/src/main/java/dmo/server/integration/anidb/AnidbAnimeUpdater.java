@@ -1,10 +1,7 @@
 package dmo.server.integration.anidb;
 
 import dmo.server.domain.Anime;
-import dmo.server.event.AnimeListUpdateScheduled;
-import dmo.server.event.AnimeListUpdated;
-import dmo.server.event.AnimeUpdateScheduled;
-import dmo.server.event.AnimeUpdated;
+import dmo.server.event.*;
 import dmo.server.prop.AnidbProperties;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +41,10 @@ public class AnidbAnimeUpdater {
     private final Queue<Anime> updateQueue = new PriorityBlockingQueue<>(11, ANIME_COMPARATOR);
     private static final Comparator<Anime> ANIME_COMPARATOR = Comparator.comparing(Anime::getId).reversed();
     private static final Duration BAN_BACKOFF = Duration.ofMinutes(15);
-    private static final int BANNED_ERROR_CODE = 500;
+
+    private static final String BANNED_ERROR_MESSAGE = "banned";
+    private static final String NOT_FOUND_ERROR_MESSAGE = "Anime not found";
+
 
     @EventListener
     public void onUpdateAnimeListScheduled(AnimeListUpdateScheduled event) throws IOException {
@@ -75,13 +75,13 @@ public class AnidbAnimeUpdater {
 
     @Scheduled(initialDelay = 10_000L, fixedDelay = 5_000L)
     public void scheduledUpdateAnime() {
-        if (apiClientBanned.get() && LocalDateTime.now().isBefore(apiClientBanExpiresAfter.get())) {
-            log.info("Anidb banned client, expires: {}", apiClientBanExpiresAfter.get());
+        var anime = updateQueue.poll();
+        if (anime == null) {
             return;
         }
 
-        var anime = updateQueue.poll();
-        if (anime == null) {
+        if (apiClientBanned.get() && LocalDateTime.now().isBefore(apiClientBanExpiresAfter.get())) {
+            log.info("Anidb banned client, expires: {}", apiClientBanExpiresAfter.get());
             return;
         }
 
@@ -101,12 +101,25 @@ public class AnidbAnimeUpdater {
             if (apiResponse instanceof AnidbError) {
                 log.warn("Failed to get anime: {}, got: {}", anime, apiResponse);
                 var error = (AnidbError) apiResponse;
-                if (error.code == BANNED_ERROR_CODE) {
-                    apiClientBanned.set(true);
-                    var times = apiClientBannedTimes.incrementAndGet();
-                    var expires = LocalDateTime.now().plus(BAN_BACKOFF.multipliedBy(times));
-                    apiClientBanExpiresAfter.set(expires);
+                switch (error.message) {
+                    case BANNED_ERROR_MESSAGE:
+                        apiClientBanned.set(true);
+                        var times = apiClientBannedTimes.getAndIncrement();
+                        var multiplier = (long) Math.pow(2, times);
+                        var expires = LocalDateTime.now().plus(BAN_BACKOFF.multipliedBy(multiplier));
+                        apiClientBanExpiresAfter.set(expires);
+                        break;
+                    case NOT_FOUND_ERROR_MESSAGE:
+                        var event = new AnimeDeleted(anime.getId());
+                        publisher.publishEvent(event);
+                        break;
+                    default:
+                        break;
                 }
+                return;
+            }
+
+            if (!(apiResponse instanceof AnidbAnime)) {
                 return;
             }
 

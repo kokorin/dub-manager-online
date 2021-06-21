@@ -58,6 +58,12 @@
         </insert>
     </changeSet>
 
+    <changeSet author="kokorin" id="1624247028123">
+        <insert tableName="anime_type_enum">
+            <column name="type" value="DELETED"/>
+        </insert>
+    </changeSet>
+
     <changeSet author="kokorin" id="1598541710924">
         <createTable tableName="anime">
             <column name="id" type="BIGINT">

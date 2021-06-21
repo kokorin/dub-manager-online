@@ -3,10 +3,7 @@ package dmo.server.integration.anidb;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
 import dmo.server.domain.Episode;
-import dmo.server.event.AnimeListUpdateScheduled;
-import dmo.server.event.AnimeListUpdated;
-import dmo.server.event.AnimeUpdateScheduled;
-import dmo.server.event.AnimeUpdated;
+import dmo.server.event.*;
 import dmo.server.prop.AnidbProperties;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -19,10 +16,13 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.isA;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -141,6 +141,41 @@ public class AnidbAnimeUpdaterTest {
         anidbAnimeUpdater.scheduledUpdateAnime();
         anidbAnimeUpdater.onAnimeUpdateScheduled(animeUpdateScheduled(50L));
         anidbAnimeUpdater.scheduledUpdateAnime();
+    }
+
+    @Test
+    public void animeDeletedEventIsSentAfterNotFoundAnimeResponse() throws InterruptedException {
+        final List<Object> events = new CopyOnWriteArrayList<>();
+        ApplicationEventPublisher eventPublisher = new ApplicationEventPublisher() {
+            @Override
+            public void publishEvent(Object event) {
+                events.add(event);
+            }
+        };
+
+        var notFound = new AnidbError();
+        notFound.code = 500;
+        notFound.message = "Anime not found";
+
+        var anidbClient = Mockito.mock(AnidbClient.class);
+        Mockito.when(anidbClient.getAnime(47L, "", ""))
+                .thenReturn(Calls.response(notFound))
+                .thenThrow(RuntimeException.class);
+
+        var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
+
+        anidbAnimeUpdater.onAnimeUpdateScheduled(animeUpdateScheduled(47L));
+        // should return anime with DELETED status
+        anidbAnimeUpdater.scheduledUpdateAnime();
+
+        assertEquals(1, events.size());
+
+        Object eventObj = events.get(0);
+        assertNotNull(eventObj);
+        assertThat(eventObj, isA(AnimeDeleted.class));
+
+        AnimeDeleted deleted = (AnimeDeleted) eventObj;
+        assertEquals((Long) 47L, deleted.getAnimeId());
     }
 
     private static AnimeUpdateScheduled animeUpdateScheduled(Long animeId) {
