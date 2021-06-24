@@ -21,7 +21,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <springfox.version>3.0.0</springfox.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <google.api.version>1.31.5</google.api.version>
+        <google.api.version>1.32.1</google.api.version>
     </properties>
 
     <dependencyManagement>
