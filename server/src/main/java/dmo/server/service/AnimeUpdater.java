@@ -14,8 +14,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -31,6 +31,8 @@ public class AnimeUpdater {
     private final AnimeRepository animeRepository;
     @NonNull
     private final EpisodeRepository episodeRepository;
+    @NonNull
+    private final EpisodeStatusRepository episodeStatusRepository;
     @NonNull
     private final AnimeUpdateRepository animeUpdateRepository;
     @NonNull
@@ -54,7 +56,7 @@ public class AnimeUpdater {
         }
     }
 
-    @Scheduled(initialDelay = 20_000L, fixedDelay = 300_000L)
+    @Scheduled(initialDelay = 300_000L, fixedDelay = 3_600_000L)
     public void scheduleAnimeUpdate() {
         var anime = animeRepository.findAnimeWithoutEpisodes();
         var updateScheduled = new AnimeUpdateScheduled(anime);
@@ -123,6 +125,8 @@ public class AnimeUpdater {
         if (episodes != null) {
             episodes.forEach(e -> e.setAnime(savedAnime));
             episodeRepository.saveAll(episodes);
+            episodeRepository.flush();
+            episodeStatusRepository.fillEpisodeStatuses(savedAnime);
         }
 
         var animeUpdate = new AnimeUpdate();

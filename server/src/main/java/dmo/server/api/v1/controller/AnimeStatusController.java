@@ -1,15 +1,18 @@
 package dmo.server.api.v1.controller;
 
 import dmo.server.api.v1.dto.AnimeStatusDto;
+import dmo.server.api.v1.dto.EpisodeStatusDto;
 import dmo.server.api.v1.dto.PageDto;
 import dmo.server.api.v1.dto.UpdateAnimeStatusDto;
 import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.AnimeStatus;
 import dmo.server.security.DubUserDetails;
 import dmo.server.service.AnimeStatusService;
+import dmo.server.service.EpisodeStatusService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +23,14 @@ import javax.validation.constraints.NotNull;
 import java.util.function.Consumer;
 
 @RestController
-@RequestMapping("api/v1/anime_status")
+@RequestMapping("api/v1/user/current/anime")
 @Validated
 @RequiredArgsConstructor
 public class AnimeStatusController {
     @NonNull
     private final AnimeStatusService animeStatusService;
+    @NonNull
+    private final EpisodeStatusService episodeStatusService;
     @NonNull
     private final AnimeMapper animeMapper;
 
@@ -37,6 +42,17 @@ public class AnimeStatusController {
         var result = animeStatusService.findAll(userDetails.getId(), pageRequest);
 
         return animeMapper.toAnimeStatusPageDto(result);
+    }
+
+    @GetMapping("{id}/episodes")
+    public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal DubUserDetails userDetails,
+                                                 @PathVariable("id") Long animeId,
+                                                 @RequestParam("page") @Min(0) int page,
+                                                 @RequestParam("size") @Min(1) @Max(100) int size) {
+        var pageRequest = PageRequest.of(page, size);
+        var result = episodeStatusService.findByAnimeAndUser(animeId, userDetails.getId(), pageRequest);
+
+        return animeMapper.toEpisodeStatusPageDto(result);
     }
 
     @PostMapping("{animeId}")

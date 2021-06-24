@@ -288,7 +288,7 @@ class ServerApplicationTests {
         var httpEntity = new HttpEntity<>(request, headers);
 
         var response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
+                "http://localhost:" + port + "/api/v1/user/current/anime/" + animeId,
                 httpEntity,
                 AnimeStatusDto.class
         );
@@ -305,7 +305,7 @@ class ServerApplicationTests {
 
         request.setProgress(AnimeProgressDto.COMPLETED);
         animeStatus = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
+                "http://localhost:" + port + "/api/v1/user/current/anime/" + animeId,
                 httpEntity,
                 AnimeStatusDto.class
         ).getBody();

@@ -33,9 +33,18 @@ public class Episode {
     private LocalDate airDate;
 
     public enum Type {
+        /**
+         * Normal or Regular.
+         */
         REGULAR,
         SPECIAL,
+        /**
+         * Opening/Ending.
+         */
         CREDIT,
+        /**
+         * Trailer/Promo/Commercial.
+         */
         TRAILER,
         PARODY,
         OTHER

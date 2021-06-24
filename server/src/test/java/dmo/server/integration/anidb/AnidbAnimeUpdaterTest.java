@@ -8,11 +8,12 @@ import dmo.server.prop.AnidbProperties;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.CollectionUtils;
 import retrofit2.mock.Calls;
 
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -26,9 +27,19 @@ import static org.hamcrest.Matchers.isA;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
+@SpringBootTest(
+        classes = {AnidbConfig.class, MockAnidbConf.class},
+        properties = "spring.main.allow-bean-definition-overriding=true")
 public class AnidbAnimeUpdaterTest {
-    private AnidbAnimeMapper anidbAnimeMapper = Mappers.getMapper(AnidbAnimeMapper.class);
-    private AnidbProperties anidbProperties = new AnidbProperties("", "");
+    private final AnidbProperties anidbProperties = new AnidbProperties("", "");
+
+    @Autowired
+    private MockResponseInterceptor mockResponseInterceptor;
+
+    private final AnidbAnimeMapper anidbAnimeMapper = Mappers.getMapper(AnidbAnimeMapper.class);
+
+    @Autowired
+    private AnidbClient anidbClient;
 
     @Test
     void updateAnimeList() throws Exception {
@@ -40,13 +51,9 @@ public class AnidbAnimeUpdaterTest {
             }
         };
 
-        try (InputStream input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-titles.xml.gz")) {
-            var anidbConfig = new AnidbConfigMock("application/gzip", input);
-
-            var anidbClient = anidbConfig.anidbClient();
-            var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
-            anidbAnimeUpdater.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
-        }
+        mockResponseInterceptor.useResponseFileOnce("anime-titles.xml.gz");
+        var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
+        anidbAnimeUpdater.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
 
         Object event = eventRef.get();
         assertNotNull(event);
@@ -83,17 +90,13 @@ public class AnidbAnimeUpdaterTest {
             }
         };
 
-        try (var input = AnidbAnimeUpdaterTest.class.getResourceAsStream("anime-979.xml")) {
-            var anidbConfig = new AnidbConfigMock("application/xml", input);
+        mockResponseInterceptor.useResponseFileOnce("anime-979.xml");
+        var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
 
-            var anidbClient = anidbConfig.anidbClient();
-            var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
-
-            var anime = new Anime();
-            anime.setId(979L);
-            anidbAnimeUpdater.onAnimeUpdateScheduled(new AnimeUpdateScheduled(anime));
-            anidbAnimeUpdater.scheduledUpdateAnime();
-        }
+        var anime = new Anime();
+        anime.setId(979L);
+        anidbAnimeUpdater.onAnimeUpdateScheduled(new AnimeUpdateScheduled(anime));
+        anidbAnimeUpdater.scheduledUpdateAnime();
 
         Object event = eventRef.get();
         assertNotNull(event);

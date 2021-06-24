@@ -50,12 +50,15 @@ public class AnimeStatusService {
                     var result = new AnimeStatus();
                     result.setUser(user);
                     result.setAnime(anime);
+                    result.setCompletedRegularEpisodes(0L);
+                    result.setTotalRegularEpisodes(0L);
+                    result.setProgress(AnimeStatus.Progress.NOT_STARTED);
+                    // If AnimeStatus was created we have to save it
+                    animeStatusRepository.save(result);
                     return result;
                 });
 
         updater.accept(animeStatus);
-        // If AnimeStatus was created we have to save it
-        animeStatusRepository.save(animeStatus);
 
         return animeStatus;
     }

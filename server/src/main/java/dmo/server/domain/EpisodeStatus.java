@@ -7,56 +7,50 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @Entity
-@Getter
-@Setter
-public class AnimeStatus {
+public class EpisodeStatus {
+
     @EmbeddedId
-    private AnimeStatusId id;
+    private EpisodeStatusId id;
 
     @ManyToOne(optional = false)
-    @MapsId("animeId")
-    private Anime anime;
+    @MapsId("episodeId")
+    @Getter
+    @Setter
+    private Episode episode;
+
+    @Column(name = "episode_id", insertable = false, updatable = false)
+    private Long episodeId;
 
     @ManyToOne(optional = false)
     @MapsId("userId")
+    @Getter
+    @Setter
     private User user;
+
+    @Column(name = "user_id", insertable = false, updatable = false)
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Getter
+    @Setter
     private Progress progress = Progress.NOT_STARTED;
 
-    /**
-     * Number of completed regular episodes.
-     */
-    @Column(nullable = false)
-    private Long completedRegularEpisodes;
-
-    /**
-     * Total number of regular episodes.
-     */
-    @Column(nullable = false)
-    private Long totalRegularEpisodes;
-
-    @Column(length = 4_096)
-    private String comment;
-
-    // Suppress Lombok setter generation
-    private void setId(AnimeStatusId id) {
+    private void setId(EpisodeStatusId id) {
         this.id = id;
     }
 
     @PrePersist
     @PreUpdate
     private void updateId() {
-        setId(new AnimeStatusId(
-                Optional.ofNullable(anime).map(Anime::getId).orElse(null),
+        setId(new EpisodeStatusId(
+                Optional.ofNullable(episode).map(Episode::getId).orElse(null),
                 Optional.ofNullable(user).map(User::getId).orElse(null)
         ));
     }
 
     public enum Progress {
         NOT_STARTED,
-        IN_PROGRESS,
         COMPLETED
     }
 
@@ -64,10 +58,10 @@ public class AnimeStatus {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class AnimeStatusId implements Serializable {
+    public static class EpisodeStatusId implements Serializable {
         private static final long serialVersionUID = 1;
 
-        private Long animeId;
+        private Long episodeId;
         private Long userId;
     }
 }

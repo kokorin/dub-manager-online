@@ -59,7 +59,7 @@ public class AnimeController {
                                            @RequestParam("page") @Min(0) int page,
                                            @RequestParam("size") @Min(1) @Max(100) int size) {
         var pageRequest = PageRequest.of(page, size, Sort.by("type", "number"));
-        var result = episodeService.findAll(pageRequest, id);
+        var result = episodeService.findAll(id, pageRequest);
         return animeMapper.toEpisodePageDto(result);
     }
 }

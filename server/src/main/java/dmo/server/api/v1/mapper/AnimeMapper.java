@@ -4,6 +4,7 @@ import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeStatus;
 import dmo.server.domain.Episode;
+import dmo.server.domain.EpisodeStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -63,5 +64,22 @@ public interface AnimeMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "anime", ignore = true)
+    @Mapping(target = "completedRegularEpisodes", ignore = true)
+    @Mapping(target = "totalRegularEpisodes", ignore = true)
     void updateAnimeStatus(UpdateAnimeStatusDto update, @MappingTarget AnimeStatus entity);
+
+    EpisodeStatusDto toEpisodeStatusDto(EpisodeStatus entity);
+
+    List<EpisodeStatusDto> toEpisodeStatusDtoList(List<EpisodeStatus> entities);
+
+    default PageDto<EpisodeStatusDto> toEpisodeStatusPageDto(Page<EpisodeStatus> page) {
+        return new PageDto<>(
+                page.getNumber(),
+                page.getSize(),
+                page.getNumberOfElements(),
+                page.getTotalPages(),
+                page.getTotalElements(),
+                toEpisodeStatusDtoList(page.getContent())
+        );
+    }
 }
