@@ -13,42 +13,49 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    EpisodeDto,
+    EpisodeDtoFromJSON,
+    EpisodeDtoFromJSONTyped,
+    EpisodeDtoToJSON,
+} from './';
+
 /**
  * 
  * @export
- * @interface UpdateAnimeStatusDto
+ * @interface EpisodeStatusDto
  */
-export interface UpdateAnimeStatusDto {
+export interface EpisodeStatusDto {
+    /**
+     * 
+     * @type {EpisodeDto}
+     * @memberof EpisodeStatusDto
+     */
+    episode: EpisodeDto;
     /**
      * 
      * @type {string}
-     * @memberof UpdateAnimeStatusDto
+     * @memberof EpisodeStatusDto
      */
-    comment: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAnimeStatusDto
-     */
-    progress: UpdateAnimeStatusDtoProgressEnum;
+    progress: EpisodeStatusDtoProgressEnum;
 }
 
-export function UpdateAnimeStatusDtoFromJSON(json: any): UpdateAnimeStatusDto {
-    return UpdateAnimeStatusDtoFromJSONTyped(json, false);
+export function EpisodeStatusDtoFromJSON(json: any): EpisodeStatusDto {
+    return EpisodeStatusDtoFromJSONTyped(json, false);
 }
 
-export function UpdateAnimeStatusDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateAnimeStatusDto {
+export function EpisodeStatusDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): EpisodeStatusDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'comment': json['comment'],
+        'episode': EpisodeDtoFromJSON(json['episode']),
         'progress': json['progress'],
     };
 }
 
-export function UpdateAnimeStatusDtoToJSON(value?: UpdateAnimeStatusDto | null): any {
+export function EpisodeStatusDtoToJSON(value?: EpisodeStatusDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +64,7 @@ export function UpdateAnimeStatusDtoToJSON(value?: UpdateAnimeStatusDto | null):
     }
     return {
         
-        'comment': value.comment,
+        'episode': EpisodeDtoToJSON(value.episode),
         'progress': value.progress,
     };
 }
@@ -66,9 +73,8 @@ export function UpdateAnimeStatusDtoToJSON(value?: UpdateAnimeStatusDto | null):
 * @export
 * @enum {string}
 */
-export enum UpdateAnimeStatusDtoProgressEnum {
+export enum EpisodeStatusDtoProgressEnum {
     COMPLETED = 'COMPLETED',
-    INPROGRESS = 'IN_PROGRESS',
     NOTSTARTED = 'NOT_STARTED'
 }
 

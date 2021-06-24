@@ -51,7 +51,6 @@ public class AnidbAnimeUpdaterTest {
             }
         };
 
-        mockResponseInterceptor.useResponseFileOnce("anime-titles.xml.gz");
         var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
         anidbAnimeUpdater.onUpdateAnimeListScheduled(new AnimeListUpdateScheduled());
 
@@ -60,7 +59,7 @@ public class AnidbAnimeUpdaterTest {
         assertTrue(event instanceof AnimeListUpdated);
 
         AnimeListUpdated animeListUpdated = (AnimeListUpdated) event;
-        assertEquals(4, animeListUpdated.getAnimeList().size());
+        assertEquals(6, animeListUpdated.getAnimeList().size());
 
         Anime anime = animeListUpdated.getAnimeList().get(0);
         assertEquals(Long.valueOf(1L), anime.getId());
@@ -90,7 +89,6 @@ public class AnidbAnimeUpdaterTest {
             }
         };
 
-        mockResponseInterceptor.useResponseFileOnce("anime-979.xml");
         var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);
 
         var anime = new Anime();
@@ -119,15 +117,7 @@ public class AnidbAnimeUpdaterTest {
 
     @Test
     public void animeIsNotRequestedIfBanned() throws InterruptedException {
-        var banned = new AnidbError();
-        banned.code = 500;
-        banned.message = "banned";
-
-        var anidbClient = Mockito.mock(AnidbClient.class);
-        Mockito.when(anidbClient.getAnime(47L, "", ""))
-                .thenReturn(Calls.response(banned));
-        Mockito.doThrow(RuntimeException.class)
-                .when(anidbClient).getAnime(Mockito.any(), Mockito.any(), Mockito.any());
+        mockResponseInterceptor.useResponseFileOnce("api-banned.xml");
 
         var eventPublisher = Mockito.mock(ApplicationEventPublisher.class);
         var anidbAnimeUpdater = new AnidbAnimeUpdater(anidbProperties, anidbClient, eventPublisher, anidbAnimeMapper);

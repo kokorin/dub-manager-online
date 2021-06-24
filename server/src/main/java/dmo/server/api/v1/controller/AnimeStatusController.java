@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 import java.util.function.Consumer;
 
 @RestController
-@RequestMapping("api/v1/user/current/anime")
+@RequestMapping("api/v1/users/current/anime")
 @Validated
 @RequiredArgsConstructor
 public class AnimeStatusController {

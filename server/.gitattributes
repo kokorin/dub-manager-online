@@ -1,3 +1,4 @@
 * text eol=auto
-*.sh eol=lf
-mvnw eol=lf
+*.sh text eol=lf
+mvnw text eol=lf
+*.gz binary

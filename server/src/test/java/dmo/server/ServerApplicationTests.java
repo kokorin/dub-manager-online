@@ -1,7 +1,5 @@
 package dmo.server;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
@@ -10,6 +8,7 @@ import dmo.server.event.AnimeListUpdated;
 import dmo.server.integration.anidb.AnidbAnimeLightList;
 import dmo.server.integration.anidb.AnidbAnimeUpdater;
 import dmo.server.integration.anidb.AnidbClient;
+import dmo.server.integration.anidb.MockAnidbConf;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
 import dmo.server.repository.AnimeUpdateRepository;
@@ -18,11 +17,9 @@ import dmo.server.security.DubUserDetails;
 import dmo.server.security.GoogleAuthenticationService;
 import dmo.server.security.JwtService;
 import dmo.server.service.AnimeUpdater;
-import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -38,7 +35,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.StreamUtils;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -47,22 +43,21 @@ import org.testcontainers.utility.DockerImageName;
 import retrofit2.mock.Calls;
 
 import javax.transaction.Transactional;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.*;
 
 import static dmo.server.domain.Anime.Type.DELETED;
 import static dmo.server.domain.Anime.Type.UNKNOWN;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = MockAnidbConf.class)
 @SpringJUnitConfig
 @Testcontainers
 @TestPropertySource(properties = {
         "logging.level.ROOT=INFO",
         "dmo.anidb.client=test",
         "dmo.anidb.client.version=1",
-        "google.oauth.client.id=123"
+        "google.oauth.client.id=123",
+        "spring.main.allow-bean-definition-overriding=true"
 })
 class ServerApplicationTests {
     @LocalServerPort
@@ -121,37 +116,6 @@ class ServerApplicationTests {
         animeStatusRepository.deleteAll();
         animeUpdateRepository.deleteAll();
         animeRepository.deleteAll();
-    }
-
-    @Test
-    void openapiIsUpToDate() throws Exception {
-        assertNotEquals(0, port);
-
-        var url = "http://localhost:" + port + "/api/openapi?group=v1";
-        var content = restTemplate.getForObject(url, String.class);
-
-        final String expected;
-        try (InputStream input = this.getClass().getResourceAsStream("openapi_v1.json")) {
-            expected = StreamUtils.copyToString(input, Charset.defaultCharset())
-                    .replaceAll("localhost:8080", "localhost:" + port)
-                    .replaceAll("\\s*\\r?\\n?$", " ");
-        }
-
-        JSONAssert.assertEquals("Actual:\n" + content, expected, content, true);
-    }
-
-    @Test
-    void userIsRegisteredAutomaticallyUponFirstLoginWithGoogle() {
-        var jwtResponse = loginWithGoogleAuthenticationMock();
-
-        assertNotNull(jwtResponse);
-        assertNotNull(jwtResponse.getAccessToken());
-        assertNotNull(jwtResponse.getExpiresIn());
-
-        var user = userRepository.findByEmail(jwtResponse.getUserDetails().getEmail());
-        assertTrue(user.isPresent());
-        assertNotNull(user.get().getId());
-        assertEquals(jwtResponse.getUserDetails().getEmail(), user.get().getEmail());
     }
 
     @Test
@@ -288,7 +252,7 @@ class ServerApplicationTests {
         var httpEntity = new HttpEntity<>(request, headers);
 
         var response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/user/current/anime/" + animeId,
+                "http://localhost:" + port + "/api/v1/users/current/anime/" + animeId,
                 httpEntity,
                 AnimeStatusDto.class
         );
@@ -305,7 +269,7 @@ class ServerApplicationTests {
 
         request.setProgress(AnimeProgressDto.COMPLETED);
         animeStatus = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/user/current/anime/" + animeId,
+                "http://localhost:" + port + "/api/v1/users/current/anime/" + animeId,
                 httpEntity,
                 AnimeStatusDto.class
         ).getBody();
@@ -368,18 +332,6 @@ class ServerApplicationTests {
         result.setUserDetails(jwtService.fromJwt(result.getAccessToken()));
 
         return result;
-    }
-
-    @Data
-    public static class JwtResponse {
-        @JsonProperty("access_token")
-        private String accessToken;
-
-        @JsonProperty("expires_in")
-        private Long expiresIn;
-
-        @JsonIgnore
-        private DubUserDetails userDetails;
     }
 
     private static Anime newAnime(Long id, Long episodeCount, String... titles) {

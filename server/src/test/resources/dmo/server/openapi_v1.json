@@ -25,6 +25,10 @@
     {
       "name": "configuration-controller",
       "description": "Configuration Controller"
+    },
+    {
+      "name": "user-controller",
+      "description": "User Controller"
     }
   ],
   "schemes": [
@@ -209,7 +213,36 @@
         }
       }
     },
-    "/api/v1/user/current/anime": {
+    "/api/v1/users/current": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "getUser",
+        "operationId": "getUserUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/anime": {
       "get": {
         "tags": [
           "anime-status-controller"
@@ -256,7 +289,7 @@
         }
       }
     },
-    "/api/v1/user/current/anime/{animeId}": {
+    "/api/v1/users/current/anime/{animeId}": {
       "post": {
         "tags": [
           "anime-status-controller"
@@ -310,7 +343,7 @@
         }
       }
     },
-    "/api/v1/user/current/anime/{id}/episodes": {
+    "/api/v1/users/current/anime/{id}/episodes": {
       "get": {
         "tags": [
           "anime-status-controller"
@@ -516,6 +549,22 @@
     },
     "EpisodeStatusDto": {
       "type": "object",
+      "required": [
+        "episode",
+        "progress"
+      ],
+      "properties": {
+        "episode": {
+          "$ref": "#/definitions/EpisodeDto"
+        },
+        "progress": {
+          "type": "string",
+          "enum": [
+            "COMPLETED",
+            "NOT_STARTED"
+          ]
+        }
+      },
       "title": "EpisodeStatusDto"
     },
     "EpisodeTitleDto": {
@@ -714,6 +763,19 @@
         }
       },
       "title": "UpdateAnimeStatusDto"
+    },
+    "UserDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserDto"
     }
   }
 }
