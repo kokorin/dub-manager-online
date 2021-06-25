@@ -6,12 +6,15 @@
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
-    "@types/node": "^15.12.2",
+    "@types/node": "^15.12.4",
     "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.7",
+    "@types/react-dom": "^17.0.8",
     "@types/react-router-dom": "^5.1.7",
-    "bootstrap": "^5.0.1",
+    "bootstrap": "^5.0.2",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "node-fetch": "^2.6.1",
+    "prettier": "^2.3.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-dom": "^17.0.2",
@@ -23,10 +26,27 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "lint": "eslint 'src/**/*.ts*'"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react-hooks/recommended",
+      "prettier",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "react/prop-types": "off"
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "tabWidth": 4,
+    "semi": true
   },
   "browserslist": {
     "production": [
@@ -44,7 +64,7 @@
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.5",
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "react-scripts": "^4.0.3"
+    "@testing-library/react": "^12.0.0",
+    "react-scripts": "4.0.3"
   }
 }

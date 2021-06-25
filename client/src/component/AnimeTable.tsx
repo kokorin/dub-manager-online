@@ -1,10 +1,10 @@
-import {TableCell, TableRow} from "@material-ui/core";
-import {nonNegativeOrDefault} from "../service";
-import {AnimeTableRows} from "./AnimeTableRows";
-import {Table} from "./Table";
-import {getAnimeList} from "../api";
-import {Anime, Page} from "../domain";
-import React, {ReactNode} from "react";
+import { TableCell, TableRow } from "@material-ui/core";
+import { nonNegativeOrDefault } from "../service";
+import { AnimeTableRows } from "./AnimeTableRows";
+import { Table } from "./Table";
+import { getAnimeList } from "../api";
+import { Anime, Page } from "../domain";
+import React, { ReactNode } from "react";
 
 interface AnimeTableState {
     isLoading: boolean;
@@ -12,10 +12,10 @@ interface AnimeTableState {
     search: string;
 }
 
-export default class AnimeTable extends React.Component<any, AnimeTableState> {
+export default class AnimeTable extends React.Component<unknown, AnimeTableState> {
     searchTimeoutId: number | undefined;
 
-    constructor(props: Readonly<any>) {
+    constructor(props: Readonly<unknown>) {
         super(props);
         this.state = {
             isLoading: false,
@@ -25,9 +25,9 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
                 numberOfElements: 0,
                 totalElements: 0,
                 totalPages: 0,
-                content: []
+                content: [],
             },
-            search: ""
+            search: "",
         };
     }
 
@@ -37,21 +37,21 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
         }
 
         this.searchTimeoutId = window.setTimeout(() => {
-            this.fetchData({page: 0, search: newSearch});
+            this.fetchData({ page: 0, search: newSearch });
             this.searchTimeoutId = 0;
         }, 1_500);
     };
 
     private handleChangePage = (newPage: number) => {
-        this.fetchData({page: newPage});
+        this.fetchData({ page: newPage });
     };
 
     private handleChangeRowsPerPage = (newRowsPerPage: number) => {
-        this.fetchData({page: 0, size: newRowsPerPage});
+        this.fetchData({ page: 0, size: newRowsPerPage });
     };
 
-    private fetchData = async (fetchParams: { page?: number, size?: number, search?: string }) => {
-        this.setState({isLoading: true});
+    private fetchData = async (fetchParams: { page?: number; size?: number; search?: string }) => {
+        this.setState({ isLoading: true });
 
         const page = nonNegativeOrDefault(fetchParams.page, this.state.data.number);
         const size = fetchParams.size || this.state.data.size;
@@ -63,20 +63,20 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
             ...this.state,
             isLoading: false,
             data: res,
-            search: title
+            search: title,
         });
     };
 
-    componentDidMount = () => {
-        this.fetchData({page: 0, size: 10});
+    componentDidMount = (): void => {
+        this.fetchData({ page: 0, size: 10 });
     };
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         clearTimeout(this.searchTimeoutId);
     }
 
-    render() {
-        const {number, size, totalElements, content} = this.state.data;
+    render(): ReactNode {
+        const { number, size, totalElements, content } = this.state.data;
         const head: ReactNode = (
             <TableRow>
                 <TableCell>ID</TableCell>
@@ -95,7 +95,7 @@ export default class AnimeTable extends React.Component<any, AnimeTableState> {
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             >
-                <AnimeTableRows content={content}/>
+                <AnimeTableRows content={content} />
             </Table>
         );
     }
