@@ -1,1 +1,1 @@
-export {default as AnimeTableRows } from "./AnimeTableRows";
+export { default as AnimeTableRows } from "./AnimeTableRows";

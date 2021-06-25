@@ -1,14 +1,13 @@
-import {resolveAnimeTitle} from "../service";
-import {Anime} from "../domain";
-import React from "react";
+import { resolveAnimeTitle } from "../service";
+import { Anime } from "../domain";
+import React, { ReactNode } from "react";
 
 export interface AnimeDetailsComponentProps {
     anime: Anime;
 }
 
-export default class AnimeDetailsComponent extends React.Component<AnimeDetailsComponentProps, any> {
-
-    render() {
+export default class AnimeDetailsComponent extends React.Component<AnimeDetailsComponentProps> {
+    render(): ReactNode {
         const anime = this.props.anime;
 
         return (
