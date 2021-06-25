@@ -1,1 +1,1 @@
-export {default as EpisodeTableRows } from "./EpisodeTableRows";
+export { default as EpisodeTableRows } from "./EpisodeTableRows";

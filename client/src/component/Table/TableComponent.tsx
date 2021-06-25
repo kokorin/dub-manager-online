@@ -19,19 +19,18 @@ const TableComponent: FC<OwnProps> = (props) => {
     const { head, children, number, size, totalElements, onChangeSearch, onChangePage, onChangeRowsPerPage } = props;
 
     const handleChangePage = useCallback((_, newPage: number) => onChangePage(newPage), [onChangePage]);
-    const handleChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => onChangeRowsPerPage(Number(event.target.value)), [onChangeRowsPerPage]);
+    const handleChangeRowsPerPage = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => onChangeRowsPerPage(Number(event.target.value)),
+        [onChangeRowsPerPage]
+    );
 
     return (
         <Paper>
             {onChangeSearch && <Search onChangeSearch={onChangeSearch} />}
             <TableContainer>
                 <Table stickyHeader={true} aria-label="simple table">
-                    <TableHead>
-                        {head}
-                    </TableHead>
-                    <TableBody>
-                        {children}
-                    </TableBody>
+                    <TableHead>{head}</TableHead>
+                    <TableBody>{children}</TableBody>
                     <TableFooter>
                         <TableRow>
                             <TablePagination
