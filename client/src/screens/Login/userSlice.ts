@@ -35,7 +35,9 @@ const userSlice = createSlice({
             state.clientId = payload.googleOAuthClientId;
         });
         builder.addCase(fetchConfig.rejected, (state) => {
-            state.clientId = "823210037861-f8ohubjp05esj8l3utdvssga7jajrrfb.apps.googleusercontent.com";
+            if (process.env.NODE_ENV === "development") {
+                state.clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+            }
         });
         builder.addCase(authenticateUser.fulfilled, (state, { payload }) => {
             state.tokenId = payload.access_token;
