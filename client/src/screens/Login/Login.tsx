@@ -3,7 +3,7 @@ import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from "re
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router-dom";
 import { selectClientId, selectIsAuthenticated } from "./userSelectors";
-import { authenticateUser, fetchConfig } from "./UserSlice";
+import { authenticateUser, fetchConfig } from "./userSlice";
 
 const Login: FC = () => {
     const dispatch = useDispatch();

@@ -1,28 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { ThunkConfig } from "store";
+import { loginUser, Token } from "service/auth";
 import { User } from "./types";
 import { getConfig } from "../../api";
 import { Config } from "../../domain";
-import { StateType } from "../../store";
-import { loginUser, Token } from "service/auth";
 
 const userSliceName = "user";
 
-interface UserThunkConfig {
-    state: StateType;
-}
-
-export const fetchConfig = createAsyncThunk<Config, void, UserThunkConfig>(
-    `${userSliceName}/login`,
-    () => getConfig(),
-    {
-        condition: (_, { getState }) => {
-            const { user } = getState();
-            if (user.clientId) return false;
-        },
+export const fetchConfig = createAsyncThunk<Config, void, ThunkConfig>(`${userSliceName}/login`, () => getConfig(), {
+    condition: (_, { getState }) => {
+        const { user } = getState();
+        if (user.clientId) return false;
     },
-);
+});
 
-export const authenticateUser = createAsyncThunk<Token, string, UserThunkConfig>(
+export const authenticateUser = createAsyncThunk<Token, string, ThunkConfig>(
     `${userSliceName}/authenticate`,
     async (tokenId) => {
         return await loginUser(tokenId);
