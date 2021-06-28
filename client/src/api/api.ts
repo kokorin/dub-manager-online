@@ -4,7 +4,7 @@ import { Anime, Config, Episode, Page } from "../domain";
 // FIXME need to replace any type
 // eslint-disable-next-line
 const catchError = (response: Response): any => {
-    console.log("error: " + response);
+    console.log("error: ", JSON.stringify(response));
     if (response.status === 401) {
         const redirect = encodeURIComponent(window.location.pathname);
         window.location.href = `/login?redirect=${redirect}`;

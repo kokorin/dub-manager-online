@@ -1,9 +1,9 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import { nonNegativeOrDefault } from "../service";
-import { AnimeTableRows } from "./AnimeTableRows";
-import { Table } from "./Table";
-import { getAnimeList } from "../api";
-import { Anime, Page } from "../domain";
+import { nonNegativeOrDefault } from "service/numberUtils";
+import { AnimeTableRows } from "../../components/AnimeTableRows";
+import { Table } from "../../components/Table";
+import { getAnimeList } from "../../api";
+import { Anime, Page } from "../../domain";
 import React, { ReactNode } from "react";
 
 interface AnimeTableState {

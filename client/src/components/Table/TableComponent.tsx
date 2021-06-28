@@ -21,7 +21,7 @@ const TableComponent: FC<OwnProps> = (props) => {
     const handleChangePage = useCallback((_, newPage: number) => onChangePage(newPage), [onChangePage]);
     const handleChangeRowsPerPage = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => onChangeRowsPerPage(Number(event.target.value)),
-        [onChangeRowsPerPage]
+        [onChangeRowsPerPage],
     );
 
     return (
