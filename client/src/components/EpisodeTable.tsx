@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import { nonNegativeOrDefault } from "../service";
+import { nonNegativeOrDefault } from "service/numberUtils";
 import { EpisodeTableRows } from "./EpisodeTableRows";
 import { Table } from "./Table";
 import { Episode, Page } from "../domain";

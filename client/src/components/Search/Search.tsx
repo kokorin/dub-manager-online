@@ -9,7 +9,7 @@ interface OwnProps {
 const Search: FC<OwnProps> = ({ onChangeSearch }) => {
     const handleSearchChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => onChangeSearch(event.target.value),
-        [onChangeSearch]
+        [onChangeSearch],
     );
     return (
         <div>
