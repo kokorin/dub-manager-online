@@ -1,3 +1,0 @@
-* text eol=auto
-*.sh eol=lf
-mvnw eol=lf

@@ -44,5 +44,5 @@ public interface AnimeRepository extends JpaRepository<Anime, Long> {
 
     @Query("FROM Anime WHERE id = (SELECT MAX(id) FROM Anime WHERE episodeCount IS NULL AND type != 'DELETED')")
     @NonNull
-    Anime findAnimeWithoutEpisodes();
+    Optional<Anime> findAnimeWithoutEpisodes();
 }

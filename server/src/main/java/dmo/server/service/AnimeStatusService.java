@@ -2,13 +2,17 @@ package dmo.server.service;
 
 import dmo.server.domain.AnimeStatus;
 import dmo.server.domain.User;
+import dmo.server.event.AnimeRequested;
 import dmo.server.exception.AnimeNotFoundException;
 import dmo.server.exception.UserNotFoundException;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
+import dmo.server.repository.EpisodeStatusRepository;
 import dmo.server.repository.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Consumer;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AnimeStatusService {
@@ -26,6 +31,10 @@ public class AnimeStatusService {
     private final AnimeRepository animeRepository;
     @NonNull
     private final AnimeStatusRepository animeStatusRepository;
+    @NonNull
+    private final EpisodeStatusRepository episodeStatusRepository;
+    @NonNull
+    private final ApplicationEventPublisher eventPublisher;
 
     @Secured("ROLE_USER")
     @Transactional
@@ -50,12 +59,21 @@ public class AnimeStatusService {
                     var result = new AnimeStatus();
                     result.setUser(user);
                     result.setAnime(anime);
+                    result.setCompletedRegularEpisodes(0L);
+                    result.setTotalRegularEpisodes(0L);
+                    result.setProgress(AnimeStatus.Progress.NOT_STARTED);
+                    // If AnimeStatus was created we have to save it
+                    animeStatusRepository.save(result);
                     return result;
                 });
 
         updater.accept(animeStatus);
-        // If AnimeStatus was created we have to save it
-        animeStatusRepository.save(animeStatus);
+
+
+        eventPublisher.publishEvent(new AnimeRequested(anime));
+
+        var updateCount = episodeStatusRepository.fillEpisodeStatuses(anime, user);
+        log.info("Updated EpisodeStatus: {}", updateCount);
 
         return animeStatus;
     }

@@ -13,8 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +41,7 @@ public class AnimeService {
     }
 
     @Secured("ROLE_USER")
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<Anime> findByTitle(String title, Pageable page) {
         var ids = animeRepository.findIdByTitle(title, page);
         var content = animeRepository.findAllWithTitles(ids, page.getSort());

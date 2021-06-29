@@ -22,10 +22,10 @@ public class EpisodeService {
     private final EpisodeRepository episodeRepository;
 
     @Secured("ROLE_USER")
-    public Page<Episode> findAll(Pageable pageable, Long animeId) {
+    public Page<Episode> findAll(Long animeId, Pageable pageable) {
         var anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
 
-        return episodeRepository.findAllByAnime(pageable, anime);
+        return episodeRepository.findAllByAnime(anime,  pageable);
     }
 }

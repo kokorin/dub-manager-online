@@ -24,6 +24,12 @@ export interface UpdateAnimeStatusDto {
      * @type {string}
      * @memberof UpdateAnimeStatusDto
      */
+    comment: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateAnimeStatusDto
+     */
     progress: UpdateAnimeStatusDtoProgressEnum;
 }
 
@@ -37,6 +43,7 @@ export function UpdateAnimeStatusDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
+        'comment': json['comment'],
         'progress': json['progress'],
     };
 }
@@ -50,6 +57,7 @@ export function UpdateAnimeStatusDtoToJSON(value?: UpdateAnimeStatusDto | null):
     }
     return {
         
+        'comment': value.comment,
         'progress': value.progress,
     };
 }

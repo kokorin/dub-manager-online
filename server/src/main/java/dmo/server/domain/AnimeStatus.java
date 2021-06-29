@@ -23,7 +23,22 @@ public class AnimeStatus {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Progress progress;
+    private Progress progress = Progress.NOT_STARTED;
+
+    @Column(length = 4_096)
+    private String comment;
+
+    /**
+     * Number of completed regular episodes.
+     */
+    @Column(nullable = false)
+    private Long completedRegularEpisodes;
+
+    /**
+     * Total number of regular episodes.
+     */
+    @Column(nullable = false)
+    private Long totalRegularEpisodes;
 
     // Suppress Lombok setter generation
     private void setId(AnimeStatusId id) {

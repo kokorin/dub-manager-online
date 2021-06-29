@@ -6,6 +6,7 @@ import dmo.server.event.*;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeUpdateRepository;
 import dmo.server.repository.EpisodeRepository;
+import dmo.server.repository.EpisodeStatusRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -32,16 +33,19 @@ public class AnimeUpdater {
     @NonNull
     private final EpisodeRepository episodeRepository;
     @NonNull
+    private final EpisodeStatusRepository episodeStatusRepository;
+    @NonNull
     private final AnimeUpdateRepository animeUpdateRepository;
     @NonNull
     private final ApplicationEventPublisher eventPublisher;
 
     private final AtomicReference<Instant> lastUpdateInstant = new AtomicReference<>(Instant.now());
 
-    private final static Duration ANIME_UPDATE_PERIOD = Duration.ofDays(1);
+    //TODO allow configuration
+    private final static Duration ANIME_UPDATE_PERIOD = Duration.ofDays(7);
     private final static Duration ANIME_LIST_UPDATE_PERIOD = Duration.ofDays(1);
 
-    @Scheduled(initialDelay = 10_000L, fixedDelay = 600_000L)
+    @Scheduled(fixedDelayString = "${anime.list.update.delay}")
     public void scheduleAnimeListUpdate() {
         long animeCount = animeRepository.count();
         boolean timeToUpdate = lastUpdateInstant.get().isBefore(Instant.now().minus(ANIME_LIST_UPDATE_PERIOD));
@@ -54,12 +58,13 @@ public class AnimeUpdater {
         }
     }
 
-    @Scheduled(initialDelay = 20_000L, fixedDelay = 300_000L)
+    @Scheduled(fixedDelayString = "${anime.random.update.delay}")
     public void scheduleAnimeUpdate() {
-        var anime = animeRepository.findAnimeWithoutEpisodes();
-        var updateScheduled = new AnimeUpdateScheduled(anime);
-        eventPublisher.publishEvent(updateScheduled);
-        log.info("Scheduled Anime update: {}", anime.getId());
+        animeRepository.findAnimeWithoutEpisodes().ifPresent(anime -> {
+            var updateScheduled = new AnimeUpdateScheduled(anime);
+            eventPublisher.publishEvent(updateScheduled);
+            log.info("Scheduled Anime update: {}", anime.getId());
+        });
     }
 
     @EventListener
@@ -123,6 +128,8 @@ public class AnimeUpdater {
         if (episodes != null) {
             episodes.forEach(e -> e.setAnime(savedAnime));
             episodeRepository.saveAll(episodes);
+            episodeRepository.flush();
+            episodeStatusRepository.fillEpisodeStatuses(savedAnime);
         }
 
         var animeUpdate = new AnimeUpdate();

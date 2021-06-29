@@ -40,7 +40,7 @@ public class AnidbAnimeUpdater {
 
     private final Queue<Anime> updateQueue = new PriorityBlockingQueue<>(11, ANIME_COMPARATOR);
     private static final Comparator<Anime> ANIME_COMPARATOR = Comparator.comparing(Anime::getId).reversed();
-    private static final Duration BAN_BACKOFF = Duration.ofMinutes(15);
+    private static final Duration BAN_BACKOFF = Duration.ofHours(6);
 
     private static final String BANNED_ERROR_MESSAGE = "banned";
     private static final String NOT_FOUND_ERROR_MESSAGE = "Anime not found";
@@ -73,7 +73,7 @@ public class AnidbAnimeUpdater {
         log.info("Anime update scheduled: {}", anime);
     }
 
-    @Scheduled(initialDelay = 10_000L, fixedDelay = 5_000L)
+    @Scheduled(fixedDelayString = "${anime.update.delay}")
     public void scheduledUpdateAnime() {
         var anime = updateQueue.poll();
         if (anime == null) {

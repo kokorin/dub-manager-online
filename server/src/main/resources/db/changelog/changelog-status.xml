@@ -53,4 +53,58 @@
             </column>
         </createTable>
     </changeSet>
-</databaseChangeLog> 
+
+    <changeSet id="1624515626882" author="kokorin">
+        <addDefaultValue tableName="anime_status" columnName="progress" defaultValue="NOT_STARTED"
+                         columnDataType="VARCHAR(32)"/>
+    </changeSet>
+
+    <changeSet id="1624454588713" author="kokorin">
+        <addColumn tableName="anime_status">
+            <column name="completed_regular_episodes" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_regular_episodes" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="VARCHAR(4096)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1624454731891" author="kokorin">
+        <createTable tableName="episode_progress_enum">
+            <column name="progress" type="VARCHAR(32)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1624454746438" author="kokorin">
+        <insert tableName="episode_progress_enum">
+            <column name="progress" value="NOT_STARTED"/>
+        </insert>
+        <insert tableName="episode_progress_enum">
+            <column name="progress" value="COMPLETED"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1624454932713" author="kokorin">
+        <createTable tableName="episode_status">
+            <column name="episode_id" type="BIGINT">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_episode_status_to_episode"
+                             referencedTableName="episode" referencedColumnNames="id"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true"
+                             foreignKeyName="fk_episode_status_to_user"
+                             referencedTableName="dub_user" referencedColumnNames="id"/>
+            </column>
+            <column name="progress" type="VARCHAR(32)" defaultValue="NOT_STARTED">
+                <constraints nullable="false"
+                             foreignKeyName="fk_episode_status_to_episode_progress_enum"
+                             referencedTableName="episode_progress_enum" referencedColumnNames="progress"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,7 +1,5 @@
 package dmo.server;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
@@ -10,6 +8,7 @@ import dmo.server.event.AnimeListUpdated;
 import dmo.server.integration.anidb.AnidbAnimeLightList;
 import dmo.server.integration.anidb.AnidbAnimeUpdater;
 import dmo.server.integration.anidb.AnidbClient;
+import dmo.server.integration.anidb.MockAnidbConf;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
 import dmo.server.repository.AnimeUpdateRepository;
@@ -18,11 +17,9 @@ import dmo.server.security.DubUserDetails;
 import dmo.server.security.GoogleAuthenticationService;
 import dmo.server.security.JwtService;
 import dmo.server.service.AnimeUpdater;
-import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -38,7 +35,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.StreamUtils;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -47,22 +43,21 @@ import org.testcontainers.utility.DockerImageName;
 import retrofit2.mock.Calls;
 
 import javax.transaction.Transactional;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.*;
 
 import static dmo.server.domain.Anime.Type.DELETED;
 import static dmo.server.domain.Anime.Type.UNKNOWN;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = MockAnidbConf.class)
 @SpringJUnitConfig
 @Testcontainers
 @TestPropertySource(properties = {
         "logging.level.ROOT=INFO",
         "dmo.anidb.client=test",
         "dmo.anidb.client.version=1",
-        "google.oauth.client.id=123"
+        "google.oauth.client.id=123",
+        "spring.main.allow-bean-definition-overriding=true"
 })
 class ServerApplicationTests {
     @LocalServerPort
@@ -124,37 +119,6 @@ class ServerApplicationTests {
     }
 
     @Test
-    void openapiIsUpToDate() throws Exception {
-        assertNotEquals(0, port);
-
-        var url = "http://localhost:" + port + "/api/openapi?group=v1";
-        var content = restTemplate.getForObject(url, String.class);
-
-        final String expected;
-        try (InputStream input = this.getClass().getResourceAsStream("openapi_v1.json")) {
-            expected = StreamUtils.copyToString(input, Charset.defaultCharset())
-                    .replaceAll("localhost:8080", "localhost:" + port)
-                    .replaceAll("\\s*\\r?\\n?$", " ");
-        }
-
-        JSONAssert.assertEquals("Actual:\n" + content, expected, content, true);
-    }
-
-    @Test
-    void userIsRegisteredAutomaticallyUponFirstLoginWithGoogle() {
-        var jwtResponse = loginWithGoogleAuthenticationMock();
-
-        assertNotNull(jwtResponse);
-        assertNotNull(jwtResponse.getAccessToken());
-        assertNotNull(jwtResponse.getExpiresIn());
-
-        var user = userRepository.findByEmail(jwtResponse.getUserDetails().getEmail());
-        assertTrue(user.isPresent());
-        assertNotNull(user.get().getId());
-        assertEquals(jwtResponse.getUserDetails().getEmail(), user.get().getEmail());
-    }
-
-    @Test
     void animeListIsStoredToDatabaseUponUpdate() {
         animeUpdater.onAnimeListUpdate(new AnimeListUpdated(
                 Arrays.asList(
@@ -194,129 +158,6 @@ class ServerApplicationTests {
     }
 
     @Test
-    void animeListRequiresAuthenticationViaApi() {
-        var response = restTemplate.getForEntity(
-                "http://localhost:" + port + "/api/v1/anime?page=0&size=100",
-                String.class
-        );
-
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-    }
-
-    @Test
-    void animeListIsRetrievedViaApi() {
-        animeUpdater.onAnimeListUpdate(new AnimeListUpdated(
-                Arrays.asList(
-                        newAnime(1L, 1L, "星界の紋章", "Crest of the Stars"),
-                        newAnime(2L, 1L, "サザンアイズ", "3x3 Eyes", "3x3 глаза"),
-                        newAnime(3L, 1L, "3×3 EYES -聖魔伝説-",
-                                "3x3 Eyes: Legend of the Divine Demon", "3х3 глаза: Сказание Сэймы")
-                )
-        ));
-
-        var jwtResponse = loginWithGoogleAuthenticationMock();
-        var headers = new HttpHeaders();
-        headers.setBearerAuth(jwtResponse.getAccessToken());
-        var httpEntity = new HttpEntity<>(headers);
-
-        PageDto<AnimeDto> page = restTemplate.exchange(
-                "http://localhost:" + port + "/api/v1/anime?page=0&size=100",
-                HttpMethod.GET,
-                httpEntity,
-                new ParameterizedTypeReference<PageDto<AnimeDto>>() {
-                }
-        ).getBody();
-
-        assertNotNull(page);
-        assertEquals(0, page.getNumber());
-        assertEquals(1, page.getTotalPages());
-        assertEquals(100, page.getSize());
-        assertEquals(3L, page.getTotalElements());
-        assertEquals(3, page.getNumberOfElements());
-        assertEquals(3, page.getContent().size());
-        assertEquals(8, page.getContent().stream().mapToInt(a -> a.getTitles().size()).sum());
-    }
-
-    @Test
-    void animeStatusUpdateRequiresAuthenticationViaApi() {
-        var request = new UpdateAnimeStatusDto();
-        request.setProgress(AnimeProgressDto.IN_PROGRESS);
-        var animeId = 1L;
-
-        var response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
-                request,
-                String.class
-        );
-
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-    }
-
-    @Test
-    void clientConfigurationDoesntRequireAuthentication() {
-        var response = restTemplate.getForEntity(
-                "http://localhost:" + port + "/api/v1/conf",
-                ConfigurationDto.class
-        );
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        var config = response.getBody();
-        assertNotNull(config);
-        assertEquals("123", config.getGoogleOAuthClientId());
-    }
-
-    @Test
-    void animeStatusCanBeUpdatedViaApi() {
-        animeUpdater.onAnimeListUpdate(new AnimeListUpdated(
-                Arrays.asList(
-                        newAnime(1L, 1L, "星界の紋章", "Crest of the Stars"),
-                        newAnime(2L, 1L, "サザンアイズ", "3x3 Eyes", "3x3 глаза"),
-                        newAnime(3L, 1L, "3×3 EYES -聖魔伝説-",
-                                "3x3 Eyes: Legend of the Divine Demon", "3х3 глаза: Сказание Сэймы")
-                )
-        ));
-
-        var jwtResponse = loginWithGoogleAuthenticationMock();
-        var headers = new HttpHeaders();
-        headers.setBearerAuth(jwtResponse.getAccessToken());
-
-        var animeId = 1L;
-        var request = new UpdateAnimeStatusDto();
-        request.setProgress(AnimeProgressDto.IN_PROGRESS);
-
-        var httpEntity = new HttpEntity<>(request, headers);
-
-        var response = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
-                httpEntity,
-                AnimeStatusDto.class
-        );
-
-        assertEquals(HttpStatus.OK, response.getStatusCode(), response.toString());
-
-        var animeStatus = response.getBody();
-
-        assertNotNull(animeStatus);
-        assertEquals((Long) animeId, animeStatus.getAnime().getId());
-        assertEquals(2, animeStatus.getAnime().getTitles().size());
-        assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
-        assertEquals(AnimeProgressDto.IN_PROGRESS, animeStatus.getProgress());
-
-        request.setProgress(AnimeProgressDto.COMPLETED);
-        animeStatus = restTemplate.postForEntity(
-                "http://localhost:" + port + "/api/v1/anime_status/" + animeId,
-                httpEntity,
-                AnimeStatusDto.class
-        ).getBody();
-
-        assertEquals((Long) animeId, animeStatus.getAnime().getId());
-        assertEquals(2, animeStatus.getAnime().getTitles().size());
-        assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
-        assertEquals(AnimeProgressDto.COMPLETED, animeStatus.getProgress());
-    }
-
-    @Test
     public void scheduledAnimeListUpdate() {
         var call = Calls.response(new AnidbAnimeLightList());
         Mockito.when(anidbClient.getAnimeList()).thenReturn(call);
@@ -341,45 +182,6 @@ class ServerApplicationTests {
 
         Mockito.verify(anidbClient).getAnime(Mockito.eq(3L), Mockito.anyString(), Mockito.anyString());
         Mockito.verifyNoMoreInteractions(anidbClient);
-    }
-
-    private JwtResponse loginWithGoogleAuthenticationMock() {
-        assertNotEquals(0, port);
-
-        var url = "http://localhost:" + port + "/login/google";
-        var token = UUID.randomUUID().toString();
-        var email = token + "@gmail.com";
-
-        Mockito.doReturn(new DubUserDetails(
-                null,
-                email,
-                AuthorityUtils.NO_AUTHORITIES,
-                null
-        )).when(googleAuthenticationService).fromIdToken(Mockito.eq(token));
-
-        var body = new LinkedMultiValueMap<String, String>();
-        body.add("id_token", token);
-
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        var request = new HttpEntity<>(body, headers);
-
-        var result = restTemplate.postForObject(url, request, JwtResponse.class);
-        result.setUserDetails(jwtService.fromJwt(result.getAccessToken()));
-
-        return result;
-    }
-
-    @Data
-    public static class JwtResponse {
-        @JsonProperty("access_token")
-        private String accessToken;
-
-        @JsonProperty("expires_in")
-        private Long expiresIn;
-
-        @JsonIgnore
-        private DubUserDetails userDetails;
     }
 
     private static Anime newAnime(Long id, Long episodeCount, String... titles) {

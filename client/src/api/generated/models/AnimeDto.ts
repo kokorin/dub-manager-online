@@ -82,6 +82,7 @@ export function AnimeDtoToJSON(value?: AnimeDto | null): any {
 * @enum {string}
 */
 export enum AnimeDtoTypeEnum {
+    DELETED = 'DELETED',
     MOVIE = 'MOVIE',
     MUSICVIDEO = 'MUSIC_VIDEO',
     OTHER = 'OTHER',

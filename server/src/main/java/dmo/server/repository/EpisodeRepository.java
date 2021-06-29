@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EpisodeRepository extends JpaRepository<Episode, Long> {
-    Page<Episode> findAllByAnime(Pageable pageable, Anime anime);
+    Page<Episode> findAllByAnime(Anime anime, Pageable pageable);
 }

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anime id="357" restricted="false">
+    <type>TV Series</type>
+    <episodecount>1</episodecount>
+    <startdate>1970-01-01</startdate>
+    <titles>
+        <title xml:lang="x-jat" type="main">Test Anime</title>
+        <title xml:lang="x-jat" type="synonym">test`blubb</title>
+        <title xml:lang="ja" type="official">ンート</title>
+        <title xml:lang="ja" type="kanareading">test title k</title>
+        <title xml:lang="ja" type="titlecard">test title c</title>
+        <title xml:lang="x-jat" type="titlecard">test title c TR</title>
+    </titles>
+    <similaranime>
+        <anime id="4552" approval="32" total="34">Whatever you searched for is NOT anime...</anime>
+    </similaranime>
+    <recommendations total="4">
+        <recommendation type="For Fans" uid="311037">I watched this on Netflix. 5/7 would re-sub to HBO just to watch
+            the next season.
+        </recommendation>
+        <recommendation type="Must See" uid="315968">i love that scene where the lion appears</recommendation>
+        <recommendation type="Must See" uid="126925">[approved]</recommendation>
+        <recommendation type="Must See" uid="263840">Turns out it was all a dream!</recommendation>
+    </recommendations>
+    <url>http://www.mushi-pro.co.jp/2010/08/pipiピピ-とべないホタル/</url>
+    <creators>
+        <name id="1249" type="Original Work">Test Creator Person</name>
+    </creators>
+    <description>test`blub
+        orlynow?
+        spoiler in anime desc test
+        code in spoiler in anime desc test
+        code outside spoiler in anime desc test
+    </description>
+    <ratings>
+        <permanent count="214">5.50</permanent>
+        <temporary count="265">6.18</temporary>
+        <review count="7">5.09</review>
+    </ratings>
+    <picture>3070.jpg</picture>
+    <resources>
+        <resource type="3">
+            <externalentity>
+                <identifier>329000</identifier>
+                <identifier>mftsnt</identifier>
+            </externalentity>
+        </resource>
+        <resource type="4">
+            <externalentity>
+                <url>https://anidb.net/anime/357</url>
+            </externalentity>
+        </resource>
+        <resource type="6">
+            <externalentity>
+                <identifier>Test_method</identifier>
+            </externalentity>
+        </resource>
+        <resource type="33">
+            <externalentity>
+                <identifier>萌妻食神/22905562</identifier>
+            </externalentity>
+        </resource>
+        <resource type="34">
+            <externalentity>
+                <url>https://www.dailymotion.com/video/x7443c5?playlist=x610xb</url>
+            </externalentity>
+        </resource>
+    </resources>
+    <characters>
+        <character id="70472" type="secondary cast in" update="2020-05-04">
+            <rating votes="5">10.00</rating>
+            <name>Test Character Female</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>http://anidb.net/ch83058 [aa]</description>
+            <picture>182624.jpg</picture>
+            <seiyuu id="1249" picture="2247.gif">Test Creator Person</seiyuu>
+        </character>
+        <character id="78650" type="main character in" update="2016-06-01">
+            <rating votes="2">2.64</rating>
+            <name>Test Character Male</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>* list item 1
+
+                * list item 2
+
+                * unordered list item 1
+
+                * unordered list item 2
+
+                * ordered list item 1
+
+                * ordered list item 2
+
+                unordered without "li" 1
+                unordered without "li" 2
+                ordered without "li" 1
+                ordered without "li" 2
+            </description>
+            <picture>61862.png</picture>
+        </character>
+        <character id="81061" type="appears in" update="2020-08-15">
+            <name>Gai - Test Character</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>TEST CHARACTER
+                [hr]Gai is a large but good-natured guy, he was part of Benkei`s group when they ventured to the outside
+                world after 13 years. After Benkei is injured by Invaders, he becomes pilot of Shin Getter-3. He is
+                friends with Kei and seems to have a small crush on her. Gai is based on the character of Gai Daido from
+                Getter Robo Go, but is different aside from appearance.
+            </description>
+            <picture>82082.jpg</picture>
+        </character>
+    </characters>
+    <episodes>
+        <episode id="95304" update="2017-12-07">
+            <epno type="1">1</epno>
+            <length>25</length>
+            <rating votes="4">8.43</rating>
+            <title xml:lang="en">Please don`t go and remove this.</title>
+            <title xml:lang="de">Der Dumme und sein Köter</title>
+            <title xml:lang="ru">Сказка об Иване-дураке и его двух братьях</title>
+        </episode>
+        <episode id="95960" update="2008-12-29">
+            <epno type="1">2</epno>
+            <length>0</length>
+            <title xml:lang="en">Episode 2</title>
+            <title xml:lang="x-jat">owari to hajimari</title>
+        </episode>
+        <episode id="95961" update="2014-09-17">
+            <epno type="1">3</epno>
+            <length>3</length>
+            <title xml:lang="en">Episode 3,3</title>
+        </episode>
+        <episode id="95962" update="2014-10-01">
+            <epno type="1">5</epno>
+            <length>0</length>
+            <title xml:lang="en">Episode 5</title>
+        </episode>
+        <episode id="96884" update="2014-10-01">
+            <epno type="1">4</epno>
+            <length>4</length>
+            <title xml:lang="en">Test Edit</title>
+            <title xml:lang="de">Eine Schallplatte für ein Königreich</title>
+        </episode>
+        <episode id="108198" update="2009-09-02">
+            <epno type="4">T1</epno>
+            <length>0</length>
+            <title xml:lang="en">Episode T1</title>
+        </episode>
+        <episode id="108200" update="2017-12-07">
+            <epno type="1">6</epno>
+            <length>0</length>
+            <title xml:lang="en">Episode 6</title>
+        </episode>
+        <episode id="108201" update="2017-12-07">
+            <epno type="3">C2</epno>
+            <length>0</length>
+            <title xml:lang="en">Ending 1b</title>
+        </episode>
+        <episode id="108202" update="2017-12-07">
+            <epno type="3">C1</epno>
+            <length>0</length>
+            <title xml:lang="en">Ending 1a</title>
+        </episode>
+        <episode id="108203" update="2017-07-05">
+            <epno type="2">S2</epno>
+            <length>0</length>
+            <title xml:lang="en">test3</title>
+            <summary>Test http://anidb.net/e108203 [episode summary].</summary>
+        </episode>
+        <episode id="123029" update="2017-12-07">
+            <epno type="1">7</epno>
+            <length>15</length>
+            <title xml:lang="ja">Asdf</title>
+            <title xml:lang="en">Episode 7</title>
+            <title xml:lang="de">Aaaa</title>
+            <title xml:lang="ko">Er</title>
+        </episode>
+        <episode id="123030" update="2017-12-07">
+            <epno type="1">8</epno>
+            <length>15</length>
+            <title xml:lang="ja">Bsdf</title>
+            <title xml:lang="en">Episode 8</title>
+            <title xml:lang="de">Bbbb</title>
+            <title xml:lang="ko">Fr</title>
+        </episode>
+        <episode id="136229" update="2017-12-07">
+            <epno type="1">10</epno>
+            <length>0</length>
+            <title xml:lang="ja">test2</title>
+            <title xml:lang="en">test</title>
+            <title xml:lang="x-jat">test1</title>
+            <summary>Test summary with spoiler tags.</summary>
+        </episode>
+        <episode id="162675" update="2017-07-05">
+            <epno type="2">S3</epno>
+            <length>0</length>
+            <title xml:lang="ja">S2 Test???</title>
+            <title xml:lang="en">S2 Test?</title>
+            <title xml:lang="x-jat">S2 Test??</title>
+        </episode>
+        <episode id="164116" update="2014-11-15">
+            <epno type="4">T2</epno>
+            <length>0</length>
+            <title xml:lang="en">Trailer add test</title>
+        </episode>
+    </episodes>
+</anime>

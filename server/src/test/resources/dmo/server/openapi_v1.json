@@ -25,6 +25,10 @@
     {
       "name": "configuration-controller",
       "description": "Configuration Controller"
+    },
+    {
+      "name": "user-controller",
+      "description": "User Controller"
     }
   ],
   "schemes": [
@@ -180,7 +184,65 @@
         }
       }
     },
-    "/api/v1/anime_status": {
+    "/api/v1/conf": {
+      "get": {
+        "tags": [
+          "configuration-controller"
+        ],
+        "summary": "getConfiguration",
+        "operationId": "getConfigurationUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ConfigurationDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "getUser",
+        "operationId": "getUserUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/UserDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/anime": {
       "get": {
         "tags": [
           "anime-status-controller"
@@ -227,7 +289,7 @@
         }
       }
     },
-    "/api/v1/anime_status/{animeId}": {
+    "/api/v1/users/current/anime/{animeId}": {
       "post": {
         "tags": [
           "anime-status-controller"
@@ -281,21 +343,47 @@
         }
       }
     },
-    "/api/v1/conf": {
+    "/api/v1/users/current/anime/{id}/episodes": {
       "get": {
         "tags": [
-          "configuration-controller"
+          "anime-status-controller"
         ],
-        "summary": "getConfiguration",
-        "operationId": "getConfigurationUsingGET",
+        "summary": "getEpisodes",
+        "operationId": "getEpisodesUsingGET_1",
         "produces": [
           "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ConfigurationDto"
+              "$ref": "#/definitions/PageDtoOfEpisodeStatusDto"
             }
           },
           "401": {
@@ -358,11 +446,21 @@
       "type": "object",
       "required": [
         "anime",
-        "progress"
+        "comment",
+        "completedRegularEpisodes",
+        "progress",
+        "totalRegularEpisodes"
       ],
       "properties": {
         "anime": {
           "$ref": "#/definitions/AnimeDto"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "completedRegularEpisodes": {
+          "type": "integer",
+          "format": "int64"
         },
         "progress": {
           "type": "string",
@@ -371,6 +469,10 @@
             "IN_PROGRESS",
             "NOT_STARTED"
           ]
+        },
+        "totalRegularEpisodes": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "AnimeStatusDto"
@@ -458,6 +560,26 @@
         }
       },
       "title": "EpisodeDto"
+    },
+    "EpisodeStatusDto": {
+      "type": "object",
+      "required": [
+        "episode",
+        "progress"
+      ],
+      "properties": {
+        "episode": {
+          "$ref": "#/definitions/EpisodeDto"
+        },
+        "progress": {
+          "type": "string",
+          "enum": [
+            "COMPLETED",
+            "NOT_STARTED"
+          ]
+        }
+      },
+      "title": "EpisodeStatusDto"
     },
     "EpisodeTitleDto": {
       "type": "object",
@@ -595,12 +717,56 @@
       },
       "title": "PageDtoOfEpisodeDto"
     },
+    "PageDtoOfEpisodeStatusDto": {
+      "type": "object",
+      "required": [
+        "content",
+        "number",
+        "numberOfElements",
+        "size",
+        "totalElements",
+        "totalPages"
+      ],
+      "properties": {
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EpisodeStatusDto"
+          }
+        },
+        "number": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numberOfElements": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalElements": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "totalPages": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PageDtoOfEpisodeStatusDto"
+    },
     "UpdateAnimeStatusDto": {
       "type": "object",
       "required": [
+        "comment",
         "progress"
       ],
       "properties": {
+        "comment": {
+          "type": "string"
+        },
         "progress": {
           "type": "string",
           "enum": [
@@ -611,6 +777,19 @@
         }
       },
       "title": "UpdateAnimeStatusDto"
+    },
+    "UserDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserDto"
     }
   }
 }

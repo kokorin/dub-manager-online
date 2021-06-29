@@ -45,7 +45,9 @@ public class AnidbEpisode {
         /**
          * AniDB episode number may contain not only digits but also leading letter.
          * This letter duplicates type field.
+         *
          * @return episode number
+         * @see <a href="https://wiki.anidb.net/Content:Episodes#Type">Episode Types</a>
          */
         public Long getNumber() {
             if (number == null || number.isEmpty()) {
@@ -62,12 +64,21 @@ public class AnidbEpisode {
 
     @XmlType(name = "AnidbEpisodeType")
     public enum Type {
+        /**
+         * Normal or Regular.
+         */
         @XmlEnumValue("1")
         REGULAR,
         @XmlEnumValue("2")
         SPECIAL,
+        /**
+         * Opening/Ending
+         */
         @XmlEnumValue("3")
         CREDIT,
+        /**
+         * Trailer/Promo/Commercial.
+         */
         @XmlEnumValue("4")
         TRAILER,
         @XmlEnumValue("5")

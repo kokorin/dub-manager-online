@@ -21,12 +21,21 @@ import {
     PageDtoOfAnimeStatusDto,
     PageDtoOfAnimeStatusDtoFromJSON,
     PageDtoOfAnimeStatusDtoToJSON,
+    PageDtoOfEpisodeStatusDto,
+    PageDtoOfEpisodeStatusDtoFromJSON,
+    PageDtoOfEpisodeStatusDtoToJSON,
     UpdateAnimeStatusDto,
     UpdateAnimeStatusDtoFromJSON,
     UpdateAnimeStatusDtoToJSON,
 } from '../models';
 
 export interface FindAllUsingGET1Request {
+    page: number;
+    size: number;
+}
+
+export interface GetEpisodesUsingGET1Request {
+    id: number;
     page: number;
     size: number;
 }
@@ -66,7 +75,7 @@ export class AnimeStatusControllerApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/api/v1/anime_status`,
+            path: `/api/v1/users/current/anime`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -80,6 +89,52 @@ export class AnimeStatusControllerApi extends runtime.BaseAPI {
      */
     async findAllUsingGET1(requestParameters: FindAllUsingGET1Request): Promise<PageDtoOfAnimeStatusDto> {
         const response = await this.findAllUsingGET1Raw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * getEpisodes
+     */
+    async getEpisodesUsingGET1Raw(requestParameters: GetEpisodesUsingGET1Request): Promise<runtime.ApiResponse<PageDtoOfEpisodeStatusDto>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getEpisodesUsingGET1.');
+        }
+
+        if (requestParameters.page === null || requestParameters.page === undefined) {
+            throw new runtime.RequiredError('page','Required parameter requestParameters.page was null or undefined when calling getEpisodesUsingGET1.');
+        }
+
+        if (requestParameters.size === null || requestParameters.size === undefined) {
+            throw new runtime.RequiredError('size','Required parameter requestParameters.size was null or undefined when calling getEpisodesUsingGET1.');
+        }
+
+        const queryParameters: runtime.HTTPQuery = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.size !== undefined) {
+            queryParameters['size'] = requestParameters.size;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/v1/users/current/anime/{id}/episodes`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PageDtoOfEpisodeStatusDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * getEpisodes
+     */
+    async getEpisodesUsingGET1(requestParameters: GetEpisodesUsingGET1Request): Promise<PageDtoOfEpisodeStatusDto> {
+        const response = await this.getEpisodesUsingGET1Raw(requestParameters);
         return await response.value();
     }
 
@@ -102,7 +157,7 @@ export class AnimeStatusControllerApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/v1/anime_status/{animeId}`.replace(`{${"animeId"}}`, encodeURIComponent(String(requestParameters.animeId))),
+            path: `/api/v1/users/current/anime/{animeId}`.replace(`{${"animeId"}}`, encodeURIComponent(String(requestParameters.animeId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

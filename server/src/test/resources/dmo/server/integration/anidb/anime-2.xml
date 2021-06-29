@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anime id="2" restricted="false">
+    <type>OVA</type>
+    <episodecount>4</episodecount>
+    <startdate>1991-07-25</startdate>
+    <enddate>1992-03-19</enddate>
+    <titles>
+        <title xml:lang="x-jat" type="main">3x3 Eyes</title>
+        <title xml:lang="ja" type="synonym">サザンアイズ</title>
+        <title xml:lang="en" type="synonym">3x3 Eyes - Immortals</title>
+        <title xml:lang="ru" type="synonym">3x3 глаза</title>
+        <title xml:lang="zh-x-nan" type="synonym">三隻眼</title>
+        <title xml:lang="x-jat" type="synonym">Sazan Eyes</title>
+        <title xml:lang="x-jat" type="synonym">Southern Eyes</title>
+        <title xml:lang="x-jat" type="short">3x3</title>
+        <title xml:lang="ja" type="official">3×3 EYES</title>
+        <title xml:lang="en" type="official">3x3 Eyes</title>
+        <title xml:lang="de" type="official">3x3 Augen (OVA 1)</title>
+        <title xml:lang="fr" type="official">3x3 Eyes</title>
+        <title xml:lang="it" type="official">3x3 Occhi</title>
+        <title xml:lang="es" type="official">3x3 Ojos [1-4]</title>
+        <title xml:lang="sv" type="official">3x3 Ögon</title>
+        <title xml:lang="ca" type="official">3x3 Ulls</title>
+        <title xml:lang="cs" type="official">3x3 Oči</title>
+    </titles>
+    <relatedanime>
+        <anime id="3" type="Sequel">3x3 Eyes: Seima Densetsu</anime>
+    </relatedanime>
+    <similaranime>
+        <anime id="644" approval="10" total="13">Blue Seed</anime>
+    </similaranime>
+    <recommendations total="7">
+        <recommendation type="Recommended" uid="508260">While this OVA is quite good, it only hits on pretty much the
+            first Volume of a 40 Volume manga. Great introduction for those who have yet to try the 3x3 Eyes Manga, but
+            definitely leaves you wanting more. This series beyond all other Manga I know should get a full series.
+        </recommendation>
+        <recommendation type="Recommended" uid="151117">Low on graphic but yet good story</recommendation>
+        <recommendation type="Must See" uid="465356">One of the best low rated anime,I believe it is simply the
+            masterpiece of Toei Animation, Bandai Visual and Star Child Records.It is a unique anime in all aspects and
+            definitely a must see for anyone who starts watching.
+        </recommendation>
+        <recommendation type="Must See" uid="1841">One of my favorites</recommendation>
+        <recommendation type="Must See" uid="268960">It made me shed a few tears, despite a lot of people criticizing
+            its graphics it never bothered me. It offers plenty to be taken in by it and it doesn`t dissapoint!
+        </recommendation>
+    </recommendations>
+    <url>http://www.starchild.co.jp/special/33eyes/</url>
+    <creators>
+        <name id="872" type="Original Work">Takada Yuuzou</name>
+        <name id="1009" type="Work">Toei Douga</name>
+        <name id="1975" type="Work">TAVAC</name>
+        <name id="2703" type="Music">Wada Kaoru</name>
+        <name id="6049" type="Direction">Takenouchi Kazuhisa</name>
+        <name id="4539" type="Direction">Nishio Daisuke</name>
+        <name id="5437" type="Character Design">Arai Kouichi</name>
+    </creators>
+    <description>http://anidb.net/ch7110 [Pai] is the last of the Sanjiyan -- a magical race of 3-eyed creatures, and
+        she comes in search of Tokyo high-school student http://anidb.net/ch7921 [Yakumo] with news of his father`s
+        death and hopes of becoming human. After a fatal accident, Pai is forced to absorb Yakumo`s soul to keep him
+        from dying, making him an undead creature bound to her. Their journey to make Pai human becomes complicated with
+        dark forces seeking to stop them, especially when Pai`s crueler nature emerges...
+    </description>
+    <ratings>
+        <permanent count="2097">5.18</permanent>
+        <temporary count="2151">6.96</temporary>
+        <review count="5">6.09</review>
+    </ratings>
+    <picture>221541.jpg</picture>
+    <resources>
+        <resource type="1">
+            <externalentity>
+                <identifier>382</identifier>
+            </externalentity>
+        </resource>
+        <resource type="2">
+            <externalentity>
+                <identifier>300</identifier>
+            </externalentity>
+        </resource>
+        <resource type="3">
+            <externalentity>
+                <identifier>4</identifier>
+                <identifier>hzyung</identifier>
+            </externalentity>
+        </resource>
+        <resource type="4">
+            <externalentity>
+                <url>http://www.starchild.co.jp/special/33eyes/</url>
+            </externalentity>
+        </resource>
+        <resource type="6">
+            <externalentity>
+                <identifier>3×3_Eyes</identifier>
+            </externalentity>
+        </resource>
+        <resource type="7">
+            <externalentity>
+                <identifier>3×3_EYES</identifier>
+            </externalentity>
+        </resource>
+        <resource type="8">
+            <externalentity>
+                <identifier>1799</identifier>
+            </externalentity>
+        </resource>
+        <resource type="9">
+            <externalentity>
+                <identifier>88264</identifier>
+            </externalentity>
+        </resource>
+        <resource type="10">
+            <externalentity>
+                <identifier>544</identifier>
+            </externalentity>
+        </resource>
+        <resource type="11">
+            <externalentity>
+                <identifier>mediadb/media/1372</identifier>
+            </externalentity>
+        </resource>
+        <resource type="14">
+            <externalentity>
+                <identifier>4547</identifier>
+                <identifier>v</identifier>
+            </externalentity>
+        </resource>
+        <resource type="31">
+            <externalentity>
+                <identifier>15480</identifier>
+            </externalentity>
+        </resource>
+    </resources>
+    <tags>
+        <tag id="1396" parentid="2607" weight="0" localspoiler="true" globalspoiler="false" verified="true"
+             update="2014-10-01">
+            <name>immortality</name>
+            <description>Immortality is the ability to live in a physical or spiritual form for an infinite or
+                inconceivably vast length of time. Humans, whose life span is limited and who die of age, disease and
+                external trauma, have long sought ways to extend their lives; the Epic of Gilgamesh, considered one of
+                the first great literary works created by mankind, is primarily the quest of a hero seeking to become
+                immortal. The advances of science, in particular medicine and engineering, and especially in the last
+                few centuries, have helped people extend their life span and may yet continue finding ways to do so.
+                In fiction, immortals are not quite as uncommon as in real life, and the possible implications of
+                endless or very long lives are often explored. Such implications include, but are not limited to:
+                repeatedly accompanying the deaths of those dear to them; having to hide their condition from the
+                mortals surrounding them; becoming disillusioned with their lives and being unable to kill themselves;
+                and even staying forever trapped in the body of a specific physical age, that body most often being that
+                of a child. As such, while many may wish for immortality, it may be little more than a curse for the few
+                who have it.
+            </description>
+        </tag>
+        <tag id="1802" parentid="2606" infobox="true" weight="0" localspoiler="false" globalspoiler="false"
+             verified="true" update="2016-01-24">
+            <name>seinen</name>
+            <description>Seinen, literally "young man", is one of the main demographic classifications applied to manga,
+                and, by extension, to anime, especially manga-based ones. As the name implies, seinen works are marketed
+                primarily to an audience of young men; the age range commonly understood to be the target of such works
+                goes roughly from 17 to somewhere in the 40s.
+            </description>
+            <picurl>181651.jpg</picurl>
+        </tag>
+        <tag id="2604" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2018-11-08">
+            <name>content indicators</name>
+            <description>The content indicators branch is intended to be a less geographically specific tool than the
+                `age rating` used by convention, for warning about things that might cause offence. Obviously there is
+                still a degree of subjectivity involved, but hopefully it will prove useful for parents with delicate
+                children, or children with delicate parents.
+                Note: Refer to further guidance on http://wiki.anidb.net/w/Categories:Content_Indicators [the Wiki page]
+                for how to apply tag weights for content indicators.
+            </description>
+        </tag>
+        <tag id="2605" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2014-09-28">
+            <name>dynamic</name>
+            <description>Some of the central structural elements in anime are:
+                Plot Continuity
+                How does the plot or several plots unfold. Are they a strictly linear retelling of one big continuing
+                story, a serial, possibly with several side stories, or is the content chopped into a set of unconnected
+                episodes, only sharing the same setting and characters?
+                Stereotype Characters
+                Then there is the question of the character set presentation. Is it completely original, or is it your
+                usual stereotypical character cast. Both choices have their merit, for example it would not really make
+                much sense to reinvent the wheel for a harem anime. Fans of that genre come to expect their favourite
+                stereotype protagonists.
+                Plot Twists
+                Finally there is the question of how complex the plot / the story unfolds. Are there side-plots that
+                merge into the main plot leading to unexpected plot twists, or is the anime quite predictable? The
+                latter would not be appropriate for detective stories. In harem anime on the other hand a foreseeable
+                outcome is actually something the fans will come to expect.
+            </description>
+        </tag>
+        <tag id="2606" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2018-11-05">
+            <name>target audience</name>
+            <description>Anime, like everything else in the modern world, is targeted towards specific audiences, both
+                implicitly by the creators and overtly by the marketing. While categories are associated with specific
+                sex and age groups, this is not a bar on the anime being enjoyed by people who don`t fit into that band;
+                not only do crossover titles exist, but the categories also have a considerable following outside their
+                main demographic, and a person might as well enjoy anime from all categories. Still, does not invalidate
+                the usefulness of marking a title as one of the categories; the same themes will likely be treated
+                differently in anime geared for different audiences. Only one should not jump the gun and assume that a
+                title will be more or less serious or present content in this or that way due to its target audience, or
+                conversely assume the target audience on the content and its presentation alone. As such, the audience
+                categories help form a broad impression of how a title might work with the announced themes, but offer
+                little to no in-depth information about specific content or its treatment.
+                The audience categories originate from manga magazines, which group titles of a same intended audience
+                into a magazine that is advertised as belonging to that category, and so manga-based anime will have the
+                category from their parent work. As for anime based on other works, the audience is often debatable, but
+                comparing information such as time slot to the manga-based anime generally helps figure out the most
+                likely possibility.
+                If the parent material was classified under multiple audiences over time (for example, it was originally
+                shounen, but then as the plot changed and became more mature, it was reclassified as seinen), and the
+                anime adapts parent material time periods covering multiple audiences, we tag all audiences covered by
+                the anime adaptation.
+            </description>
+        </tag>
+        <tag id="2607" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2009-04-29">
+            <name>themes</name>
+            <description>Themes describe the very central elements important to the anime stories. They set the backdrop
+                against which the protagonists must face their challenges. Be it School Life, present Daily Life,
+                Military action, Cyberpunk, Law and Order detective work, Sports, or the Underworld. These are only but
+                a few of the more typical backgrounds for anime plots. Add to that a Conspiracy setting with a possible
+                tragic outcome, the Themes span most of the imaginable subject matter relevant to anime.
+            </description>
+        </tag>
+        <tag id="2609" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2018-09-01">
+            <name>original work</name>
+            <description>What the anime is based on! This is given as the original work credit in the OP. Mostly of
+                academic interest, but a useful bit of info, hinting at the possible depth of story.
+            </description>
+        </tag>
+        <tag id="2610" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2009-04-22">
+            <name>setting</name>
+            <description>The setting describes in what time and place an anime takes place. To a certain extent it
+                describes what you can expect from the world in the anime.
+            </description>
+        </tag>
+        <tag id="2611" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2014-09-08">
+            <name>elements</name>
+            <description>Next to Themes setting the backdrop for the protagonists in anime, there are the more detailed
+                plot Elements that centre on character interactions: "What do characters do to each other or what is
+                done to them?". Is it violent Action, an awe-inspiring Adventure in a foreign place, the gripping life
+                of a Detective, a slapstick Comedy, an Ecchi Harem anime, a SciFi epic, or some Fantasy travelling
+                adventure?
+            </description>
+        </tag>
+        <tag id="2612" parentid="2610" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2016-09-04">
+            <name>time</name>
+            <description>This placeholder lists different epochs in human history and more vague but important timelines
+                such as the future, the present and the past.
+            </description>
+        </tag>
+        <tag id="2619" parentid="2841" weight="100" localspoiler="false" globalspoiler="false" verified="true"
+             update="2017-12-26">
+            <name>gunfights</name>
+            <description>Fights where two or more parties are firing guns at one another.</description>
+            <picurl>211280.jpg</picurl>
+        </tag>
+        <tag id="2624" parentid="2612" weight="600" localspoiler="false" globalspoiler="false" verified="true"
+             update="2017-02-20">
+            <name>present</name>
+            <description>Somewhere between past and future.</description>
+        </tag>
+        <tag id="2646" parentid="2849" infobox="true" weight="500" localspoiler="false" globalspoiler="false"
+             verified="true" update="2014-09-24">
+            <name>demon</name>
+            <description>In Western lore, demons are often described as minions from Hell, generally known to attack
+                humans and feast on their flesh or possess the bodies of those with weak souls. In Eastern lore, on the
+                other hand, they are generally supernatural, often but not always malevolent beings who can be more
+                mischievous than actually evil, or simply supernatural spirits of no specific alignment.
+            </description>
+        </tag>
+        <tag id="2750" parentid="2604" infobox="true" weight="600" localspoiler="false" globalspoiler="false"
+             verified="true" update="2018-11-08">
+            <name>violence</name>
+            <description>Violence is the use of physical force against oneself or another entity, compelling action
+                against one`s will on pain of being hurt.
+                Note: Refer to further guidance on http://wiki.anidb.net/w/Categories:Content_Indicators [the Wiki page]
+                for how to apply tag weights for content indicators.
+            </description>
+        </tag>
+        <tag id="2751" parentid="2881" weight="200" localspoiler="false" globalspoiler="false" verified="true"
+             update="2015-02-27">
+            <name>combat</name>
+            <description>Combat involves a violent conflict with the goal to establish dominance over an opponent.
+            </description>
+        </tag>
+        <tag id="2798" parentid="2609" infobox="true" weight="0" localspoiler="false" globalspoiler="false"
+             verified="true" update="2019-02-14">
+            <name>manga</name>
+            <description>Manga is the lifeblood that drives the anime industry. Everything and its mother is based on
+                manga. However! There are exceptions where the manga was not the basis for the anime.
+                It`s common practice to make manga adaptations of many popular anime, there`s a manga based on
+                Evangelion, and two (one shounen and one shoujo) based on each of Escaflowne and Mahou Tsukai Tai. Also
+                it`s quite common to release manga and anime versions of a story in parallel, for instance Nadesico and
+                Shoujo Kakumei Utena. There are also cases where an anime continues in a manga, as in the case of Angel
+                Beats! and Angel Beats: Heaven`s Door, or reverse.
+                See also http://anidb.net/t6493 [manhua] and http://anidb.net/t5010 [manhwa].
+            </description>
+            <picurl>215593.jpg</picurl>
+        </tag>
+        <tag id="2841" parentid="2611" infobox="true" weight="500" localspoiler="false" globalspoiler="false"
+             verified="true" update="2017-12-26">
+            <name>action</name>
+            <description>Action anime usually involve a fairly straightforward story of good guys versus bad guys, where
+                most disputes are resolved by using physical force. It often contains a lot of shooting, explosions and
+                fighting.
+            </description>
+            <picurl>211261.jpg</picurl>
+        </tag>
+        <tag id="2849" parentid="7050" infobox="true" weight="400" localspoiler="false" globalspoiler="false"
+             verified="true" update="2005-05-07">
+            <name>fantasy</name>
+            <description>Fantasy is a genre of fiction that uses magic and other supernatural phenomena as a primary
+                element of plot, theme, or setting. Many works within the genre take place in fictional worlds where
+                magic is common. Fantasy is generally distinguished from science fiction and horror by the expectation
+                that it steers clear of (pseudo-)scientific and macabre themes, respectively, though there is a great
+                deal of overlap between the three (which are subgenres of speculative fiction).
+                In popular culture, the genre of fantasy is dominated by its medievalist form, especially since the
+                worldwide success of The Lord of the Rings books by J. R. R. Tolkien. In its broadest sense however,
+                fantasy comprises works by many writers, artists, filmmakers, and musicians, from ancient myths and
+                legends to many recent works embraced by a wide audience today.
+                Fantasy is a vibrant area of academic study in a number of disciplines (English, cultural studies,
+                comparative literature, history, medieval studies). Work in this area ranges widely, from the
+                structuralist theory of Tzvetan Todorov, which emphasizes the fantastic as a liminal space, to work on
+                the connections (political, historical, literary) between medievalism and popular culture
+                Source: Wiki
+            </description>
+            <picurl>68768.jpg</picurl>
+        </tag>
+        <tag id="2851" parentid="7050" infobox="true" weight="400" localspoiler="false" globalspoiler="false"
+             verified="true" update="2018-03-11">
+            <name>horror</name>
+            <description>The horror cinematic genre is characterized by the attempt to make the viewer experience dread,
+                fear, terror, or horror. Often their plots involve the intrusion of an evil force, event or personage,
+                sometimes of supernatural origin, on the mundane world and the consequences thereof.
+            </description>
+            <picurl>214682.jpg</picurl>
+        </tag>
+        <tag id="2881" parentid="2607" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2018-01-21">
+            <name>sports</name>
+            <description>Sports anime revolves around a recreational physical activity or skill. In addition they often
+                adhere to certain genre conventions, the emphasis on training and practice in preparation for
+                competition, characters desire for self improvement, and pursuit of a specific goal.
+            </description>
+            <picurl>212185.jpg</picurl>
+        </tag>
+        <tag id="2931" weight="0" localspoiler="false" globalspoiler="false" verified="true" update="2016-12-04">
+            <name>unsorted</name>
+            <description>a bunch of tags that still need to be either deleted or moved into proper places.</description>
+        </tag>
+        <tag id="3265" parentid="6242" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2014-11-09">
+            <name>death is cheap</name>
+            <description>Important characters will have a terrible tendency to die dramatically, but will not, under any
+                circumstances, stay dead. This tends to cheapen the dramatic death of a character to the point of being
+                little more than a flesh wound if overused. If you ever hear passing mention of any form of afterlife in
+                a series, be warned that the value of "dead" has become a whole lot less all of a sudden. Similarly, if
+                the entire supporting cast is being killed off left and right, expect a resurrection by the end of the
+                current arc. This trope became so common in some series that most people are more likely to be shocked
+                if a character does not come back from the dead than when it does.
+            </description>
+        </tag>
+        <tag id="4022" parentid="6230" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2010-11-29">
+            <name>strong female lead</name>
+            <description>The lead female character has a strong personality and plays a part that is not the typical
+                damsel-in-distress role.
+                This is the exact opposite of the “damsel in distress” tag.
+            </description>
+        </tag>
+        <tag id="4096" parentid="2750" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2014-03-23">
+            <name>gore</name>
+            <description>A Splatter film or Gore film is a sub-genre of horror film that deliberately focuses on graphic
+                portrayals of gore and graphic violence. These films, through the use of special effects and excessive
+                blood and guts, tend to display an overt interest in the vulnerability of the human body and the
+                theatricality of its mutilation. Due to their willingness to portray images society might consider
+                shocking, splatter films share some ideological grounds with the transgressive art movement. The term
+                "splatter cinema" was coined by George A. Romero to describe his film Dawn of the Dead, though Dawn of
+                the Dead is generally considered by critics to have higher aspirations, such as social commentary, than
+                to be simply exploitative for its own sake.
+                [Source: wiki]
+            </description>
+            <picurl>32491.jpg</picurl>
+        </tag>
+        <tag id="4753" parentid="2931" weight="0" localspoiler="false" globalspoiler="false" verified="false"
+             update="2010-03-15">
+            <name>disturbing</name>
+            <description>Watching the show may cause the viewer to have unpleasant feelings.</description>
+        </tag>
+        <tag id="6230" parentid="2605" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2014-10-20">
+            <name>cast</name>
+        </tag>
+        <tag id="6242" parentid="2607" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2019-07-24">
+            <name>death</name>
+            <description>Death is the state of no longer being alive or the process of ceasing to be alive.
+            </description>
+        </tag>
+        <tag id="7050" parentid="2611" weight="0" localspoiler="false" globalspoiler="false" verified="true"
+             update="2019-04-18">
+            <name>speculative fiction</name>
+            <description>Speculative fiction is an umbrella genre encompassing fiction with certain elements that do not
+                exist in the real world, often in the context of supernatural, futuristic or other imaginative themes.
+                This includes, but is not limited to, science fiction, fantasy, superhero fiction, horror, utopian and
+                dystopian fiction, fairytale fantasy, supernatural fiction, as well as combinations thereof.
+                Source: Wikipedia
+            </description>
+        </tag>
+    </tags>
+    <characters>
+        <character id="7110" type="main character in" update="2012-06-18">
+            <rating votes="16">8.01</rating>
+            <name>Pai</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>The last surviving Sanjiyan Unkara who was discovered by Yakumo`s father in Tibet. Yuzo Takada
+                sometimes calls her the three-eyed elf girl from China, but she wears traditional Tibetan clothes. As is
+                typical with members of her race, she developed a split personality as she grew older in order to cope
+                with the problems of an exceptionally long life. However, Pai is the only Sanjiyan ever shown that has
+                true multiple personality disorder.
+                The Pai personality is somewhat flaky, but caring and cheerful. The two personae are aware of one
+                another, and sometimes talk between themselves.
+            </description>
+            <picture>25652.jpg</picture>
+            <seiyuu id="13" picture="16583.jpg">Hayashibara Megumi</seiyuu>
+        </character>
+        <character id="7272" type="secondary cast in" update="2009-06-25">
+            <rating votes="13">8.46</rating>
+            <name>Parvati IV</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>The Parvati personality (manifested when her third eye opens and she uses magic) is more
+                arrogant and ruthless. The two personae are aware of one another, and sometimes talk between themselves.
+            </description>
+            <picture>25652.jpg</picture>
+            <seiyuu id="13" picture="16583.jpg">Hayashibara Megumi</seiyuu>
+        </character>
+        <character id="7921" type="main character in" update="2014-12-07">
+            <rating votes="15">8.42</rating>
+            <name>Fujii Yakumo</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Undead (Pai`s "Wu").
+                Yakumo`s father was an archaeology professor who went to Tibet to study the legend of the Sanjiyans, but
+                died a natural death after he met Pai, while he was trying to get out of Yunnan (a province of China,
+                near Tibet). Yakumo carries his father`s legacy: the promise to make Pai human.
+                At the start of the story he is 17, but later had to quit high school due to the pressures of being an
+                immortal. He worked part-time in Culture Shock, a gay bar in Shinjuku (he has no homosexual inclination,
+                though). Later, he worked as an employee of Yougekisha.
+            </description>
+            <picture>26996.jpg</picture>
+            <seiyuu id="342" picture="17179.jpg">Tsujitani Kouji</seiyuu>
+        </character>
+        <character id="9279" type="secondary cast in" update="2009-06-28">
+            <rating votes="5">3.38</rating>
+            <name>Lee Ling Ling</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>The editor and manager of the Yougekisha magazine and company (who promotes the belief of
+                ghosts and demons though she is skeptical), which is a ghost-busting squad who gets paid to cleanse the
+                streets from all manners of evils. Li Ling Ling originally intended to exploit Yakumo`s and Pai`s
+                abilities, but she eventually aided Pai and Yakumo in their quest as Yakumo`s boss and providing a HQ
+                from which he can work from. She never misses an opportunity to wring every cent from some unfortunate
+                person who stumbles across their paths, though.
+                She had worked with Yakumo`s father and was in possession of the statue at the beginning of the series
+                before she knew of its importance.
+            </description>
+            <picture>28801.jpg</picture>
+            <seiyuu id="588" picture="41015.jpg">Orikasa Ai</seiyuu>
+        </character>
+        <character id="9280" type="secondary cast in" update="2009-06-14">
+            <rating votes="6">6.50</rating>
+            <name>Benares</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>The Wu of Kaiyanwang. He assumed command of Kaiyanwang`s demons after his master was sealed
+                away by Parvati. He`s spent the last 300 years searching for ways to revive Kaiyanwang from his sealed
+                prison. Before becoming a Wu, Benares was a powerful dragon monster who consumed various holy demons.
+                This allowed him to absorb enough intelligence to eventually transform himself into the humanoid being
+                we see today. Benares is a highly powerful figure within the demon world physically, magically, and
+                politically, and strikes fear into even the bravest of souls.
+            </description>
+            <picture>28804.jpg</picture>
+            <seiyuu id="286" picture="17117.jpg">Ootsuka Akio</seiyuu>
+        </character>
+        <character id="9827" type="appears in" update="2009-06-23">
+            <rating votes="1">6.75</rating>
+            <name>Yougekisha</name>
+            <gender>unknown</gender>
+            <charactertype id="3">Organization</charactertype>
+            <description>A Hongkong publishing/exorcism company.</description>
+        </character>
+        <character id="9828" type="appears in" update="2009-06-23">
+            <rating votes="1">1.47</rating>
+            <name>Chen Aguri</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>The chief editor and founder of Yougekisha. He`s turned into stone after getting a little too
+                close to the demon world, but is revived later. His main interest is to study the Sanjiyan Unkara so
+                that he can write a great article for his magazine.
+            </description>
+            <picture>29832.jpg</picture>
+        </character>
+        <character id="9994" type="secondary cast in" update="2009-06-28">
+            <rating votes="6">4.90</rating>
+            <name>Meixing Long</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Younger sister of Steve Long and a superb martial artist. She becomes involved in story when
+                she witnesses her brothers apartment blown up. In the rubble she finds a piece of the statue of
+                humanity. She begins to search for her brother and those who bombed his apartment. This is when she runs
+                into Pai and Yakumo. At first she bashed up Yakumo. She falls in love with Yakumo, but ended up studying
+                as an exchange student in England when it became obvious Yakumo was only interested in Pai.
+            </description>
+            <picture>30155.jpg</picture>
+            <seiyuu id="322" picture="17159.jpg">Tanaka Mayumi</seiyuu>
+        </character>
+        <character id="9995" type="appears in" update="2009-06-28">
+            <rating votes="1">1.47</rating>
+            <name>Steve Long</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>A Taoist and a regular human, he`s quite skilled at using paper charms, and can sense demonic
+                energy.
+            </description>
+            <picture>30156.jpg</picture>
+            <seiyuu id="2782" picture="23189.jpg">Ginga Banjou</seiyuu>
+        </character>
+        <character id="9996" type="appears in" update="2011-04-09">
+            <rating votes="4">4.75</rating>
+            <name>Natsuko</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Yakumo`s friend from junior high. Even when she had left school and was working as a highschool
+                teacher, she never forgot about Yakumo.
+            </description>
+            <picture>30157.jpg</picture>
+            <seiyuu id="1870" picture="186893.jpg">Mizutani Yuuko</seiyuu>
+        </character>
+        <character id="9997" type="appears in" update="2009-06-28">
+            <rating votes="2">6.75</rating>
+            <name>Kaiyanwang</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Kaiyanwang is the ruler of the Sanjiyans.
+                The strongest Sanjiyan. His ambitions drove him to wage war against the rest of the Sanjiyan Unkara,
+                which ultimately led them to their fate. He was sealed away by Parvati IV after a bloody struggle.
+            </description>
+            <picture>30159.jpg</picture>
+        </character>
+        <character id="56530" type="appears in" update="2013-06-01">
+            <rating votes="1">6.75</rating>
+            <name>Fujii Sazuku</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Fujii Sazuku is Yakumo`s father.</description>
+            <picture>137568.jpg</picture>
+            <seiyuu id="416" picture="23206.jpg">Saka Osamu</seiyuu>
+        </character>
+        <character id="56531" type="appears in" update="2013-06-01">
+            <rating votes="1">3.29</rating>
+            <name>Xunquai</name>
+            <gender>female</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>137570.jpg</picture>
+            <seiyuu id="3250" picture="24693.jpg">Fujita Toshiko</seiyuu>
+        </character>
+        <character id="56532" type="appears in" update="2013-06-01">
+            <rating votes="1">6.75</rating>
+            <name>Chou</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>137572.jpg</picture>
+            <seiyuu id="28" picture="23184.jpg">Aono Takeshi</seiyuu>
+        </character>
+        <character id="56616" type="appears in" update="2013-06-03">
+            <rating votes="1">1.47</rating>
+            <name>Youma</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>137681.jpg</picture>
+            <seiyuu id="2405" picture="23217.jpg">Shioya Kouzou</seiyuu>
+        </character>
+        <character id="56617" type="appears in" update="2013-06-03">
+            <rating votes="1">1.47</rating>
+            <name>Okama Tenchou</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <picture>137682.jpg</picture>
+            <seiyuu id="3317" picture="258399.jpg">Kishino Yukimasa</seiyuu>
+        </character>
+        <character id="56618" type="appears in" update="2013-06-03">
+            <rating votes="2">4.52</rating>
+            <name>Kunio</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Kunio is Yakumo`s friend. He is called Saru (Monkey).</description>
+            <picture>137683.jpg</picture>
+            <seiyuu id="468" picture="17383.jpg">Kikuchi Masami</seiyuu>
+        </character>
+        <character id="56619" type="appears in" update="2013-06-03">
+            <rating votes="1">3.29</rating>
+            <name>Hideichi</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Hideichi is Yakumo`s friend.</description>
+            <picture>137684.jpg</picture>
+            <seiyuu id="353" picture="17192.jpg">Midorikawa Hikaru</seiyuu>
+        </character>
+        <character id="56620" type="appears in" update="2013-06-03">
+            <rating votes="1">3.29</rating>
+            <name>Tatsuya</name>
+            <gender>male</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Tatsuya is Yakumo`s friend.</description>
+            <picture>137685.jpg</picture>
+            <seiyuu id="3235" picture="25824.jpg">Satou Hiroyuki</seiyuu>
+        </character>
+        <character id="56621" type="appears in" update="2013-06-03">
+            <rating votes="1">6.75</rating>
+            <name>Takuhi</name>
+            <gender>unknown</gender>
+            <charactertype id="1">Character</charactertype>
+            <description>Takuhi is Pai`s bird youma which resides in her stick.
+                He is responsible for the events that led Yakumo into becoming Parvati`s undead Wu. He`s killed by one
+                of Kaiyanwang`s followers while they`re trying to find Steve Long and Mei Ling Ling.
+            </description>
+            <picture>137687.jpg</picture>
+        </character>
+    </characters>
+    <episodes>
+        <episode id="2618" update="2020-03-29">
+            <epno type="1">1</epno>
+            <length>30</length>
+            <airdate>1991-07-25</airdate>
+            <rating votes="10">7.35</rating>
+            <title xml:lang="ja">転生の章</title>
+            <title xml:lang="en">Transmigration</title>
+            <title xml:lang="de">Reinkarnation</title>
+            <title xml:lang="fr">Renaissance</title>
+            <title xml:lang="x-jat">Tensei no Shou</title>
+            <summary>Yakumo Fugii, an ordinary Japanese student, inherits the care of Pai, a young girl from Nepal, from
+                his dying archaeologist father. But Pai is more than she innocently appears to be. She is the last of a
+                vanished magical race known as the Sanjiyan Unkara, or Triclops, and is in a desperate hunt against the
+                forces of darkness to find the Ningen no Zou (Statue of Humanity) to turn her human. Yakumo nearly dies
+                in a fight against a demon and to save him, Pai turns him into a Wu, a zombie bound to her service who
+                cannot die. Yakumo and Pai travel to Hong Hong to meet with Ling Ling Lee, a colleague of his father`s,
+                to track down the statue. But, the demons of the dark lord Kaiyan Wang are already there to retrieve
+                it...whatever the cost.
+                Source: theTVDB.com
+            </summary>
+        </episode>
+        <episode id="2619" update="2020-03-29">
+            <epno type="1">3</epno>
+            <length>30</length>
+            <airdate>1992-01-23</airdate>
+            <rating votes="7">6.51</rating>
+            <title xml:lang="ja">採生の章</title>
+            <title xml:lang="en">Sacrifice</title>
+            <title xml:lang="de">Lebenswille</title>
+            <title xml:lang="fr">Le Démon Volant</title>
+            <title xml:lang="x-jat">Saisei no Shou</title>
+            <summary>Yakumo and Pai return to Hong Kong when the Statue of Humanity turns up in the possession of Steve
+                Long, another Monster Buster, Inc colleague. Before they can reach it, Steve and the statue are
+                kidnapped. Yakumo, Pai, Ling Ling, and Steve`s sister Meixing attempt a rescue. But it`s all a trap to
+                catch Pai, the statue, and Meixing in a human sacrifice to release the dark spirit of Kaiyan Wang!
+                Source: theTVDB.com
+            </summary>
+        </episode>
+        <episode id="2620" update="2020-03-29">
+            <epno type="1">2</epno>
+            <length>30</length>
+            <airdate>1991-09-26</airdate>
+            <rating votes="7">7.45</rating>
+            <title xml:lang="ja">八雲の章</title>
+            <title xml:lang="en">Yakumo</title>
+            <title xml:lang="de">Yakumo</title>
+            <title xml:lang="fr">Yakumo</title>
+            <title xml:lang="x-jat">Yakumo no Shou</title>
+            <summary>Yakumo and Pai return to Japan from Hong Kong after the Statue of Humanity disappears from the
+                mysterious Mrs. Huang`s mansion. Yakumo returns to school and his friends in the hopes of resuming a
+                normal life. But nothing is normal when you`re an undead zombie bound to a magical being and demons
+                start attacking your schoolmates on the playground!
+                Source: theTVDB.com
+            </summary>
+        </episode>
+        <episode id="2621" update="2020-03-29">
+            <epno type="1">4</epno>
+            <length>30</length>
+            <airdate>1992-03-19</airdate>
+            <rating votes="7">6.90</rating>
+            <title xml:lang="ja">迷走の章</title>
+            <title xml:lang="en">Straying</title>
+            <title xml:lang="de">Verlust</title>
+            <title xml:lang="fr">Contre-temps</title>
+            <title xml:lang="x-jat">Meisou no Shou</title>
+            <summary>Yakumo, Pai, and the crew of Monster Buster, Inc celebrate their recapture of the statue at Madame
+                Huang`s estate, but the party is spoiled by a gruesome challenge delivered by a powerful Wu of Kaiyan
+                Wang`s. Pai meets the Wu for a showdown at Aberdeen Harbor and half the harbor is destroyed in the
+                aftermath. How will Yakumo continue on without the anchor of his life?
+                Source: theTVDB.com
+            </summary>
+        </episode>
+        <episode id="90826" update="2011-10-20">
+            <epno type="5">P1</epno>
+            <length>20</length>
+            <title xml:lang="en">T3 Target Arctic Animation</title>
+        </episode>
+    </episodes>
+</anime>
