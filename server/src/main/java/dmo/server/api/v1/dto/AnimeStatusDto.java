@@ -3,8 +3,6 @@ package dmo.server.api.v1.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class AnimeStatusDto {
     @ApiModelProperty(required = true)
@@ -12,4 +10,13 @@ public class AnimeStatusDto {
 
     @ApiModelProperty(required = true)
     private AnimeProgressDto progress;
+
+    @ApiModelProperty(required = true)
+    private String comment;
+
+    @ApiModelProperty(required = true)
+    private Long completedRegularEpisodes;
+
+    @ApiModelProperty(required = true)
+    private Long totalRegularEpisodes;
 }

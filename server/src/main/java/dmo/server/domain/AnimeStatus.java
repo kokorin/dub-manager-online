@@ -25,6 +25,9 @@ public class AnimeStatus {
     @Column(nullable = false)
     private Progress progress = Progress.NOT_STARTED;
 
+    @Column(length = 4_096)
+    private String comment;
+
     /**
      * Number of completed regular episodes.
      */
@@ -36,9 +39,6 @@ public class AnimeStatus {
      */
     @Column(nullable = false)
     private Long totalRegularEpisodes;
-
-    @Column(length = 4_096)
-    private String comment;
 
     // Suppress Lombok setter generation
     private void setId(AnimeStatusId id) {

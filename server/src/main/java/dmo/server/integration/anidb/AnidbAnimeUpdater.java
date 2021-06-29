@@ -73,7 +73,7 @@ public class AnidbAnimeUpdater {
         log.info("Anime update scheduled: {}", anime);
     }
 
-    @Scheduled(initialDelay = 10_000L, fixedDelay = 5_000L)
+    @Scheduled(fixedDelayString = "${anime.update.delay}")
     public void scheduledUpdateAnime() {
         var anime = updateQueue.poll();
         if (anime == null) {

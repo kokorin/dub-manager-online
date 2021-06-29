@@ -4,6 +4,7 @@ import dmo.server.domain.EpisodeStatus;
 import dmo.server.exception.AnimeNotFoundException;
 import dmo.server.exception.UserNotFoundException;
 import dmo.server.repository.AnimeRepository;
+import dmo.server.repository.EpisodeStatusRepository;
 import dmo.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

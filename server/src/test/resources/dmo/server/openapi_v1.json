@@ -446,11 +446,21 @@
       "type": "object",
       "required": [
         "anime",
-        "progress"
+        "comment",
+        "completedRegularEpisodes",
+        "progress",
+        "totalRegularEpisodes"
       ],
       "properties": {
         "anime": {
           "$ref": "#/definitions/AnimeDto"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "completedRegularEpisodes": {
+          "type": "integer",
+          "format": "int64"
         },
         "progress": {
           "type": "string",
@@ -459,6 +469,10 @@
             "IN_PROGRESS",
             "NOT_STARTED"
           ]
+        },
+        "totalRegularEpisodes": {
+          "type": "integer",
+          "format": "int64"
         }
       },
       "title": "AnimeStatusDto"
