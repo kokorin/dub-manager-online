@@ -20,8 +20,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=true react-scripts build",
-    "test": "CI=true react-scripts test --coverage --watchAll=false",
+    "build": "react-scripts build",
+    "test": "react-scripts test --coverage --watchAll=false",
     "lint": "eslint 'src/**/*.ts*'"
   },
   "jest": {

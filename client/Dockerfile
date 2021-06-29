@@ -8,6 +8,7 @@ RUN npm install
 # Build
 COPY src /client/src
 COPY public /client/public
+ENV CI=true
 RUN npm run build
 
 FROM alpine
