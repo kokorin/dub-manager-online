@@ -15,7 +15,7 @@ interface OwnProps {
     onChangeRowsPerPage: (newRowsPerPage: number) => void;
 }
 
-const TableComponent: FC<OwnProps> = (props) => {
+const TableWithSearch: FC<OwnProps> = (props) => {
     const { head, children, number, size, totalElements, onChangeSearch, onChangePage, onChangeRowsPerPage } = props;
 
     const handleChangePage = useCallback((_, newPage: number) => onChangePage(newPage), [onChangePage]);
@@ -49,4 +49,4 @@ const TableComponent: FC<OwnProps> = (props) => {
     );
 };
 
-export default TableComponent;
+export default TableWithSearch;

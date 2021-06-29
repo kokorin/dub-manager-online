@@ -1,8 +1,10 @@
 import { combineReducers, configureStore, Dispatch } from "@reduxjs/toolkit";
 import userReducer from "screens/Login/userSlice";
+import animeListReducer from "screens/AnimeTable/animeTableSlice";
 
 const rootReducers = combineReducers({
     user: userReducer,
+    animeList: animeListReducer,
 });
 
 const store = configureStore({

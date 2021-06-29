@@ -1,7 +1,7 @@
 import { TableCell, TableRow } from "@material-ui/core";
 import { nonNegativeOrDefault } from "service/numberUtils";
 import { EpisodeTableRows } from "./EpisodeTableRows";
-import { Table } from "./Table";
+import { TableWithSearch } from "./TableWithSearch";
 import { Episode, Page } from "../domain";
 import React, { ReactNode } from "react";
 import { getEpisodeList } from "../api";
@@ -70,7 +70,7 @@ export default class EpisodeTable extends React.Component<EpisodeTableProps, Epi
         );
 
         return (
-            <Table
+            <TableWithSearch
                 head={head}
                 number={number}
                 size={size}
@@ -79,7 +79,7 @@ export default class EpisodeTable extends React.Component<EpisodeTableProps, Epi
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
             >
                 <EpisodeTableRows content={content} />
-            </Table>
+            </TableWithSearch>
         );
     }
 }

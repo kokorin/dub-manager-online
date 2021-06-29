@@ -1,6 +1,6 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import { resolveAnimeTitle } from "../../service";
-import { Anime } from "../../domain";
+import { resolveAnimeTitle } from "../../../../service";
+import { Anime } from "../../../../domain";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 
