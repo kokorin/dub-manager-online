@@ -1,10 +1,10 @@
+import { SecureRoute } from "components/SecureRoute";
 import React, { FC } from "react";
 import { Route, Switch } from "react-router-dom";
-import { SecureRoute } from "components/SecureRoute";
-import { AnimeTable } from "screens/AnimeTable";
 import { AnimeView } from "screens/AnimeView";
 import { Login } from "screens/Login";
 import { NotFound } from "screens/NotFound";
+import { Main } from "../../screens/Main";
 
 interface OwnProps {
     isAuthenticated: boolean;
@@ -16,7 +16,7 @@ const Routes: FC<OwnProps> = ({ isAuthenticated, authenticationPath }) => {
         <Switch>
             <SecureRoute
                 path={"/"}
-                component={AnimeTable}
+                component={Main}
                 exact={true}
                 isAuthenticated={isAuthenticated}
                 authenticationPath={authenticationPath}
