@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import jwtDecode from "jwt-decode";
 import { ThunkConfig } from "store";
 import { loginUser, Token } from "service/auth";
-import { User } from "./types";
+import { Account, User } from "./types";
 import { getConfig } from "../../api";
 import { Config } from "../../domain";
 
@@ -38,6 +39,13 @@ const userSlice = createSlice({
             if (process.env.NODE_ENV === "development") {
                 state.clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
             }
+        });
+        builder.addCase(authenticateUser.pending, (state, { meta }) => {
+            const { email, name, picture, locale } = jwtDecode<Account>(meta.arg);
+            state.email = email;
+            state.name = name;
+            state.picture = picture;
+            state.locale = locale;
         });
         builder.addCase(authenticateUser.fulfilled, (state, { payload }) => {
             state.tokenId = payload.access_token;

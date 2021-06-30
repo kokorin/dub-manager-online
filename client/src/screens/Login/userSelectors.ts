@@ -11,3 +11,13 @@ export const selectIsAuthenticated = createSelector<StateType, User, boolean>(
     (state) => state.user,
     (user) => user.tokenId != null,
 );
+
+export const selectUserName = createSelector<StateType, User, string>(
+    (state) => state.user,
+    (user) => user.name ?? "anonymous",
+);
+
+export const selectUserPicture = createSelector<StateType, User, string>(
+    (state) => state.user,
+    (user) => user.picture ?? "",
+);
