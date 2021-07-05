@@ -1,47 +1,20 @@
 import AnimeDetailsComponent from "./AnimeDetailsComponent";
-import { Anime, AnimeType } from "../domain";
-import React, { ReactNode } from "react";
-import { getAnime } from "../api";
+import React, { FC } from "react";
+import { useGetAnimeQuery } from "../api";
+import Loader from "./Loader";
 
-export interface AnimeDetailsProps {
+interface OwnProps {
     animeId: number;
 }
 
-interface AnimeDetailsState {
-    isLoading: boolean;
-    anime: Anime;
-}
+const AnimeDetails: FC<OwnProps> = (props) => {
+    const { data: anime, isLoading } = useGetAnimeQuery({ id: props.animeId });
 
-export default class AnimeDetails extends React.Component<AnimeDetailsProps, AnimeDetailsState> {
-    constructor(props: Readonly<AnimeDetailsProps>) {
-        super(props);
-        this.state = {
-            isLoading: false,
-            anime: {
-                id: 0,
-                type: AnimeType.TVSERIES,
-                titles: [],
-            },
-        };
+    if (!anime || isLoading) {
+        return <Loader />;
     }
 
-    private fetchAnime = async () => {
-        this.setState({ isLoading: true });
+    return <AnimeDetailsComponent anime={anime} />;
+};
 
-        const anime = await getAnime(this.props.animeId);
-        this.setState({
-            // TODO check if ...this.state is really needed
-            ...this.state,
-            isLoading: false,
-            anime,
-        });
-    };
-
-    componentDidMount(): void {
-        this.fetchAnime();
-    }
-
-    render(): ReactNode {
-        return <AnimeDetailsComponent anime={this.state.anime} />;
-    }
-}
+export default AnimeDetails;

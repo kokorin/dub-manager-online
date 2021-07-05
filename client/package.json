@@ -1,81 +1,80 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.58",
-    "@reduxjs/toolkit": "^1.6.0",
-    "axios": "^0.21.1",
-    "bootstrap": "^5.0.2",
-    "node-fetch": "^2.6.1",
-    "qs": "^6.10.1",
-    "react": "^17.0.2",
-    "react-bootstrap": "^1.6.1",
-    "react-dom": "^17.0.2",
-    "react-google-login": "^5.2.2",
-    "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --coverage --watchAll=false",
-    "lint": "eslint 'src/**/*.ts*'"
-  },
-  "jest": {
-    "coveragePathIgnorePatterns": [
-      "/generated/"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react-hooks/recommended",
-      "prettier",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "react/prop-types": "off"
+    "name": "client",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@material-ui/core": "^4.11.4",
+        "@material-ui/icons": "^4.11.2",
+        "@material-ui/lab": "^4.0.0-alpha.58",
+        "@reduxjs/toolkit": "^1.6.0",
+        "axios": "^0.21.1",
+        "bootstrap": "^5.0.2",
+        "node-fetch": "^2.6.1",
+        "qs": "^6.10.1",
+        "react": "^17.0.2",
+        "react-bootstrap": "^1.6.1",
+        "react-dom": "^17.0.2",
+        "react-google-login": "^5.2.2",
+        "react-redux": "^7.2.4",
+        "react-router-dom": "^5.2.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test --coverage --watchAll=false",
+        "lint": "eslint 'src/**/*.ts*'"
+    },
+    "jest": {
+        "coveragePathIgnorePatterns": [
+            "/generated/"
+        ]
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest",
+            "eslint:recommended",
+            "plugin:react/recommended",
+            "plugin:@typescript-eslint/recommended",
+            "plugin:react-hooks/recommended",
+            "prettier",
+            "plugin:prettier/recommended"
+        ],
+        "rules": {
+            "react/prop-types": "off"
+        }
+    },
+    "prettier": {
+        "printWidth": 120,
+        "tabWidth": 4,
+        "semi": true,
+        "trailingComma": "all"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "proxy": "http://localhost:8080",
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.14.1",
+        "@testing-library/react": "^12.0.0",
+        "@types/node": "^15.12.5",
+        "@types/qs": "^6.9.6",
+        "@types/react": "^17.0.11",
+        "@types/react-dom": "^17.0.8",
+        "@types/react-router-dom": "^5.1.7",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "prettier": "^2.3.2",
+        "react-scripts": "4.0.3",
+        "typescript": "^4.3.4"
     }
-  },
-  "prettier": {
-    "printWidth": 120,
-    "tabWidth": 4,
-    "semi": true,
-    "trailingComma": "all"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://localhost:8080",
-  "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.3.5",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@types/node": "^15.12.5",
-    "@types/qs": "^6.9.6",
-    "@types/react": "^17.0.11",
-    "@types/react-dom": "^17.0.8",
-    "@types/react-router-dom": "^5.1.7",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.3.4"
-  }
 }

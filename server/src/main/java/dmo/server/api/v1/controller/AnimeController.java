@@ -7,6 +7,7 @@ import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.Anime;
 import dmo.server.service.AnimeService;
 import dmo.server.service.EpisodeService;
+import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ public class AnimeController {
     private final AnimeMapper animeMapper;
 
     @GetMapping
+    @ApiOperation(value = "Search Anime by title", nickname = "findAnime")
     public PageDto<AnimeDto> findAll(@RequestParam(value = "title", defaultValue = "") String title,
                                           @RequestParam("page") @Min(0) int page,
                                           @RequestParam("size") @Min(1) @Max(100) int size) {
@@ -49,13 +51,15 @@ public class AnimeController {
     }
 
     @GetMapping("{id}")
+    @ApiOperation(value = "Get Anime description", nickname = "getAnime")
     public AnimeDto getAnime(@PathVariable("id") Long id) {
         Anime result = animeService.findById(id);
         return animeMapper.toAnimeDto(result);
     }
 
     @GetMapping("{id}/episodes")
-    public PageDto<EpisodeDto> getEpisodes(@PathVariable("id") Long id,
+    @ApiOperation(value = "Search Anime episodes", nickname = "findEpisodes")
+    public PageDto<EpisodeDto> findEpisodes(@PathVariable("id") Long id,
                                            @RequestParam("page") @Min(0) int page,
                                            @RequestParam("size") @Min(1) @Max(100) int size) {
         var pageRequest = PageRequest.of(page, size, Sort.by("type", "number"));

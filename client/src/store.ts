@@ -1,23 +1,19 @@
-import { combineReducers, configureStore, Dispatch } from "@reduxjs/toolkit";
-import userReducer from "screens/Login/userSlice";
-import animeListReducer from "screens/AnimeTable/animeTableSlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { api } from "./api";
+import authSlice from "./auth";
 
 const rootReducers = combineReducers({
-    user: userReducer,
-    animeList: animeListReducer,
+    auth: authSlice.reducer,
+    [api.reducerPath]: api.reducer,
 });
 
 const store = configureStore({
     reducer: rootReducers,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
     devTools: process.env.NODE_ENV !== "production",
 });
 
-export type StateType = ReturnType<typeof store.getState>;
-
-export interface ThunkConfig {
-    state: StateType;
-    // eslint-disable-next-line
-    dispatch: Dispatch<any>;
-}
+export type AppState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

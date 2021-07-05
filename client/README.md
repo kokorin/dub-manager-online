@@ -4,32 +4,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## REST Client Generation
 
-Shell
-```
-npx @openapitools/openapi-generator-cli generate \
-    -i ../server/src/test/resources/dmo/server/openapi_v1.json \
-    -g typescript-fetch \
-    --api-package api \
-    --model-package domain \
-    --invoker-package rootpackage \
-    --additional-properties=typescriptThreePlus=true \
-    -o src/api/generated
-``` 
+Shell & PowerShell
 
-PowerShell
 ```
-npx @openapitools/openapi-generator-cli generate `
-    -i ../server/src/test/resources/dmo/server/openapi_v1.json `
-    -g typescript-fetch `
-    --api-package api `
-    --model-package domain `
-    --invoker-package rootpackage `
-    --additional-properties=typescriptThreePlus=true `
-    -o src/api/generated
-``` 
+npx @rtk-incubator/rtk-query-codegen-openapi -h ../server/src/test/resources/dmo/server/openapi_v1.json > ./src/api/generated.ts
+```
 
 # Available Scripts
-
 
 In the project directory, you can run:
 
