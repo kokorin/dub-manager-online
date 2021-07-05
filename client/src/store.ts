@@ -1,19 +1,18 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { api } from "./api";
-import authSlice from "./auth";
+import { api, authErrorHandler } from "./api";
+import auth from "./auth";
 
 const rootReducers = combineReducers({
-    auth: authSlice.reducer,
+    auth: auth,
     [api.reducerPath]: api.reducer,
 });
 
 const store = configureStore({
     reducer: rootReducers,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware, authErrorHandler),
     devTools: process.env.NODE_ENV !== "production",
 });
 
 export type AppState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
 
 export default store;

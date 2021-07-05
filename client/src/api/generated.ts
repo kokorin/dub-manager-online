@@ -1,17 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 export const api = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "/" }),
     tagTypes: [],
     endpoints: (build) => ({
         findAnime: build.query<FindAnimeApiResponse, FindAnimeApiArg>({
             query: (queryArg) => ({
                 url: `/api/v1/anime`,
-                params: {
-                    page: queryArg.page,
-                    size: queryArg.size,
-                    title: queryArg.title,
-                },
+                params: { page: queryArg.page, size: queryArg.size, title: queryArg.title },
             }),
         }),
         getAnime: build.query<GetAnimeApiResponse, GetAnimeApiArg>({
@@ -84,7 +80,7 @@ export type FindAnimeStatusesApiArg = {
     /** size */
     size: number;
 };
-export type UpdateAnimeStatusApiResponse /** status 200 OK */ = AnimeStatusDto | /** status 201 Created */ undefined;
+export type UpdateAnimeStatusApiResponse = /** status 200 OK */ AnimeStatusDto | /** status 201 Created */ undefined;
 export type UpdateAnimeStatusApiArg = {
     /** animeId */
     animeId: number;

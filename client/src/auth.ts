@@ -12,9 +12,15 @@ const initialState: Auth = {
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        notAuthorized: (state) => {
+            state.isAuthenticated = false;
+        },
+    },
 });
 
 export const selectAuth: (state: AppState) => Auth = (state: AppState) => state.auth;
 
-export default authSlice;
+export const { notAuthorized } = authSlice.actions;
+
+export default authSlice.reducer;
