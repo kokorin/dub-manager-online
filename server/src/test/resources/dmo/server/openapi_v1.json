@@ -41,8 +41,8 @@
         "tags": [
           "anime-controller"
         ],
-        "summary": "findAll",
-        "operationId": "findAllUsingGET",
+        "summary": "Search Anime by title",
+        "operationId": "findAnime",
         "produces": [
           "*/*"
         ],
@@ -95,8 +95,8 @@
         "tags": [
           "anime-controller"
         ],
-        "summary": "getAnime",
-        "operationId": "getAnimeUsingGET",
+        "summary": "Get Anime description",
+        "operationId": "getAnime",
         "produces": [
           "*/*"
         ],
@@ -134,8 +134,8 @@
         "tags": [
           "anime-controller"
         ],
-        "summary": "getEpisodes",
-        "operationId": "getEpisodesUsingGET",
+        "summary": "Search Anime episodes",
+        "operationId": "findEpisodes",
         "produces": [
           "*/*"
         ],
@@ -189,8 +189,8 @@
         "tags": [
           "configuration-controller"
         ],
-        "summary": "getConfiguration",
-        "operationId": "getConfigurationUsingGET",
+        "summary": "Get client-specific configuration from server",
+        "operationId": "getConfiguration",
         "produces": [
           "*/*"
         ],
@@ -218,8 +218,8 @@
         "tags": [
           "user-controller"
         ],
-        "summary": "getUser",
-        "operationId": "getUserUsingGET",
+        "summary": "Get current user information",
+        "operationId": "getCurrentUser",
         "produces": [
           "*/*"
         ],
@@ -247,8 +247,8 @@
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "findAll",
-        "operationId": "findAllUsingGET_1",
+        "summary": "Find all Anime tracked by current user",
+        "operationId": "findAnimeStatuses",
         "produces": [
           "*/*"
         ],
@@ -294,8 +294,8 @@
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "updateStatus",
-        "operationId": "updateStatusUsingPOST",
+        "summary": "Update status of Anime tracked by current user",
+        "operationId": "updateAnimeStatus",
         "consumes": [
           "application/json"
         ],
@@ -348,8 +348,8 @@
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "getEpisodes",
-        "operationId": "getEpisodesUsingGET_1",
+        "summary": "Find all Episode of Anime tracked by current user",
+        "operationId": "findEpisodeStatuses",
         "produces": [
           "*/*"
         ],
@@ -507,6 +507,9 @@
     },
     "ConfigurationDto": {
       "type": "object",
+      "required": [
+        "googleOAuthClientId"
+      ],
       "properties": {
         "googleOAuthClientId": {
           "type": "string"

@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import { Route, Switch } from "react-router-dom";
 import { SecureRoute } from "components/SecureRoute";
-import { AnimeTable } from "screens/AnimeTable";
 import { AnimeView } from "screens/AnimeView";
-import { Login } from "screens/Login";
 import { NotFound } from "screens/NotFound";
+import { AnimeTable } from "../../screens/AnimeTable";
+import { Login } from "../../screens/Login";
 
 interface OwnProps {
     isAuthenticated: boolean;

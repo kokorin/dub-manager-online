@@ -1,21 +1,21 @@
 import { resolveAnimeTitle } from "../service";
 import { Anime } from "../domain";
-import React, { ReactNode } from "react";
+import React, { FC } from "react";
 
-export interface AnimeDetailsComponentProps {
+export interface OwnProps {
     anime: Anime;
 }
 
-export default class AnimeDetailsComponent extends React.Component<AnimeDetailsComponentProps> {
-    render(): ReactNode {
-        const anime = this.props.anime;
+const AnimeDetailsComponent: FC<OwnProps> = (props) => {
+    const anime = props.anime;
 
-        return (
-            <div>
-                <div>ID: {anime.id}</div>
-                <div>TYPE: {anime.type}</div>
-                <div>TITLE: {resolveAnimeTitle(anime.titles)}</div>
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+            <div>ID: {anime.id}</div>
+            <div>TYPE: {anime.type}</div>
+            <div>TITLE: {resolveAnimeTitle(anime.titles)}</div>
+        </div>
+    );
+};
+
+export default AnimeDetailsComponent;
