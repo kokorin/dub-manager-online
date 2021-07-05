@@ -23,8 +23,8 @@ export const AnimeTable: FC = () => {
         return <div>Loading...</div>;
     }
 
-    const animeTableRows = data.content.map((anime, index) => (
-        <TableRow key={index}>
+    const animeTableRows = data.content.map((anime) => (
+        <TableRow key={anime.id}>
             <TableCell component="th" scope="row">
                 <Link to={`/anime/${anime.id}`}>{anime.id}</Link>
             </TableCell>
