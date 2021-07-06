@@ -29,13 +29,13 @@ const AnimeStatusTable: FC = () => {
         const to = `/anime/${animeStatus.anime.id}`;
         return (
             <TableRow key={animeStatus.anime.id}>
-                <TableCell>
+                <TableCell align="center">
                     <Link to={to}>{animeStatus.anime.id}</Link>
                 </TableCell>
-                <TableCell>{resolveAnimeTitle(animeStatus.anime.titles)}</TableCell>
-                <TableCell>{animeStatus.anime.type}</TableCell>
-                <TableCell>{animeStatus.progress}</TableCell>
-                <TableCell>
+                <TableCell align="center">{resolveAnimeTitle(animeStatus.anime.titles)}</TableCell>
+                <TableCell align="center">{animeStatus.anime.type}</TableCell>
+                <TableCell align="center">{animeStatus.progress}</TableCell>
+                <TableCell align="center">
                     {animeStatus.completedRegularEpisodes}/{animeStatus.totalRegularEpisodes}
                 </TableCell>
             </TableRow>
@@ -44,6 +44,7 @@ const AnimeStatusTable: FC = () => {
 
     return (
         <TableWithSearch
+            key="animeStatusTable"
             head={head}
             number={page}
             size={size}
