@@ -5,6 +5,9 @@ import dmo.server.repository.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +16,14 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 @RequiredArgsConstructor
-public class DubUserDetailsService {
+public class DubUserDetailsService implements UserDetailsService {
     @NonNull
     private final UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 
     @Transactional
     public DubUserDetails loadOrCreateUserByEmail(String email) {

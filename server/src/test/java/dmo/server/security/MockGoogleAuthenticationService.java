@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Primary
-public class MockGoogleAuthenticationService extends GoogleAuthenticationService {
-    public MockGoogleAuthenticationService() {
+public class MockGoogleAuthenticationService /*extends GoogleAuthenticationService*/ {
+    /*public MockGoogleAuthenticationService() {
         super(new GoogleOAuthProperties("Don't give anything"));
     }
 
@@ -26,5 +26,5 @@ public class MockGoogleAuthenticationService extends GoogleAuthenticationService
                 AuthorityUtils.NO_AUTHORITIES,
                 null
         );
-    }
+    }*/
 }

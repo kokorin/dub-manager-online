@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Slf4j
 public class GoogleAuthenticationService implements InitializingBean {

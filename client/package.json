@@ -8,15 +8,13 @@
         "@material-ui/lab": "^4.0.0-alpha.58",
         "@reduxjs/toolkit": "^1.6.0",
         "axios": "^0.21.1",
-        "bootstrap": "^5.0.2",
         "node-fetch": "^2.6.1",
         "qs": "^6.10.1",
         "react": "^17.0.2",
-        "react-bootstrap": "^1.6.1",
         "react-dom": "^17.0.2",
-        "react-google-login": "^5.2.2",
         "react-redux": "^7.2.4",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "react-social-login-buttons": "^3.5.0"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -62,7 +60,6 @@
             "last 1 safari version"
         ]
     },
-    "proxy": "http://localhost:8080",
     "devDependencies": {
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",
@@ -73,6 +70,7 @@
         "@types/react-router-dom": "^5.1.7",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
+        "http-proxy-middleware": "^0.19.1",
         "prettier": "^2.3.2",
         "react-scripts": "4.0.3",
         "typescript": "^4.3.4"

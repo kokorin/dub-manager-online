@@ -1,3 +1,14 @@
+# OAuth2
+
+This app uses OAuth2
+
+## GitHub
+
+Create client ID and secret:
+
+https://github.com/settings/applications/new
+
+# Running DB locally
 
 Shell
 ```

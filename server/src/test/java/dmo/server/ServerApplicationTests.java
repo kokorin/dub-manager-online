@@ -1,6 +1,5 @@
 package dmo.server;
 
-import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
 import dmo.server.event.AnimeDeleted;
@@ -13,9 +12,6 @@ import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
 import dmo.server.repository.AnimeUpdateRepository;
 import dmo.server.repository.UserRepository;
-import dmo.server.security.DubUserDetails;
-import dmo.server.security.GoogleAuthenticationService;
-import dmo.server.security.JwtService;
 import dmo.server.service.AnimeUpdater;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,17 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.util.LinkedMultiValueMap;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -43,11 +34,14 @@ import org.testcontainers.utility.DockerImageName;
 import retrofit2.mock.Calls;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 import static dmo.server.domain.Anime.Type.DELETED;
 import static dmo.server.domain.Anime.Type.UNKNOWN;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = MockAnidbConf.class)
 @SpringJUnitConfig
@@ -87,12 +81,6 @@ class ServerApplicationTests {
 
     @Autowired
     private AnimeUpdater animeUpdater;
-
-    @SpyBean
-    private GoogleAuthenticationService googleAuthenticationService;
-
-    @Autowired
-    private JwtService jwtService;
 
     private static final DockerImageName MARIA_ALPINE = DockerImageName
             .parse("yobasystems/alpine-mariadb")
