@@ -45,7 +45,7 @@ public class JwtService {
     }
 
     public String toJwt(DubUserDetails userDetails) {
-        log.debug("Generation JWT: {}", userDetails);
+        log.debug("Generating JWT: {}", userDetails);
         return Jwts.builder()
                 .setId(UUID.randomUUID().toString())
                 .setSubject(userDetails.getUsername())

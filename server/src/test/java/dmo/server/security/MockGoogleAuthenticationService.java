@@ -1,8 +1,6 @@
 package dmo.server.security;
 
-import dmo.server.prop.GoogleOAuthProperties;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 @Component

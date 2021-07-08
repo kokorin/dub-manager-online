@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -18,7 +21,7 @@ import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @NonNull
     private final JwtService jwtService;
@@ -27,24 +30,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
                                         HttpServletResponse httpServletResponse,
                                         Authentication authentication) throws IOException, ServletException {
-        DubUserDetails userDetails = (DubUserDetails) authentication.getPrincipal();
+        var userDetails = (OAuth2User) authentication.getPrincipal();
         String jwt = jwtService.toJwt(userDetails);
-
-        long expiresIn = Duration.between(Instant.now(), userDetails.getExpiresAfter()).toMillis();
-        String response = "{\n" +
-                "   \"access_token\": \"" + jwt + "\",\n" +
-                "   \"expires_in\": " + expiresIn + "\n" +
-                "}\n";
-
-        httpServletResponse.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
         Cookie accessTokenCookie = new Cookie("access_token", jwt);
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/api/");
         httpServletResponse.addCookie(accessTokenCookie);
 
-        httpServletResponse.getWriter()
-                .append(response)
-                .flush();
+        super.onAuthenticationSuccess(httpServletRequest, httpServletResponse, authentication);
     }
 }

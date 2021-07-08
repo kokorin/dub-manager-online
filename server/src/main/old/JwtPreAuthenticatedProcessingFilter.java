@@ -14,7 +14,7 @@ public class JwtPreAuthenticatedProcessingFilter extends AbstractPreAuthenticate
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (!StringUtils.isEmpty(authHeader)) {
+        if (StringUtils.hasText(authHeader)) {
             String[] typeAndValue = authHeader.split(" ");
             if (typeAndValue.length != 2 || !"Bearer".equalsIgnoreCase(typeAndValue[0])) {
                 return null;

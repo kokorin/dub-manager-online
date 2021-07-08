@@ -1,6 +1,5 @@
 package dmo.server.integration.anidb;
 
-import com.google.common.collect.Iterables;
 import okhttp3.*;
 import okio.Okio;
 
