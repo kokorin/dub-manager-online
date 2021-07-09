@@ -1,12 +1,16 @@
 # OAuth2
 
-This app uses OAuth2
+This app uses OAuth2.
 
-## GitHub
+Read about OAuth resource-server multi-tenancy in Spring:
 
-Create client ID and secret:
+https://docs.spring.io/spring-security/site/docs/current/reference/html5/#oauth2resourceserver-multitenancy
 
-https://github.com/settings/applications/new
+## Google Auth Provider
+
+## GitHub Auth Provider
+
+Create client ID and secret: https://github.com/settings/applications/new
 
 # Running DB locally
 

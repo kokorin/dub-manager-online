@@ -113,7 +113,6 @@ public class ApiTest {
         assertNotNull(response);
         var user = response.getBody();
         assertNotNull(user);
-        assertNotNull(user.getId());
         assertNotNull(user.getEmail());
 
         assertThat(user.getEmail(), endsWith("@dub-manager.online"));
