@@ -2,8 +2,11 @@ package dmo.server.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,10 +14,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtIssuerAuthenticationManagerResolver;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+
+import java.util.Collections;
+import java.util.function.Function;
 
 @Configuration
 @EnableWebSecurity
@@ -28,13 +37,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return result;
     }
 
+    private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
+        return new OidcUserAuthenticationConverter();
+    }
+
+    private Function<String, AuthenticationManager> authManagerProducer() {
+        return issuer -> {
+            var jwtDecoder = JwtDecoders.fromIssuerLocation(issuer);
+            var provider = new JwtAuthenticationProvider(jwtDecoder);
+            provider.setJwtAuthenticationConverter(jwtAuthenticationConverter());
+            return provider::authenticate;
+        };
+    }
+
+    private AuthenticationManagerResolver<String> issuerAuthenticationManagerResolver() {
+        return new TrustedIssuerJwtAuthenticationManagerResolver(
+                Collections.singleton("https://accounts.google.com")::contains,
+                authManagerProducer()
+        );
+    }
+
     private AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new SetAuthTokenUrlAuthenticationSuccessHandler();
     }
 
     private JwtIssuerAuthenticationManagerResolver authenticationManagerResolver() {
         return new JwtIssuerAuthenticationManagerResolver(
-                "https://accounts.google.com"
+                issuerAuthenticationManagerResolver()
         );
     }
 

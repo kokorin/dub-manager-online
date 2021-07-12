@@ -5,7 +5,9 @@ import dmo.server.api.v1.mapper.UserMapper;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,6 @@ public class UserController {
     @GetMapping
     @ApiOperation(value = "Get current user information", nickname = "getCurrentUser")
     public UserDto getUser(@AuthenticationPrincipal OidcUser user) {
-        return userMapper.toDto(user);
+        return userMapper.toDto( user);
     }
 }
