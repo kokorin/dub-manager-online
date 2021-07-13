@@ -2,6 +2,9 @@ package dmo.server;
 
 import dmo.server.api.v1.dto.*;
 import dmo.server.integration.anidb.MockAnidbConf;
+import dmo.server.security.OidcUserAuthenticationConverter;
+import dmo.server.service.UserRegistrar;
+import lombok.SneakyThrows;
 import no.nav.security.mock.oauth2.MockOAuth2Server;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +15,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -30,6 +41,8 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -53,12 +66,14 @@ import static org.junit.jupiter.api.Assertions.*;
 })
 public class ApiTest {
 
-
     @LocalServerPort
     private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private UserRegistrar userRegistrar;
 
     private static final DockerImageName MARIA_ALPINE = DockerImageName
             .parse("yobasystems/alpine-mariadb")
@@ -128,7 +143,7 @@ public class ApiTest {
     }
 
     @Test
-    void userIsRegisteredAutomaticallyUponFirstLoginWithGoogle() {
+    void userIsRegisteredAutomaticallyUponFirstLogin() {
         var authHeaders = loginWithAuthMock();
 
         var url = "http://localhost:" + port + "/api/v1/users/current";
@@ -323,21 +338,36 @@ public class ApiTest {
         final String expected;
         try (InputStream input = this.getClass().getResourceAsStream("openapi_v1.json")) {
             expected = StreamUtils.copyToString(input, Charset.defaultCharset())
-                    .replaceAll("localhost:8080", "localhost:" + port)
-                    .replaceAll("\\s*\\r?\\n?$", " ");
+                    .replaceAll("localhost:8080", "localhost:" + port);
         }
 
         JSONAssert.assertEquals("Actual:\n" + content, expected, content, true);
     }
 
+    @SneakyThrows
     private HttpHeaders loginWithAuthMock() {
         var username = UUID.randomUUID().toString();
         var email = username + "@dub-manager.online";
 
         var token = mockOAuth2Server.issueToken(ISSUER, username, "audience", Map.of("email", email));
+        var tokenStr = token.serialize();
+
+        var jwt = new Jwt(
+                tokenStr,
+                token.getJWTClaimsSet().getIssueTime().toInstant(),
+                token.getJWTClaimsSet().getExpirationTime().toInstant(),
+                token.getHeader().toJSONObject(),
+                token.getJWTClaimsSet().toJSONObject()
+        );
+
+        var authToken = new OidcUserAuthenticationConverter().convert(jwt);
+
+        userRegistrar.onAuthenticationSuccess(
+                new AuthenticationSuccessEvent(authToken)
+        );
 
         var resultHeaders = new HttpHeaders();
-        resultHeaders.add("Cookie", "access_token=" + token.serialize());
+        resultHeaders.add("Cookie", "access_token=" + tokenStr);
         return resultHeaders;
     }
 }
