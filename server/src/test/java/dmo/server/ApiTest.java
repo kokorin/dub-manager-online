@@ -2,6 +2,8 @@ package dmo.server;
 
 import dmo.server.api.v1.dto.*;
 import dmo.server.integration.anidb.MockAnidbConf;
+import no.nav.security.mock.oauth2.MockOAuth2Server;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -10,12 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.StreamUtils;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.MariaDBContainer;
@@ -23,6 +27,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Collections;
@@ -48,13 +53,12 @@ import static org.junit.jupiter.api.Assertions.*;
 })
 public class ApiTest {
 
+
     @LocalServerPort
     private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    private static boolean animeListUpdated = false;
 
     private static final DockerImageName MARIA_ALPINE = DockerImageName
             .parse("yobasystems/alpine-mariadb")
@@ -66,12 +70,31 @@ public class ApiTest {
             .withEnv("MYSQL_CHARSET", "utf8mb4")
             .withEnv("MYSQL_COLLATION", "utf8mb4_general_ci");
 
+
+    private static final String ISSUER = "mock-auth";
+
+    private static final MockOAuth2Server mockOAuth2Server = new MockOAuth2Server();
+
+    @BeforeAll
+    public static void startMockOAuth() throws IOException {
+        mockOAuth2Server.start();
+    }
+
     @DynamicPropertySource
     public static void updateConfig(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", database::getJdbcUrl);
         registry.add("spring.datasource.username", database::getUsername);
         registry.add("spring.datasource.password", database::getPassword);
+
+        registry.add("spring.security.oauth2.client.provider." + ISSUER + ".issuer-uri",
+                () -> mockOAuth2Server.issuerUrl(ISSUER).toString());
+        registry.add("spring.security.oauth2.client.registration." + ISSUER + ".client-id",
+                () -> "random-client-id");
+        registry.add("spring.security.oauth2.client.registration." + ISSUER + ".client-secret",
+                () -> "random-client-secret");
     }
+
+    private static boolean animeListUpdated = false;
 
     @BeforeEach
     public void waitUntilAnimeListIsUpdated() throws InterruptedException {
@@ -106,7 +129,7 @@ public class ApiTest {
 
     @Test
     void userIsRegisteredAutomaticallyUponFirstLoginWithGoogle() {
-        var authHeaders = loginWithGoogleAuthenticationMock();
+        var authHeaders = loginWithAuthMock();
 
         var url = "http://localhost:" + port + "/api/v1/users/current";
         var response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(authHeaders), UserDto.class);
@@ -128,7 +151,7 @@ public class ApiTest {
 
     @Test
     void animeListIsUpdated() throws InterruptedException {
-        var authHeaders = loginWithGoogleAuthenticationMock();
+        var authHeaders = loginWithAuthMock();
 
         var url = "http://localhost:" + port + "/api/v1/anime?page=0&size=100";
         var response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(authHeaders),
@@ -172,7 +195,7 @@ public class ApiTest {
 
     @Test
     void animeStatusCanBeUpdated() throws InterruptedException {
-        var authHeaders = loginWithGoogleAuthenticationMock();
+        var authHeaders = loginWithAuthMock();
         var animeId = 1L;
         var request = new UpdateAnimeStatusDto();
         request.setProgress(AnimeProgressDto.IN_PROGRESS);
@@ -228,7 +251,7 @@ public class ApiTest {
 
     @Test
     void episodeStatusNotAvailableIfNoAnimeStatusSet() throws InterruptedException {
-        var authHeaders = loginWithGoogleAuthenticationMock();
+        var authHeaders = loginWithAuthMock();
         var animeId = 1L;
 
         var response = restTemplate.exchange(
@@ -244,7 +267,7 @@ public class ApiTest {
 
     @Test
     void episodeStatusIsSetToNotStartedByDefault() throws InterruptedException {
-        var authHeaders = loginWithGoogleAuthenticationMock();
+        var authHeaders = loginWithAuthMock();
 
         var animeId = 1L;
         var episodeId = 1L;
@@ -307,25 +330,14 @@ public class ApiTest {
         JSONAssert.assertEquals("Actual:\n" + content, expected, content, true);
     }
 
-    private HttpHeaders loginWithGoogleAuthenticationMock() {
-        var url = "http://localhost:" + port + "/login/google";
-        var email = UUID.randomUUID() + "@dub-manager.online";
+    private HttpHeaders loginWithAuthMock() {
+        var username = UUID.randomUUID().toString();
+        var email = username + "@dub-manager.online";
 
-        var body = new LinkedMultiValueMap<String, String>();
-        body.add("id_token", email);
-
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        var request = new HttpEntity<>(body, headers);
-
-        var jwtResponse = restTemplate.postForObject(url, request, JwtResponse.class);
-
-        assertNotNull(jwtResponse);
-        assertNotNull(jwtResponse.getAccessToken());
-        assertNotNull(jwtResponse.getExpiresIn());
+        var token = mockOAuth2Server.issueToken(ISSUER, username, "audience", Map.of("email", email));
 
         var resultHeaders = new HttpHeaders();
-        resultHeaders.setBearerAuth(jwtResponse.getAccessToken());
+        resultHeaders.add("Cookie", "access_token=" + token.serialize());
         return resultHeaders;
     }
 }

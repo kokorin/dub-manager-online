@@ -20,6 +20,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <springfox.version>3.0.0</springfox.version>
         <retrofit.version>2.9.0</retrofit.version>
+        <okhttp4.version>4.9.1</okhttp4.version>
     </properties>
 
     <dependencyManagement>
@@ -83,16 +84,20 @@
             <version>${retrofit.version}</version>
         </dependency>
 
+        <!--
+            Use okhttp 4 because of mock-oauth2-server requires it.
+            Squareup states that 4th version is binary compatible with 3rd version.
+        -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp4.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>converter-jaxb</artifactId>
             <version>${retrofit.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>pl.droidsonroids.retrofit2</groupId>
-            <artifactId>converter-jspoon</artifactId>
-            <version>1.3.2</version>
         </dependency>
 
         <dependency>
@@ -140,6 +145,20 @@
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit-mock</artifactId>
             <version>${retrofit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>mock-oauth2-server</artifactId>
+            <version>0.3.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>${okhttp4.version}</version>
             <scope>test</scope>
         </dependency>
 
