@@ -38,18 +38,18 @@ public class AnimeStatusService {
 
     @Secured("ROLE_USER")
     @Transactional
-    public Page<AnimeStatus> findAll(Long userId, Pageable pageable) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+    public Page<AnimeStatus> findAll(String userEmail, Pageable pageable) {
+        User user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
 
         return animeStatusRepository.findAllByUser(user, pageable);
     }
 
     @Secured("ROLE_USER")
     @Transactional
-    public AnimeStatus updateAnimeStatus(Long userId, Long animeId, Consumer<AnimeStatus> updater) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+    public AnimeStatus updateAnimeStatus(String userEmail, Long animeId, Consumer<AnimeStatus> updater) {
+        var user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
 
         var anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));

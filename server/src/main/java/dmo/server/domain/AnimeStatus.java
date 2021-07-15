@@ -18,7 +18,7 @@ public class AnimeStatus {
     private Anime anime;
 
     @ManyToOne(optional = false)
-    @MapsId("userId")
+    @MapsId("userEmail")
     private User user;
 
     @Enumerated(EnumType.STRING)
@@ -50,7 +50,7 @@ public class AnimeStatus {
     private void updateId() {
         setId(new AnimeStatusId(
                 Optional.ofNullable(anime).map(Anime::getId).orElse(null),
-                Optional.ofNullable(user).map(User::getId).orElse(null)
+                Optional.ofNullable(user).map(User::getEmail).orElse(null)
         ));
     }
 
@@ -68,6 +68,6 @@ public class AnimeStatus {
         private static final long serialVersionUID = 1;
 
         private Long animeId;
-        private Long userId;
+        private String userEmail;
     }
 }

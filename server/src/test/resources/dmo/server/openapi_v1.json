@@ -23,10 +23,6 @@
       "description": "Anime Status Controller"
     },
     {
-      "name": "configuration-controller",
-      "description": "Configuration Controller"
-    },
-    {
       "name": "user-controller",
       "description": "User Controller"
     }
@@ -170,35 +166,6 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/PageDtoOfEpisodeDto"
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/v1/conf": {
-      "get": {
-        "tags": [
-          "configuration-controller"
-        ],
-        "summary": "Get client-specific configuration from server",
-        "operationId": "getConfiguration",
-        "produces": [
-          "*/*"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ConfigurationDto"
             }
           },
           "401": {
@@ -505,18 +472,6 @@
       },
       "title": "AnimeTitleDto"
     },
-    "ConfigurationDto": {
-      "type": "object",
-      "required": [
-        "googleOAuthClientId"
-      ],
-      "properties": {
-        "googleOAuthClientId": {
-          "type": "string"
-        }
-      },
-      "title": "ConfigurationDto"
-    },
     "EpisodeDto": {
       "type": "object",
       "required": [
@@ -783,13 +738,36 @@
     },
     "UserDto": {
       "type": "object",
+      "required": [
+        "email"
+      ],
       "properties": {
         "email": {
           "type": "string"
         },
-        "id": {
-          "type": "integer",
-          "format": "int64"
+        "familyName": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "middleName": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "preferredUsername": {
+          "type": "string"
         }
       },
       "title": "UserDto"

@@ -24,10 +24,10 @@ public interface EpisodeStatusRepository extends JpaRepository<EpisodeStatus, Ep
     }
 
     @Modifying
-    @Query("INSERT INTO EpisodeStatus(episodeId, userId)\n" +
-            "SELECT e.id, u.id\n" +
+    @Query("INSERT INTO EpisodeStatus(episodeId, userEmail)\n" +
+            "SELECT e.id, u.email\n" +
             "FROM AnimeStatus st\n" +
-            "JOIN User u ON u.id = st.id.userId\n" +
+            "JOIN User u ON u.email = st.id.userEmail\n" +
             "JOIN Episode e ON e.anime.id = st.id.animeId\n" +
             "JOIN Anime a ON a.id = st.id.animeId\n" +
             "WHERE a = :anime\n" +

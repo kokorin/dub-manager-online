@@ -20,7 +20,7 @@ server {
         proxy_pass  http://app;
     }
 
-    location ~* /login/.+ {
+    location ~* /oauth2/.+ {
         proxy_pass  http://app;
     }
 }
