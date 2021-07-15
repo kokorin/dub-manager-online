@@ -39,12 +39,9 @@ public class UserRegistrar {
             return;
         }
 
-        var user = userRepository.findById(oidUser.getEmail())
-                .orElseGet(() -> {
-                    var u = new User();
-                    u.setEmail(oidUser.getEmail());
-                    return userRepository.save(u);
-                });
+        var email = oidUser.getEmail();
+        var user = userRepository.findById(email)
+                .orElseGet(() -> userRepository.save(new User(email)));
 
         log.info("Confirmed user: {}", user);
     }
