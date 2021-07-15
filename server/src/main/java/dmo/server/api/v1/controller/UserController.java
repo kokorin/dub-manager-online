@@ -2,6 +2,7 @@ package dmo.server.api.v1.controller;
 
 import dmo.server.api.v1.dto.UserDto;
 import dmo.server.api.v1.mapper.UserMapper;
+import dmo.server.security.JwtUser;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +21,7 @@ public class UserController {
 
     @GetMapping
     @ApiOperation(value = "Get current user information", nickname = "getCurrentUser")
-    public UserDto getUser(@AuthenticationPrincipal OidcUser user) {
+    public UserDto getUser(@AuthenticationPrincipal JwtUser user) {
         return userMapper.toDto( user);
     }
 }

@@ -2,24 +2,25 @@ package dmo.server;
 
 import dmo.server.api.v1.dto.*;
 import dmo.server.integration.anidb.MockAnidbConf;
-import dmo.server.service.UserRegistrar;
+import dmo.server.okhttp.InMemoryCookieJar;
 import lombok.SneakyThrows;
 import no.nav.security.mock.oauth2.MockOAuth2Server;
+import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
-import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -59,12 +61,6 @@ public class ApiTest {
 
     @LocalServerPort
     private int port;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Autowired
-    private UserRegistrar userRegistrar;
 
     private static final DockerImageName MARIA_ALPINE = DockerImageName
             .parse("yobasystems/alpine-mariadb")
@@ -98,6 +94,8 @@ public class ApiTest {
                 () -> "random-client-id");
         registry.add("spring.security.oauth2.client.registration." + ISSUER + ".client-secret",
                 () -> "random-client-secret");
+        registry.add("spring.security.oauth2.client.registration." + ISSUER + ".scope",
+                () -> "profile,email,openid");
     }
 
     private static boolean animeListUpdated = false;
@@ -111,22 +109,8 @@ public class ApiTest {
     }
 
     @Test
-    void clientConfigurationDoesntRequireAuthentication() {
-        var response = restTemplate.getForEntity(
-                "http://localhost:" + port + "/api/v1/conf",
-                ConfigurationDto.class
-        );
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        var config = response.getBody();
-        assertNotNull(config);
-        assertEquals("GoogleAuthClientId", config.getGoogleOAuthClientId());
-    }
-
-    @Test
     void currentUserRequiresLogin() {
+        var restTemplate = getRestTemplate(false);
         var url = "http://localhost:" + port + "/api/v1/users/current";
         var response = restTemplate.getForEntity(url, Void.class);
         assertNotNull(response);
@@ -135,10 +119,10 @@ public class ApiTest {
 
     @Test
     void userIsRegisteredAutomaticallyUponFirstLogin() {
-        var authHeaders = loginWithAuthMock();
+        var restTemplate = getRestTemplate(true);
 
         var url = "http://localhost:" + port + "/api/v1/users/current";
-        var response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(authHeaders), UserDto.class);
+        var response = restTemplate.getForEntity(url, UserDto.class);
         assertNotNull(response);
         var user = response.getBody();
         assertNotNull(user);
@@ -149,6 +133,7 @@ public class ApiTest {
 
     @Test
     void animeListRequiresAuthentication() {
+        var restTemplate = getRestTemplate(false);
         var url = "http://localhost:" + port + "/api/v1/anime?page=0&size=100";
         var response = restTemplate.getForEntity(url, Void.class);
         assertNotNull(response);
@@ -157,10 +142,10 @@ public class ApiTest {
 
     @Test
     void animeListIsUpdated() throws InterruptedException {
-        var authHeaders = loginWithAuthMock();
+        var restTemplate = getRestTemplate(true);
 
         var url = "http://localhost:" + port + "/api/v1/anime?page=0&size=100";
-        var response = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<>(authHeaders),
+        var response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY,
                 new ParameterizedTypeReference<PageDto<AnimeDto>>() {
                 });
         assertNotNull(response);
@@ -183,7 +168,8 @@ public class ApiTest {
     }
 
     @Test
-    void animeStatusRequiresUpdate() throws InterruptedException {
+    void animeStatusUpdateRequiresAuthentication() throws InterruptedException {
+        var restTemplate = getRestTemplate(false);
         var animeId = 1L;
         var request = new UpdateAnimeStatusDto();
         request.setProgress(AnimeProgressDto.IN_PROGRESS);
@@ -201,7 +187,7 @@ public class ApiTest {
 
     @Test
     void animeStatusCanBeUpdated() throws InterruptedException {
-        var authHeaders = loginWithAuthMock();
+        var restTemplate = getRestTemplate(true);
         var animeId = 1L;
         var request = new UpdateAnimeStatusDto();
         request.setProgress(AnimeProgressDto.IN_PROGRESS);
@@ -209,7 +195,7 @@ public class ApiTest {
 
         var response = restTemplate.postForEntity(
                 "http://localhost:" + port + "/api/v1/users/current/anime/" + animeId,
-                new HttpEntity<>(request, authHeaders),
+                new HttpEntity<>(request),
                 AnimeStatusDto.class
         );
 
@@ -228,7 +214,7 @@ public class ApiTest {
         request.setProgress(AnimeProgressDto.COMPLETED);
         response = restTemplate.postForEntity(
                 "http://localhost:" + port + "/api/v1/users/current/anime/" + animeId,
-                new HttpEntity<>(request, authHeaders),
+                new HttpEntity<>(request),
                 AnimeStatusDto.class
         );
         assertNotNull(response);
@@ -244,6 +230,7 @@ public class ApiTest {
 
     @Test
     void episodeStatusRequiresAuthentication() throws InterruptedException {
+        var restTemplate = getRestTemplate(false);
         var animeId = 1L;
 
         var response = restTemplate.getForEntity(
@@ -257,15 +244,10 @@ public class ApiTest {
 
     @Test
     void episodeStatusNotAvailableIfNoAnimeStatusSet() throws InterruptedException {
-        var authHeaders = loginWithAuthMock();
+        var restTemplate = getRestTemplate(true);
         var animeId = 1L;
 
-        var response = restTemplate.exchange(
-                "http://localhost:" + port + "/api/v1/users/current/anime/" + animeId + "/episode/42",
-                HttpMethod.GET,
-                new HttpEntity<>(authHeaders),
-                Void.class
-        );
+        var response = restTemplate.getForEntity("http://localhost:" + port + "/api/v1/users/current/anime/" + animeId + "/episode/42", Void.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -273,7 +255,7 @@ public class ApiTest {
 
     @Test
     void episodeStatusIsSetToNotStartedByDefault() throws InterruptedException {
-        var authHeaders = loginWithAuthMock();
+        var restTemplate = getRestTemplate(true);
 
         var animeId = 1L;
         var episodeId = 1L;
@@ -283,7 +265,7 @@ public class ApiTest {
 
         var animeResponse = restTemplate.postForEntity(
                 "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
-                new HttpEntity<>(request, authHeaders),
+                new HttpEntity<>(request),
                 AnimeStatusDto.class,
                 Map.of("port", port, "animeId", animeId)
         );
@@ -297,7 +279,7 @@ public class ApiTest {
         var episodesResponse = restTemplate.exchange(
                 "http://localhost:{port}/api/v1/users/current/anime/{animeId}/episodes?page=0&size=100",
                 HttpMethod.GET,
-                new HttpEntity<>(authHeaders),
+                HttpEntity.EMPTY,
                 new ParameterizedTypeReference<PageDto<EpisodeStatusDto>>() {
                 },
                 Map.of("port", port, "animeId", animeId, "episodeId", episodeId)
@@ -321,6 +303,7 @@ public class ApiTest {
 
     @Test
     void openapiIsUpToDate() throws Exception {
+        var restTemplate = getRestTemplate(false);
         assertNotEquals(0, port);
 
         var url = "http://localhost:" + port + "/api/openapi?group=v1";
@@ -336,29 +319,34 @@ public class ApiTest {
     }
 
     @SneakyThrows
-    private HttpHeaders loginWithAuthMock() {
-        var username = UUID.randomUUID().toString();
-        var email = username + "@dub-manager.online";
+    private TestRestTemplate getRestTemplate(boolean authorize) {
+        var restTemplate = new TestRestTemplate(new RestTemplateBuilder()
+                .requestFactory(() -> new OkHttp3ClientHttpRequestFactory(
+                        new OkHttpClient(new OkHttpClient.Builder()
+                                .followRedirects(true)
+                                .cookieJar(new InMemoryCookieJar())
+                        )
+                )));
 
-        var token = mockOAuth2Server.issueToken(ISSUER, username, "audience", Map.of("email", email));
-        var tokenStr = token.serialize();
+        if (authorize) {
+            var username = UUID.randomUUID().toString();
+            var email = username + "@dub-manager.online";
 
-        /*var jwt = new Jwt(
-                tokenStr,
-                token.getJWTClaimsSet().getIssueTime().toInstant(),
-                token.getJWTClaimsSet().getExpirationTime().toInstant(),
-                token.getHeader().toJSONObject(),
-                token.getJWTClaimsSet().toJSONObject()
-        );
+            mockOAuth2Server.enqueueCallback(new DefaultOAuth2TokenCallback(
+                    ISSUER,
+                    username,
+                    List.of("audience"),
+                    Map.of("email", email),
+                    3600
+            ));
 
-        var authToken = new OidcUserAuthenticationConverter().convert(jwt);
+            var authorizationResponse = restTemplate.getForEntity(
+                    "http://localhost:{port}/oauth2/authorization/{issuer}",
+                    String.class,
+                    Map.of("port", port, "issuer", ISSUER)
+            );
+        }
 
-        userRegistrar.onAuthenticationSuccess(
-                new AuthenticationSuccessEvent(authToken)
-        );*/
-
-        var resultHeaders = new HttpHeaders();
-        resultHeaders.add("Cookie", "access_token=" + tokenStr);
-        return resultHeaders;
+        return restTemplate;
     }
 }

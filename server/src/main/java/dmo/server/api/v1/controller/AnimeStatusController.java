@@ -6,6 +6,7 @@ import dmo.server.api.v1.dto.PageDto;
 import dmo.server.api.v1.dto.UpdateAnimeStatusDto;
 import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.AnimeStatus;
+import dmo.server.security.JwtUser;
 import dmo.server.service.AnimeStatusService;
 import dmo.server.service.EpisodeStatusService;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,7 @@ public class AnimeStatusController {
 
     @GetMapping
     @ApiOperation(value = "Find all Anime tracked by current user", nickname = "findAnimeStatuses")
-    public PageDto<AnimeStatusDto> findAll(@AuthenticationPrincipal OidcUser user,
+    public PageDto<AnimeStatusDto> findAll(@AuthenticationPrincipal JwtUser user,
                                            @RequestParam("page") @Min(0) int page,
                                            @RequestParam("size") @Min(1) @Max(100) int size) {
         var pageRequest = PageRequest.of(page, size);
@@ -47,25 +48,25 @@ public class AnimeStatusController {
 
     @GetMapping("{id}/episodes")
     @ApiOperation(value = "Find all Episode of Anime tracked by current user", nickname = "findEpisodeStatuses")
-    public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal OidcUser oidcUser,
+    public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal JwtUser user,
                                                  @PathVariable("id") Long animeId,
                                                  @RequestParam("page") @Min(0) int page,
                                                  @RequestParam("size") @Min(1) @Max(100) int size) {
         var pageRequest = PageRequest.of(page, size);
-        var result = episodeStatusService.findByAnimeAndUser(animeId, oidcUser.getEmail(), pageRequest);
+        var result = episodeStatusService.findByAnimeAndUser(animeId, user.getEmail(), pageRequest);
 
         return animeMapper.toEpisodeStatusPageDto(result);
     }
 
     @PostMapping("{animeId}")
     @ApiOperation(value = "Update status of Anime tracked by current user", nickname = "updateAnimeStatus")
-    public AnimeStatusDto updateStatus(@AuthenticationPrincipal OidcUser userDetails,
+    public AnimeStatusDto updateStatus(@AuthenticationPrincipal JwtUser user,
                                        @PathVariable("animeId") @NotNull Long animeId,
                                        @RequestBody UpdateAnimeStatusDto updateAnimeStatusDto) {
         Consumer<AnimeStatus> updater = animeStatus -> animeMapper.updateAnimeStatus(updateAnimeStatusDto, animeStatus);
 
         var animeStatus = animeStatusService.updateAnimeStatus(
-                userDetails.getEmail(),
+                user.getEmail(),
                 animeId,
                 updater
         );

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,10 +16,14 @@ public class JwtUser implements UserDetails {
 
     private final String email;
     private final Collection<? extends GrantedAuthority> authorities;
-
-    public JwtUser(OidcUser oidcUser) {
-        this(oidcUser.getEmail(), oidcUser.getAuthorities());
-    }
+    private final String fullName;
+    private final String givenName;
+    private final String familyName;
+    private final String middleName;
+    private final String nickName;
+    private final String preferredUsername;
+    private final String picture;
+    private final String locale;
 
     @Override
     public String getUsername() {

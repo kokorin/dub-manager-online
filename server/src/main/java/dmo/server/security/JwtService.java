@@ -6,17 +6,13 @@ import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
-import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ByteUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import dmo.server.domain.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.util.StringUtils;
 
@@ -26,7 +22,6 @@ import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 
 /**
  * @see <a href="https://connect2id.com/products/nimbus-jose-jwt">nimbus-jose-jwt</a>
@@ -57,8 +52,14 @@ public class JwtService {
     }
 
     private static final String AUTHORITIES_CLAIM = "authorities";
-    private static final SecurityContext EMPTY_CONTEXT = new SecurityContext() {
-    };
+    private static final String FULL_NAME_CLAIM = "fullName";
+    private static final String GIVEN_NAME_CLAIM = "givenName";
+    private static final String FAMILY_NAME_CLAIM = "familyName";
+    private static final String MIDDLE_NAME_CLAIM = "middleName";
+    private static final String NICK_NAME_CLAIM = "nickName";
+    private static final String PREFERRED_USERNAME_CLAIM = "preferredUsername";
+    private static final String PICTURE_CLAIM = "picture";
+    private static final String LOCALE_CLAIM = "locale";
 
     public String createToken(JwtUser user) {
         return createToken(user, Instant.now().plus(expiration));
@@ -74,6 +75,14 @@ public class JwtService {
         var payload = new JWTClaimsSet.Builder()
                 .subject(user.getEmail())
                 .claim(AUTHORITIES_CLAIM, AuthorityUtils.authorityListToSet(user.getAuthorities()))
+                .claim(FULL_NAME_CLAIM, user.getFullName())
+                .claim(GIVEN_NAME_CLAIM, user.getGivenName())
+                .claim(FAMILY_NAME_CLAIM, user.getFamilyName())
+                .claim(MIDDLE_NAME_CLAIM, user.getMiddleName())
+                .claim(NICK_NAME_CLAIM, user.getNickName())
+                .claim(PREFERRED_USERNAME_CLAIM, user.getPreferredUsername())
+                .claim(PICTURE_CLAIM, user.getPicture())
+                .claim(LOCALE_CLAIM, user.getLocale())
                 .expirationTime(Date.from(expirationTime))
                 .build();
 
@@ -124,7 +133,15 @@ public class JwtService {
         try {
             return new JwtUser(
                     claims.getSubject(),
-                    AuthorityUtils.createAuthorityList(claims.getStringArrayClaim(AUTHORITIES_CLAIM))
+                    AuthorityUtils.createAuthorityList(claims.getStringArrayClaim(AUTHORITIES_CLAIM)),
+                    claims.getStringClaim(FULL_NAME_CLAIM),
+                    claims.getStringClaim(GIVEN_NAME_CLAIM),
+                    claims.getStringClaim(FAMILY_NAME_CLAIM),
+                    claims.getStringClaim(MIDDLE_NAME_CLAIM),
+                    claims.getStringClaim(NICK_NAME_CLAIM),
+                    claims.getStringClaim(PREFERRED_USERNAME_CLAIM),
+                    claims.getStringClaim(PICTURE_CLAIM),
+                    claims.getStringClaim(LOCALE_CLAIM)
             );
         } catch (ParseException | NullPointerException e) {
             throw new BadCredentialsException("Failed to parse claims", e);

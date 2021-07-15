@@ -1,11 +1,11 @@
 package dmo.server.security;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.time.Instant;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
@@ -30,30 +30,79 @@ class JwtServiceTest {
     @Test
     void createAndParse() {
         var jwtService = new JwtService(SECRET);
-        var user = new JwtUser("username@mailserver.com", AuthorityUtils.NO_AUTHORITIES);
+        var user = new JwtUser(
+                "username@mailserver.com",
+                AuthorityUtils.NO_AUTHORITIES,
+                "fullName",
+                "givenName",
+                "familyName",
+                "middleName",
+                "nickName",
+                "preferredUsername",
+                "picture",
+                "locale"
+        );
         var token = jwtService.createToken(user);
         var actualUser = jwtService.parseToken(token);
 
         assertEquals("username@mailserver.com", actualUser.getEmail());
         assertEquals(AuthorityUtils.NO_AUTHORITIES, actualUser.getAuthorities());
+        assertEquals("fullName", actualUser.getFullName());
+        assertEquals("givenName", actualUser.getGivenName());
+        assertEquals("familyName", actualUser.getFamilyName());
+        assertEquals("middleName", actualUser.getMiddleName());
+        assertEquals("nickName", actualUser.getNickName());
+        assertEquals("preferredUsername", actualUser.getPreferredUsername());
+        assertEquals("picture", actualUser.getPicture());
+        assertEquals("locale", actualUser.getLocale());
     }
 
     @Test
     void createAndParseWithAuthorities() {
         var jwtService = new JwtService(SECRET);
         var authorities = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_RANDOM");
-        var user = new JwtUser("username@mailserver.com", authorities);
+        var user = new JwtUser(
+                "username@mailserver.com",
+                authorities,
+                "fullName",
+                "givenName",
+                "familyName",
+                "middleName",
+                "nickName",
+                "preferredUsername",
+                "picture",
+                "locale"
+        );
         var token = jwtService.createToken(user);
         var actualUser = jwtService.parseToken(token);
 
         assertEquals("username@mailserver.com", actualUser.getEmail());
-        assertEquals(AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_RANDOM"),actualUser.getAuthorities());
+        assertEquals(Set.of("ROLE_USER", "ROLE_RANDOM"), AuthorityUtils.authorityListToSet(actualUser.getAuthorities()));
+        assertEquals("fullName", actualUser.getFullName());
+        assertEquals("givenName", actualUser.getGivenName());
+        assertEquals("familyName", actualUser.getFamilyName());
+        assertEquals("middleName", actualUser.getMiddleName());
+        assertEquals("nickName", actualUser.getNickName());
+        assertEquals("preferredUsername", actualUser.getPreferredUsername());
+        assertEquals("picture", actualUser.getPicture());
+        assertEquals("locale", actualUser.getLocale());
     }
 
     @Test
     void badCredentialsIsThrownIfSignedWithAnotherSecret() {
         var jwtService = new JwtService(SECRET);
-        var user = new JwtUser("username@mailserver.com", AuthorityUtils.createAuthorityList("ROLE_USER"));
+        var user = new JwtUser(
+                "username@mailserver.com",
+                AuthorityUtils.createAuthorityList("ROLE_USER"),
+                "fullName",
+                "givenName",
+                "familyName",
+                "middleName",
+                "nickName",
+                "preferredUsername",
+                "picture",
+                "locale"
+        );
         var token = new JwtService(null).createToken(user);
         assertThrows(BadCredentialsException.class, () -> jwtService.parseToken(token));
     }
@@ -61,7 +110,18 @@ class JwtServiceTest {
     @Test
     void badCredentialsIsThrownIfTokenIsExpired() {
         var jwtService = new JwtService(SECRET);
-        var user = new JwtUser("username@mailserver.com", AuthorityUtils.createAuthorityList("ROLE_USER"));
+        var user = new JwtUser(
+                "username@mailserver.com",
+                AuthorityUtils.createAuthorityList("ROLE_USER"),
+                "fullName",
+                "givenName",
+                "familyName",
+                "middleName",
+                "nickName",
+                "preferredUsername",
+                "picture",
+                "locale"
+        );
         var token = new JwtService(null).createToken(user, Instant.EPOCH);
         assertThrows(BadCredentialsException.class, () -> jwtService.parseToken(token));
     }

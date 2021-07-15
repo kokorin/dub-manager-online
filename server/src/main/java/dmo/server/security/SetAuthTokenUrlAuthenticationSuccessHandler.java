@@ -2,6 +2,7 @@ package dmo.server.security;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -17,13 +18,15 @@ public class SetAuthTokenUrlAuthenticationSuccessHandler extends SimpleUrlAuthen
 
     @NonNull
     private final JwtService jwtService;
+    @NonNull
+    private final ConversionService conversionService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         var oidUser = (OidcUser) authentication.getPrincipal();
-        var jwtUser = new JwtUser(oidUser);
+        var jwtUser = conversionService.convert(oidUser, JwtUser.class);
         var token = jwtService.createToken(jwtUser);
 
         Cookie accessTokenCookie = new Cookie("access_token", token);
