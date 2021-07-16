@@ -19,8 +19,8 @@ export const api = createApi({
                 params: { page: queryArg.page, size: queryArg.size },
             }),
         }),
-        getConfiguration: build.query<GetConfigurationApiResponse, GetConfigurationApiArg>({
-            query: () => ({ url: `/api/v1/conf` }),
+        getOAuthClients: build.query<GetOAuthClientsApiResponse, GetOAuthClientsApiArg>({
+            query: () => ({ url: `/api/v1/conf/oauth/clients` }),
         }),
         getCurrentUser: build.query<GetCurrentUserApiResponse, GetCurrentUserApiArg>({
             query: () => ({ url: `/api/v1/users/current` }),
@@ -69,8 +69,8 @@ export type FindEpisodesApiArg = {
     /** size */
     size: number;
 };
-export type GetConfigurationApiResponse = /** status 200 OK */ ConfigurationDto;
-export type GetConfigurationApiArg = {};
+export type GetOAuthClientsApiResponse = /** status 200 OK */ string[];
+export type GetOAuthClientsApiArg = {};
 export type GetCurrentUserApiResponse = /** status 200 OK */ UserDto;
 export type GetCurrentUserApiArg = {};
 export type FindAnimeStatusesApiResponse = /** status 200 OK */ PageDtoOfAnimeStatusDto;
@@ -134,12 +134,16 @@ export type PageDtoOfEpisodeDto = {
     totalElements: number;
     totalPages: number;
 };
-export type ConfigurationDto = {
-    googleOAuthClientId: string;
-};
 export type UserDto = {
-    email?: string;
-    id?: number;
+    email: string;
+    familyName?: string;
+    fullName?: string;
+    givenName?: string;
+    locale?: string;
+    middleName?: string;
+    nickName?: string;
+    picture?: string;
+    preferredUsername?: string;
 };
 export type AnimeStatusDto = {
     anime: AnimeDto;
@@ -176,7 +180,7 @@ export const {
     useFindAnimeQuery,
     useGetAnimeQuery,
     useFindEpisodesQuery,
-    useGetConfigurationQuery,
+    useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
     useUpdateAnimeStatusMutation,
