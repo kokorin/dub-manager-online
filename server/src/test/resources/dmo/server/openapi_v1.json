@@ -23,6 +23,10 @@
       "description": "Anime Status Controller"
     },
     {
+      "name": "settings-controller",
+      "description": "Settings Controller"
+    },
+    {
       "name": "user-controller",
       "description": "User Controller"
     }
@@ -166,6 +170,39 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/PageDtoOfEpisodeDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/conf/oauth/clients": {
+      "get": {
+        "tags": [
+          "settings-controller"
+        ],
+        "summary": "Get list of registered OAuth2 clients",
+        "operationId": "getOAuthClients",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
             }
           },
           "401": {

@@ -9,7 +9,7 @@ export const {
     useFindAnimeQuery,
     useGetAnimeQuery,
     useFindEpisodesQuery,
-    useGetConfigurationQuery,
+    useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
     useUpdateAnimeStatusMutation,

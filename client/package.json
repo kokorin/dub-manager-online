@@ -61,6 +61,7 @@
         ]
     },
     "devDependencies": {
+        "@rtk-incubator/rtk-query-codegen-openapi": "^0.4.0",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",
         "@types/node": "^15.12.5",

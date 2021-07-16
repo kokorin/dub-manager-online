@@ -35,10 +35,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -106,6 +103,18 @@ public class ApiTest {
             animeListUpdated = true;
             TimeUnit.SECONDS.sleep(1);
         }
+    }
+
+    @Test
+    void confOAuthClients() {
+        var restTemplate = getRestTemplate(false);
+        var url = "http://localhost:" + port + "/api/v1/conf/oauth/clients";
+        var response = restTemplate.getForEntity(url, Set.class);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        var clients = response.getBody();
+        assertNotNull(clients);
+        assertEquals(Set.of("google", ISSUER), clients);
     }
 
     @Test
