@@ -9,6 +9,7 @@ interface OwnProps {
     head: ReactNode;
     number: number;
     size: number;
+    title?: string;
     totalElements: number;
     onChangeSearch?: (newSearch: string) => void;
     onChangePage: (newPage: number) => void;
@@ -16,7 +17,8 @@ interface OwnProps {
 }
 
 const TableWithSearch: FC<OwnProps> = (props) => {
-    const { head, children, number, size, totalElements, onChangeSearch, onChangePage, onChangeRowsPerPage } = props;
+    const { head, children, number, size, title, totalElements, onChangeSearch, onChangePage, onChangeRowsPerPage } =
+        props;
 
     const handleChangePage = useCallback((_, newPage: number) => onChangePage(newPage), [onChangePage]);
     const handleChangeRowsPerPage = useCallback(
@@ -26,7 +28,7 @@ const TableWithSearch: FC<OwnProps> = (props) => {
 
     return (
         <Paper>
-            {onChangeSearch && <Search onChangeSearch={onChangeSearch} />}
+            {onChangeSearch && <Search onChangeSearch={onChangeSearch} text={title || ""} />}
             <TableContainer>
                 <Table stickyHeader={true} aria-label="simple table">
                     <TableHead>{head}</TableHead>

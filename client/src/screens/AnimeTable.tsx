@@ -42,6 +42,7 @@ export const AnimeTable: FC = () => {
             head={animeTableHead}
             number={page}
             size={size}
+            title={title}
             totalElements={data.totalElements}
             onChangeSearch={setTitle}
             onChangePage={setPage}
