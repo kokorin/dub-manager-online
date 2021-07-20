@@ -20,6 +20,7 @@ const TableWithSearch: FC<OwnProps> = (props) => {
     const { head, children, number, size, title, totalElements, onChangeSearch, onChangePage, onChangeRowsPerPage } =
         props;
 
+    const handleChangeSearch = useCallback((text) => onChangeSearch && onChangeSearch(text), [onChangeSearch]);
     const handleChangePage = useCallback((_, newPage: number) => onChangePage(newPage), [onChangePage]);
     const handleChangeRowsPerPage = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => onChangeRowsPerPage(Number(event.target.value)),
@@ -28,7 +29,7 @@ const TableWithSearch: FC<OwnProps> = (props) => {
 
     return (
         <Paper>
-            {onChangeSearch && <Search onChangeSearch={onChangeSearch} text={title || ""} />}
+            {onChangeSearch && <Search text={title || ""} onChangeSearch={handleChangeSearch} />}
             <TableContainer>
                 <Table stickyHeader={true} aria-label="simple table">
                     <TableHead>{head}</TableHead>

@@ -1,54 +1,60 @@
 import React, { FC, useState } from "react";
-import { TableWithSearch } from "components/TableWithSearch";
 import { useFindAnimeQuery } from "../api";
-import { TableCell, TableRow } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { DataGrid, GridColDef, GridRowId } from "@material-ui/data-grid";
+import Loader from "../components/Loader";
 import { resolveAnimeTitle } from "../service";
+import { Anime, AnimeTitle } from "../domain";
+import { Search } from "../components/Search";
+import { Button, Paper } from "@material-ui/core";
+
+const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 100 },
+    { field: "type", headerName: "TYPE", width: 200 },
+    {
+        field: "titles",
+        headerName: "TITLE",
+        valueGetter: (params) => resolveAnimeTitle(params.row.titles as AnimeTitle[]),
+    },
+];
 
 export const AnimeTable: FC = () => {
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(10);
-    const [title, setTitle] = useState("");
-    const { data, isLoading } = useFindAnimeQuery({ page, size, title });
+    const [pageSize, setPageSize] = useState(10);
+    const [filter, setFilter] = useState("");
+    const [selectedRows, setSelectedRows] = useState([] as GridRowId[]);
 
-    const animeTableHead = (
-        <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell align="center">TYPE</TableCell>
-            <TableCell align="center">TITLE</TableCell>
-        </TableRow>
-    );
+    const handleSearchChange = (text: string) => {
+        setPage(0);
+        setFilter(text);
+    };
+
+    const { data, isLoading } = useFindAnimeQuery({ page, size: pageSize, title: filter });
 
     if (!data || isLoading) {
-        return <div>Loading...</div>;
+        return <Loader />;
     }
 
-    const animeTableRows = data.content.map((anime) => (
-        <TableRow key={anime.id}>
-            <TableCell component="th" scope="row">
-                <Link to={`/anime/${anime.id}`}>{anime.id}</Link>
-            </TableCell>
-            <TableCell align="center">
-                <Link to={`/anime/${anime.id}`}>{anime.type}</Link>
-            </TableCell>
-            <TableCell align="center">
-                <Link to={`/anime/${anime.id}`}>{resolveAnimeTitle(anime.titles)}</Link>
-            </TableCell>
-        </TableRow>
-    ));
+    console.log(`Selected ${JSON.stringify(selectedRows)}`);
 
     return (
-        <TableWithSearch
-            head={animeTableHead}
-            number={page}
-            size={size}
-            title={title}
-            totalElements={data.totalElements}
-            onChangeSearch={setTitle}
-            onChangePage={setPage}
-            onChangeRowsPerPage={setSize}
-        >
-            {animeTableRows}
-        </TableWithSearch>
+        <Paper>
+            <Search label="Anime Title" text={filter} onChangeSearch={handleSearchChange} />
+
+            <DataGrid
+                autoHeight={true}
+                rowsPerPageOptions={[5, 10, 25]}
+                columns={columns}
+                page={page}
+                pageSize={pageSize}
+                rows={data.content}
+                rowCount={data.totalElements}
+                onPageChange={(params) => setPage(params.page)}
+                onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                paginationMode="server"
+                checkboxSelection={true}
+                onSelectionModelChange={(params) => setSelectedRows(params.selectionModel)}
+            />
+            <Button onClick={(event) => console.log(`${JSON.stringify(event)}`)}>SELECT</Button>
+        </Paper>
     );
 };
