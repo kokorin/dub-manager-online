@@ -1,11 +1,10 @@
 import React, { FC, useState } from "react";
 import { useFindAnimeQuery } from "../api";
-import { DataGrid, GridColDef, GridRowId } from "@material-ui/data-grid";
-import Loader from "../components/Loader";
+import { DataGrid, GridColDef, GridSelectionModelChangeParams } from "@material-ui/data-grid";
 import { resolveAnimeTitle } from "../service";
 import { Anime, AnimeTitle } from "../domain";
 import { Search } from "../components/Search";
-import { Button, Paper } from "@material-ui/core";
+import { CircularProgress, Modal } from "@material-ui/core";
 
 const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 100 },
@@ -13,48 +12,50 @@ const columns: GridColDef[] = [
     {
         field: "titles",
         headerName: "TITLE",
-        valueGetter: (params) => resolveAnimeTitle(params.row.titles as AnimeTitle[]),
+        width: 300,
+        valueGetter: (params) => resolveAnimeTitle((params.row as Anime).titles),
     },
 ];
 
-export const AnimeTable: FC = () => {
+interface OwnProps {
+    onAnimeSelected: (animeIds: number[]) => void;
+}
+
+export const AnimeTable: FC<OwnProps> = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [filter, setFilter] = useState("");
-    const [selectedRows, setSelectedRows] = useState([] as GridRowId[]);
+
+    const { data, isLoading } = useFindAnimeQuery({ page, size: pageSize, title: filter });
 
     const handleSearchChange = (text: string) => {
         setPage(0);
         setFilter(text);
     };
 
-    const { data, isLoading } = useFindAnimeQuery({ page, size: pageSize, title: filter });
-
-    if (!data || isLoading) {
-        return <Loader />;
-    }
-
-    console.log(`Selected ${JSON.stringify(selectedRows)}`);
+    const handleSelectionModelChange = (params: GridSelectionModelChangeParams) => {
+        props.onAnimeSelected(params.selectionModel as number[]);
+    };
 
     return (
-        <Paper>
+        <div style={{ height: "100%", width: "100%" }}>
+            <Modal open={isLoading}>
+                <CircularProgress />
+            </Modal>
             <Search label="Anime Title" text={filter} onChangeSearch={handleSearchChange} />
-
             <DataGrid
-                autoHeight={true}
                 rowsPerPageOptions={[5, 10, 25]}
                 columns={columns}
                 page={page}
                 pageSize={pageSize}
-                rows={data.content}
-                rowCount={data.totalElements}
+                rows={data?.content || []}
+                rowCount={data?.totalElements || 0}
                 onPageChange={(params) => setPage(params.page)}
                 onPageSizeChange={(params) => setPageSize(params.pageSize)}
                 paginationMode="server"
                 checkboxSelection={true}
-                onSelectionModelChange={(params) => setSelectedRows(params.selectionModel)}
+                onSelectionModelChange={handleSelectionModelChange}
             />
-            <Button onClick={(event) => console.log(`${JSON.stringify(event)}`)}>SELECT</Button>
-        </Paper>
+        </div>
     );
 };

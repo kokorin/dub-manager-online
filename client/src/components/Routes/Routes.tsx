@@ -5,7 +5,7 @@ import { NotFound } from "screens/NotFound";
 import { Login } from "../../screens/Login";
 import { AnimeTable } from "../../screens/AnimeTable";
 import AnimeView from "../../screens/AnimeView";
-import Main from "../../screens/Main";
+import AnimeStatusScreen from "../../screens/AnimeStatusScreen";
 
 interface OwnProps {
     isAuthenticated: boolean;
@@ -17,7 +17,7 @@ const Routes: FC<OwnProps> = ({ isAuthenticated, authenticationPath }) => {
         <Switch>
             <SecureRoute
                 path={"/"}
-                component={Main}
+                component={AnimeStatusScreen}
                 exact={true}
                 isAuthenticated={isAuthenticated}
                 authenticationPath={authenticationPath}

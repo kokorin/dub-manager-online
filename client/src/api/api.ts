@@ -4,7 +4,15 @@ import { notAuthorized } from "../auth";
 import store from "../store";
 
 export const api = generatedApi.enhanceEndpoints({
-    endpoints: {},
+    addTagTypes: ["AnimeStatus"],
+    endpoints: {
+        findAnimeStatuses: {
+            providesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+        },
+        updateAnimeStatus: {
+            invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+        },
+    },
 });
 
 export const authErrorHandler: Middleware = (api: MiddlewareAPI) => (next) => (action) => {

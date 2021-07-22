@@ -1,29 +1,57 @@
 import React, { FC, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
-import Loader from "../components/Loader";
-import GridWithSearch from "../components/GridWithSearch";
-import { GridColDef } from "@material-ui/data-grid";
+import { DataGrid, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
+import { Search } from "../components/Search";
+import { CircularProgress, Modal } from "@material-ui/core";
+import { AnimeStatus } from "../domain";
+import { resolveAnimeTitle } from "../service";
+
+const getRowId: GridRowIdGetter = (data) => (data as AnimeStatus).anime.id;
+const columns: GridColDef[] = [
+    {
+        field: "anime.id",
+        headerName: "ID",
+        valueGetter: (params) => getRowId(params.row),
+    },
+    {
+        field: "anime.titles",
+        headerName: "TITLE",
+
+        valueGetter: (params) => resolveAnimeTitle((params.row as AnimeStatus).anime.titles),
+    },
+    {
+        field: "progress",
+    },
+    {
+        field: "comment",
+    },
+];
 
 const AnimeStatusTable: FC = () => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
+    const [filter, setFilter] = useState("");
     const { data, isLoading } = useFindAnimeStatusesQuery({ page, size: pageSize });
 
-    if (!data || isLoading) {
-        return <Loader />;
-    }
-
-    const columns: GridColDef[] = [{ field: "id", headerName: "ID" }];
     return (
-        <GridWithSearch
-            columns={columns}
-            page={page}
-            pageSize={pageSize}
-            rows={data.content}
-            rowCount={data.totalElements}
-            onPageChange={setPage}
-            onPageSizeChange={setPageSize}
-        />
+        <div className="anime_status_table" style={{ height: "100%", width: "100%" }}>
+            <Modal open={isLoading}>
+                <CircularProgress />
+            </Modal>
+            <Search text={filter} onChangeSearch={setFilter} />
+
+            <DataGrid
+                columns={columns}
+                getRowId={getRowId}
+                page={page}
+                pageSize={pageSize}
+                rows={data?.content || []}
+                rowCount={data?.totalElements || 0}
+                onPageChange={(params) => setPage(params.page)}
+                onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                paginationMode="server"
+            />
+        </div>
     );
 };
 
