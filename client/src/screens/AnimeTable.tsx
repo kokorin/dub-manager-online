@@ -1,24 +1,25 @@
-import React, { FC, useState } from "react";
+import React, { CSSProperties, FC, useState } from "react";
 import { useFindAnimeQuery } from "../api";
 import { DataGrid, GridColDef, GridSelectionModelChangeParams } from "@material-ui/data-grid";
 import { resolveAnimeTitle } from "../service";
-import { Anime, AnimeTitle } from "../domain";
+import { Anime } from "../domain";
 import { Search } from "../components/Search";
 import { CircularProgress, Modal } from "@material-ui/core";
 
 const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "type", headerName: "TYPE", width: 200 },
+    { field: "id", headerName: "ID", flex: 1 },
+    { field: "type", headerName: "TYPE", flex: 3 },
     {
         field: "titles",
         headerName: "TITLE",
-        width: 300,
+        flex: 10,
         valueGetter: (params) => resolveAnimeTitle((params.row as Anime).titles),
     },
 ];
 
 interface OwnProps {
     onAnimeSelected: (animeIds: number[]) => void;
+    style?: CSSProperties;
 }
 
 export const AnimeTable: FC<OwnProps> = (props) => {
@@ -38,7 +39,7 @@ export const AnimeTable: FC<OwnProps> = (props) => {
     };
 
     return (
-        <div style={{ height: "100%", width: "100%" }}>
+        <div className="anime_table" style={props.style}>
             <Modal open={isLoading}>
                 <CircularProgress />
             </Modal>

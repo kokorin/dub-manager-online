@@ -11,19 +11,22 @@ const columns: GridColDef[] = [
     {
         field: "anime.id",
         headerName: "ID",
+        flex: 1,
         valueGetter: (params) => getRowId(params.row),
     },
     {
         field: "anime.titles",
         headerName: "TITLE",
-
+        flex: 10,
         valueGetter: (params) => resolveAnimeTitle((params.row as AnimeStatus).anime.titles),
     },
     {
         field: "progress",
+        flex: 5,
     },
     {
         field: "comment",
+        flex: 5,
     },
 ];
 
@@ -50,6 +53,7 @@ const AnimeStatusTable: FC = () => {
                 onPageChange={(params) => setPage(params.page)}
                 onPageSizeChange={(params) => setPageSize(params.pageSize)}
                 paginationMode="server"
+                pagination={undefined}
             />
         </div>
     );
