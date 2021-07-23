@@ -33,10 +33,13 @@ export const api = createApi({
         }),
         updateAnimeStatus: build.mutation<UpdateAnimeStatusApiResponse, UpdateAnimeStatusApiArg>({
             query: (queryArg) => ({
-                url: `/api/v1/users/current/anime/${queryArg.animeId}`,
+                url: `/api/v1/users/current/anime/${queryArg.id}`,
                 method: "POST",
                 body: queryArg.updateAnimeStatusDto,
             }),
+        }),
+        deleteAnimeStatus: build.mutation<DeleteAnimeStatusApiResponse, DeleteAnimeStatusApiArg>({
+            query: (queryArg) => ({ url: `/api/v1/users/current/anime/${queryArg.id}`, method: "DELETE" }),
         }),
         findEpisodeStatuses: build.query<FindEpisodeStatusesApiResponse, FindEpisodeStatusesApiArg>({
             query: (queryArg) => ({
@@ -82,10 +85,15 @@ export type FindAnimeStatusesApiArg = {
 };
 export type UpdateAnimeStatusApiResponse = /** status 200 OK */ AnimeStatusDto | /** status 201 Created */ undefined;
 export type UpdateAnimeStatusApiArg = {
-    /** animeId */
-    animeId: number;
+    /** id */
+    id: number;
     /** updateAnimeStatusDto */
     updateAnimeStatusDto: UpdateAnimeStatusDto;
+};
+export type DeleteAnimeStatusApiResponse = unknown;
+export type DeleteAnimeStatusApiArg = {
+    /** id */
+    id: number;
 };
 export type FindEpisodeStatusesApiResponse = /** status 200 OK */ PageDtoOfEpisodeStatusDto;
 export type FindEpisodeStatusesApiArg = {
@@ -184,5 +192,6 @@ export const {
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
     useUpdateAnimeStatusMutation,
+    useDeleteAnimeStatusMutation,
     useFindEpisodeStatusesQuery,
 } = api;

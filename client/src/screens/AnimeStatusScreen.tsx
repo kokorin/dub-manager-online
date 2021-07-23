@@ -1,34 +1,35 @@
 import React, { FC, useState } from "react";
 import AnimeStatusTable from "./AnimeStatusTable";
-import { Button, CircularProgress, Modal, Paper } from "@material-ui/core";
+import { Box, Button, CircularProgress, Modal, Paper } from "@material-ui/core";
 import AnimeSelect from "./AnimeSelect";
-import { UpdateAnimeStatusDto, useUpdateAnimeStatusMutation } from "../api";
+import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
 
 const AnimeStatusScreen: FC = () => {
+    const [selectedAnimeStatuses, setSelectedAnimeStatuses] = useState([] as number[]);
     const [animeSelectOpen, setAnimeSelectOpen] = useState(false);
 
     const [updateAnimeStatus, { isLoading: isUpdating }] = useUpdateAnimeStatusMutation();
+    const [deleteAnimeStatus, { isLoading: isDeleting }] = useDeleteAnimeStatusMutation();
 
     const handleAnimeSelected = (animeIds: number[]) => {
         animeIds.forEach((animeId: number) => {
-            const updateAnimeStatusDto: UpdateAnimeStatusDto = { progress: "IN_PROGRESS", comment: "" };
-            updateAnimeStatus({ animeId, updateAnimeStatusDto });
+            updateAnimeStatus({ id: animeId, updateAnimeStatusDto: { progress: "IN_PROGRESS", comment: "" } });
         });
         setAnimeSelectOpen(false);
     };
 
-    if (isUpdating) {
-        return <CircularProgress color="secondary" />;
-    }
-
-    const style = {
-        margin: "10%",
-        //transform: "translate(-10%, -10%)",
+    const handleDeleteClick = () => {
+        selectedAnimeStatuses.forEach((animeId) => {
+            deleteAnimeStatus({ id: animeId });
+        });
     };
 
     return (
         <div className="anime_status_screen">
-            <Modal style={style} open={animeSelectOpen} onClose={() => setAnimeSelectOpen(false)}>
+            <Modal open={isUpdating || isDeleting}>
+                <CircularProgress />
+            </Modal>
+            <Modal style={{ margin: "10%" }} open={animeSelectOpen} onClose={() => setAnimeSelectOpen(false)}>
                 <Paper style={{ height: "100%", width: "100%" }}>
                     <AnimeSelect
                         onAnimeSelected={handleAnimeSelected}
@@ -37,9 +38,19 @@ const AnimeStatusScreen: FC = () => {
                 </Paper>
             </Modal>
             <div className="status_table_parent" style={{ height: "100%", width: "100%" }}>
-                <Button onClick={() => setAnimeSelectOpen(true)}>Add Anime</Button>
+                <Box justifyContent="right">
+                    <Button color="primary" onClick={() => setAnimeSelectOpen(true)}>
+                        Add Anime
+                    </Button>
+                    <Button color="secondary" disabled={!selectedAnimeStatuses.length} onClick={handleDeleteClick}>
+                        Delete Anime
+                    </Button>
+                </Box>
                 <div style={{ display: "flex", height: "100%" }}>
-                    <AnimeStatusTable />
+                    <AnimeStatusTable
+                        style={{ height: "100%", width: "100%" }}
+                        onAnimeStatusSelected={setSelectedAnimeStatuses}
+                    />
                 </div>
             </div>
         </div>

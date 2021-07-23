@@ -12,6 +12,7 @@ export const {
     useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
-    useUpdateAnimeStatusMutation,
     useFindEpisodeStatusesQuery,
+    useUpdateAnimeStatusMutation,
+    useDeleteAnimeStatusMutation,
 } = api;

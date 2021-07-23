@@ -41,8 +41,8 @@ const TableWithSearch: FC<OwnProps> = (props) => {
                                 count={totalElements}
                                 rowsPerPage={size}
                                 page={number}
-                                onChangePage={handleChangePage}
-                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
                             />
                         </TableRow>
                     </TableFooter>

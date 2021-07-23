@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { CSSProperties, FC, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
-import { DataGrid, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
+import { DataGrid, GridColDef, GridRowId, GridRowIdGetter } from "@material-ui/data-grid";
 import { Search } from "../components/Search";
 import { CircularProgress, Modal } from "@material-ui/core";
 import { AnimeStatus } from "../domain";
@@ -30,14 +30,23 @@ const columns: GridColDef[] = [
     },
 ];
 
-const AnimeStatusTable: FC = () => {
+interface OwnProps {
+    onAnimeStatusSelected: (animeIds: number[]) => void;
+    style?: CSSProperties;
+}
+
+const AnimeStatusTable: FC<OwnProps> = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [filter, setFilter] = useState("");
     const { data, isLoading } = useFindAnimeStatusesQuery({ page, size: pageSize });
 
+    const handleSelectionModelChange = (selectionModel: GridRowId[]) => {
+        props.onAnimeStatusSelected(selectionModel as number[]);
+    };
+
     return (
-        <div className="anime_status_table" style={{ height: "100%", width: "100%" }}>
+        <div className="anime_status_table" style={props.style}>
             <Modal open={isLoading}>
                 <CircularProgress />
             </Modal>
@@ -53,7 +62,8 @@ const AnimeStatusTable: FC = () => {
                 onPageChange={(params) => setPage(params.page)}
                 onPageSizeChange={(params) => setPageSize(params.pageSize)}
                 paginationMode="server"
-                pagination={undefined}
+                checkboxSelection={true}
+                onSelectionModelChange={handleSelectionModelChange}
             />
         </div>
     );

@@ -4,6 +4,7 @@ import dmo.server.domain.AnimeStatus;
 import dmo.server.domain.User;
 import dmo.server.event.AnimeRequested;
 import dmo.server.exception.AnimeNotFoundException;
+import dmo.server.exception.AnimeStatusNotFoundException;
 import dmo.server.exception.UserNotFoundException;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
@@ -76,5 +77,16 @@ public class AnimeStatusService {
         log.info("Updated EpisodeStatus: {}", updateCount);
 
         return animeStatus;
+    }
+
+    @Secured("ROLE_USER")
+    @Transactional
+    public void deleteAnimeStatus(String userEmail, Long animeId) {
+        var id = new AnimeStatus.AnimeStatusId(animeId, userEmail);
+        var animeStatus = animeStatusRepository.findById(id)
+                .orElseThrow(() -> new AnimeStatusNotFoundException(id));
+
+        episodeStatusRepository.deleteAllByAnimeAndUser(animeId, userEmail);
+        animeStatusRepository.delete(animeStatus);
     }
 }
