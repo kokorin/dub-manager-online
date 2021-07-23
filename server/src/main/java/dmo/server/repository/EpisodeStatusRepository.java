@@ -32,7 +32,12 @@ public interface EpisodeStatusRepository extends JpaRepository<EpisodeStatus, Ep
             "JOIN Anime a ON a.id = st.id.animeId\n" +
             "WHERE a = :anime\n" +
             "AND (u = :user OR :user IS NULL)\n" +
-            "AND (e.id, u.id) NOT IN (SELECT es.episode.id, es.user.id FROM EpisodeStatus es)")
+            "AND (e.id, u.email) NOT IN (SELECT es.episode.id, es.user.email FROM EpisodeStatus es)")
     Integer fillEpisodeStatuses(Anime anime, User user);
 
+    @Modifying
+    @Query("DELETE EpisodeStatus\n" +
+            "WHERE episode IN (FROM Episode WHERE anime.id = :animeId)\n" +
+            "AND user.email = :userEmail")
+    void deleteAllByAnimeAndUser(Long animeId, String userEmail);
 }

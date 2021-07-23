@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import no.nav.security.mock.oauth2.MockOAuth2Server;
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback;
 import okhttp3.OkHttpClient;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -235,6 +236,78 @@ public class ApiTest {
         assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
         assertEquals(AnimeProgressDto.COMPLETED, animeStatus.getProgress());
         assertEquals("Comment can be stored!", animeStatus.getComment());
+    }
+
+    @Test
+    void deleteAnimeStatusRequiresAuthentication() {
+        var restTemplate = getRestTemplate(false);
+        var response = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                HttpMethod.DELETE,
+                HttpEntity.EMPTY,
+                Void.class,
+                Map.of("port", port, "animeId", 42)
+        );
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    void deleteAnimeStatusReturnsNotFoundIfAnimeStatusIsAbsent() {
+        var restTemplate = getRestTemplate(true);
+        var response = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                HttpMethod.DELETE,
+                HttpEntity.EMPTY,
+                Void.class,
+                Map.of("port", port, "animeId", 42)
+        );
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void animeStatusCanBeDeleted() {
+        var restTemplate = getRestTemplate(true);
+
+        var animeId = 1L;
+        var request = new UpdateAnimeStatusDto();
+        request.setProgress(AnimeProgressDto.IN_PROGRESS);
+        request.setComment("Electrophoresis!");
+
+        var createResponse = restTemplate.postForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                new HttpEntity<>(request),
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(createResponse);
+        assertEquals(HttpStatus.OK, createResponse.getStatusCode(), createResponse.toString());
+
+        var deleteResponse = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                HttpMethod.DELETE,
+                HttpEntity.EMPTY,
+                Void.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(deleteResponse);
+        assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
+
+        var checkResponse = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                HttpMethod.DELETE,
+                HttpEntity.EMPTY,
+                Void.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(checkResponse);
+        assertEquals(HttpStatus.NOT_FOUND, checkResponse.getStatusCode());
     }
 
     @Test

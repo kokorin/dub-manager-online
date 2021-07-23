@@ -13,8 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,10 +58,10 @@ public class AnimeStatusController {
         return animeMapper.toEpisodeStatusPageDto(result);
     }
 
-    @PostMapping("{animeId}")
+    @PostMapping("{id}")
     @ApiOperation(value = "Update status of Anime tracked by current user", nickname = "updateAnimeStatus")
     public AnimeStatusDto updateStatus(@AuthenticationPrincipal JwtUser user,
-                                       @PathVariable("animeId") @NotNull Long animeId,
+                                       @PathVariable("id") @NotNull Long animeId,
                                        @RequestBody UpdateAnimeStatusDto updateAnimeStatusDto) {
         Consumer<AnimeStatus> updater = animeStatus -> animeMapper.updateAnimeStatus(updateAnimeStatusDto, animeStatus);
 
@@ -72,5 +72,17 @@ public class AnimeStatusController {
         );
 
         return animeMapper.toAnimeStatusDto(animeStatus);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "Delete status of Anime tracked by current user", nickname = "deleteAnimeStatus")
+    public void deleteStatus(@AuthenticationPrincipal JwtUser user,
+                             @PathVariable("id") @NotNull Long animeId) {
+
+        animeStatusService.deleteAnimeStatus(
+                user.getEmail(),
+                animeId
+        );
     }
 }
