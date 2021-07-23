@@ -3,27 +3,30 @@ package dmo.server.api.v1.dto;
 import java.util.List;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class PageDto<T> {
     @ApiModelProperty(required = true)
-    private final int number;
+    private int number;
 
     @ApiModelProperty(required = true)
-    private final int size;
+    private int size;
 
     @ApiModelProperty(required = true)
-    private final int numberOfElements;
+    private int numberOfElements;
 
     @ApiModelProperty(required = true)
-    private final int totalPages;
+    private int totalPages;
 
     @ApiModelProperty(required = true)
-    private final long totalElements;
+    private long totalElements;
 
     @ApiModelProperty(required = true)
-    private final List<T> content;
+    private List<T> content;
 }

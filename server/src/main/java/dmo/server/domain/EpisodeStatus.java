@@ -22,13 +22,13 @@ public class EpisodeStatus {
     private Long episodeId;
 
     @ManyToOne(optional = false)
-    @MapsId("userId")
+    @MapsId("userEmail")
     @Getter
     @Setter
     private User user;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
+    @Column(name = "user_email", insertable = false, updatable = false)
+    private String userEmail;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,7 +45,7 @@ public class EpisodeStatus {
     private void updateId() {
         setId(new EpisodeStatusId(
                 Optional.ofNullable(episode).map(Episode::getId).orElse(null),
-                Optional.ofNullable(user).map(User::getId).orElse(null)
+                Optional.ofNullable(user).map(User::getEmail).orElse(null)
         ));
     }
 
@@ -62,6 +62,6 @@ public class EpisodeStatus {
         private static final long serialVersionUID = 1;
 
         private Long episodeId;
-        private Long userId;
+        private String userEmail;
     }
 }

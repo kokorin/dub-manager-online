@@ -1,42 +1,80 @@
 package dmo.server.security;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.converter.ConverterRegistry;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
-
-import javax.servlet.Filter;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-@RequiredArgsConstructor
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @NonNull
-    private final GoogleAuthenticationService googleAuthenticationService;
-    @NonNull
-    private final LoginSuccessHandler loginSuccessHandler;
-    @NonNull
-    private final JwtAuthenticationUserDetailsService preAuthenticatedUserDetailsService;
-    @NonNull
-    private final DubUserDetailsService dubUserDetailsService;
+    private final String jwtKey;
+    private final ConversionService conversionService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .authenticationProvider(googleAuthenticationProvider())
-                .authenticationProvider(preAuthenticationProvider());
+    public WebSecurityConfig(@Value("${jwt.key:}") String jwtKey, ConversionService conversionService) {
+        this.jwtKey = jwtKey;
+        this.conversionService = conversionService;
+    }
+
+    private GrantedAuthoritiesMapper authoritiesMapper() {
+        var result = new SimpleAuthorityMapper();
+        result.setDefaultAuthority("ROLE_USER");
+        return result;
+    }
+
+    @Autowired
+    public void oidcUserJwtUserConverter(ConverterRegistry converterRegistry) {
+        converterRegistry.addConverter(new OidcUserToJwtUserConverter());
+    }
+
+    @Bean
+    public JwtService jwtService() {
+        return new JwtService(jwtKey);
+    }
+
+    @Bean
+    public AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> preAuthenticatedUserDetailsService() {
+        return new JwtAuthenticationUserDetailsService(jwtService());
+    }
+
+    @Bean
+    public AuthenticationProvider preAuthenticationProvider() {
+        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
+        provider.setPreAuthenticatedUserDetailsService(preAuthenticatedUserDetailsService());
+        return provider;
+    }
+
+    @Bean
+    public AbstractPreAuthenticatedProcessingFilter preAuthenticatedProcessingFilter() throws Exception {
+        var filter = new JwtPreAuthenticatedProcessingFilter();
+        // Required, not injected automatically
+        filter.setAuthenticationManager(authenticationManager());
+        return filter;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new SetAuthTokenUrlAuthenticationSuccessHandler(jwtService(), conversionService);
     }
 
     @Override
@@ -44,61 +82,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
 
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement(sessions -> sessions
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
 
-                .and()
+                .authorizeRequests(requests -> requests
+                        .antMatchers("/api/openapi").permitAll()
+                        .antMatchers("/api/v1/conf/**").permitAll()
+                        .antMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
+                )
 
-                .addFilterAt(googleIdTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilter(authenticationFilter())
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                )
 
-                .authorizeRequests()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/api/openapi").permitAll()
-                .antMatchers("/api/v1/conf").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .anyRequest().permitAll()
+                .oauth2Login(login -> login
+                        .userInfoEndpoint(info -> info
+                                .userAuthoritiesMapper(authoritiesMapper())
+                        )
+                        .successHandler(authenticationSuccessHandler())
+                )
 
-                .and()
-
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .addFilter(preAuthenticatedProcessingFilter())
         ;
-    }
-
-
-    public Filter googleIdTokenFilter() throws Exception {
-        GoogleAuthenticationProcessingFilter filter = new GoogleAuthenticationProcessingFilter("/login/google");
-
-        // Required, not injected automatically
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(loginSuccessHandler);
-
-        return filter;
-    }
-
-    @Bean
-    public AuthenticationProvider googleAuthenticationProvider() {
-        GoogleAuthenticationProvider provider = new GoogleAuthenticationProvider(
-                googleAuthenticationService,
-                dubUserDetailsService
-        );
-        return provider;
-    }
-
-    public Filter authenticationFilter() throws Exception {
-        JwtPreAuthenticatedProcessingFilter filter = new JwtPreAuthenticatedProcessingFilter();
-
-        // Required, not injected automatically
-        filter.setAuthenticationManager(authenticationManager());
-
-        return filter;
-    }
-
-    @Bean
-    public AuthenticationProvider preAuthenticationProvider() {
-        PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-        provider.setPreAuthenticatedUserDetailsService(preAuthenticatedUserDetailsService);
-
-        return provider;
     }
 }

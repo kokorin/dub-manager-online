@@ -122,6 +122,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
       - name: Cache Node Packages
         uses: actions/cache@v2
         with:

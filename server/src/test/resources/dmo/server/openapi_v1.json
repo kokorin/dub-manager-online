@@ -23,8 +23,8 @@
       "description": "Anime Status Controller"
     },
     {
-      "name": "configuration-controller",
-      "description": "Configuration Controller"
+      "name": "settings-controller",
+      "description": "Settings Controller"
     },
     {
       "name": "user-controller",
@@ -41,8 +41,8 @@
         "tags": [
           "anime-controller"
         ],
-        "summary": "findAll",
-        "operationId": "findAllUsingGET",
+        "summary": "Search Anime by title",
+        "operationId": "findAnime",
         "produces": [
           "*/*"
         ],
@@ -95,8 +95,8 @@
         "tags": [
           "anime-controller"
         ],
-        "summary": "getAnime",
-        "operationId": "getAnimeUsingGET",
+        "summary": "Get Anime description",
+        "operationId": "getAnime",
         "produces": [
           "*/*"
         ],
@@ -134,8 +134,8 @@
         "tags": [
           "anime-controller"
         ],
-        "summary": "getEpisodes",
-        "operationId": "getEpisodesUsingGET",
+        "summary": "Search Anime episodes",
+        "operationId": "findEpisodes",
         "produces": [
           "*/*"
         ],
@@ -184,13 +184,13 @@
         }
       }
     },
-    "/api/v1/conf": {
+    "/api/v1/conf/oauth/clients": {
       "get": {
         "tags": [
-          "configuration-controller"
+          "settings-controller"
         ],
-        "summary": "getConfiguration",
-        "operationId": "getConfigurationUsingGET",
+        "summary": "Get list of registered OAuth2 clients",
+        "operationId": "getOAuthClients",
         "produces": [
           "*/*"
         ],
@@ -198,7 +198,11 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ConfigurationDto"
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string"
+              }
             }
           },
           "401": {
@@ -218,8 +222,8 @@
         "tags": [
           "user-controller"
         ],
-        "summary": "getUser",
-        "operationId": "getUserUsingGET",
+        "summary": "Get current user information",
+        "operationId": "getCurrentUser",
         "produces": [
           "*/*"
         ],
@@ -247,8 +251,8 @@
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "findAll",
-        "operationId": "findAllUsingGET_1",
+        "summary": "Find all Anime tracked by current user",
+        "operationId": "findAnimeStatuses",
         "produces": [
           "*/*"
         ],
@@ -289,13 +293,13 @@
         }
       }
     },
-    "/api/v1/users/current/anime/{animeId}": {
+    "/api/v1/users/current/anime/{id}": {
       "post": {
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "updateStatus",
-        "operationId": "updateStatusUsingPOST",
+        "summary": "Update status of Anime tracked by current user",
+        "operationId": "updateAnimeStatus",
         "consumes": [
           "application/json"
         ],
@@ -304,9 +308,9 @@
         ],
         "parameters": [
           {
-            "name": "animeId",
+            "name": "id",
             "in": "path",
-            "description": "animeId",
+            "description": "id",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -341,6 +345,40 @@
             "description": "Not Found"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Delete status of Anime tracked by current user",
+        "operationId": "deleteAnimeStatus",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
       }
     },
     "/api/v1/users/current/anime/{id}/episodes": {
@@ -348,8 +386,8 @@
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "getEpisodes",
-        "operationId": "getEpisodesUsingGET_1",
+        "summary": "Find all Episode of Anime tracked by current user",
+        "operationId": "findEpisodeStatuses",
         "produces": [
           "*/*"
         ],
@@ -504,15 +542,6 @@
         }
       },
       "title": "AnimeTitleDto"
-    },
-    "ConfigurationDto": {
-      "type": "object",
-      "properties": {
-        "googleOAuthClientId": {
-          "type": "string"
-        }
-      },
-      "title": "ConfigurationDto"
     },
     "EpisodeDto": {
       "type": "object",
@@ -780,13 +809,36 @@
     },
     "UserDto": {
       "type": "object",
+      "required": [
+        "email"
+      ],
       "properties": {
         "email": {
           "type": "string"
         },
-        "id": {
-          "type": "integer",
-          "format": "int64"
+        "familyName": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "middleName": {
+          "type": "string"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "preferredUsername": {
+          "type": "string"
         }
       },
       "title": "UserDto"

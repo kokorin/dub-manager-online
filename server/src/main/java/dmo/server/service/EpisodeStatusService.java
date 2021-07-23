@@ -23,11 +23,11 @@ public class EpisodeStatusService {
 
     @Secured("ROLE_USER")
     @Transactional(readOnly = true)
-    public Page<EpisodeStatus> findByAnimeAndUser(Long animeId, Long userId, PageRequest pageRequest) {
+    public Page<EpisodeStatus> findByAnimeAndUser(Long animeId, String userEmail, PageRequest pageRequest) {
         var anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+        var user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
 
         pageRequest = pageRequest.withSort(Sort.by("episode.type", "episode.number"));
         return episodeStatusRepository.findAllByAnimeAndUser(anime, user, pageRequest);

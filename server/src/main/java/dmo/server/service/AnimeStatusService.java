@@ -4,6 +4,7 @@ import dmo.server.domain.AnimeStatus;
 import dmo.server.domain.User;
 import dmo.server.event.AnimeRequested;
 import dmo.server.exception.AnimeNotFoundException;
+import dmo.server.exception.AnimeStatusNotFoundException;
 import dmo.server.exception.UserNotFoundException;
 import dmo.server.repository.AnimeRepository;
 import dmo.server.repository.AnimeStatusRepository;
@@ -38,18 +39,18 @@ public class AnimeStatusService {
 
     @Secured("ROLE_USER")
     @Transactional
-    public Page<AnimeStatus> findAll(Long userId, Pageable pageable) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+    public Page<AnimeStatus> findAll(String userEmail, Pageable pageable) {
+        User user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
 
         return animeStatusRepository.findAllByUser(user, pageable);
     }
 
     @Secured("ROLE_USER")
     @Transactional
-    public AnimeStatus updateAnimeStatus(Long userId, Long animeId, Consumer<AnimeStatus> updater) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+    public AnimeStatus updateAnimeStatus(String userEmail, Long animeId, Consumer<AnimeStatus> updater) {
+        var user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
 
         var anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
@@ -76,5 +77,16 @@ public class AnimeStatusService {
         log.info("Updated EpisodeStatus: {}", updateCount);
 
         return animeStatus;
+    }
+
+    @Secured("ROLE_USER")
+    @Transactional
+    public void deleteAnimeStatus(String userEmail, Long animeId) {
+        var id = new AnimeStatus.AnimeStatusId(animeId, userEmail);
+        var animeStatus = animeStatusRepository.findById(id)
+                .orElseThrow(() -> new AnimeStatusNotFoundException(id));
+
+        episodeStatusRepository.deleteAllByAnimeAndUser(animeId, userEmail);
+        animeStatusRepository.delete(animeStatus);
     }
 }
