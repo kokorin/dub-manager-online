@@ -3,11 +3,14 @@ package dmo.server.api.v1.controller;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/conf")
@@ -18,6 +21,10 @@ public class SettingsController {
     @GetMapping("oauth/clients")
     @ApiOperation(value = "Get list of registered OAuth2 clients", nickname = "getOAuthClients")
     public Set<String> getRegistered() {
-        return oAuth2ClientProperties.getRegistration().keySet();
+        return oAuth2ClientProperties.getRegistration().entrySet().stream()
+                .filter(entry -> StringUtils.hasText(entry.getValue().getClientId()))
+                .filter(entry -> StringUtils.hasText(entry.getValue().getClientSecret()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
     }
 }

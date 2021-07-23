@@ -10,7 +10,6 @@ services:
     environment:
       dmo_anidb_client: ${ANIDB_CLIENT_ID}
       dmo_anidb_client_version: ${ANIDB_CLIENT_VERSION}
-      google_oauth_client_id: ${GOOGLE_OAUTH_CLIENT_ID}
 
       spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
       spring_datasource_username: dmo
@@ -36,7 +35,8 @@ services:
       HOSTNAME: ${HOSTNAME:-localhost}
       UPSTREAM: "app:8080"
     volumes:
-      - ./dev.conf.template:/etc/nginx/templates/default.conf.template
+      - ./conf/nginx/dev.conf.template:/etc/nginx/templates/default.conf.template
+      - ./conf/nginx/base.location:/etc/nginx/conf.d/base.location
       - ngshare_volume:/usr/share/nginx
     ports:
       - "80:80"

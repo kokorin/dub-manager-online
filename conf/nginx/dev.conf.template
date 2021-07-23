@@ -1,0 +1,14 @@
+#Nginx configuration, placeholders are replaced with envsubst
+
+upstream app {
+    server ${UPSTREAM};
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name ${HOSTNAME};
+
+    include conf.d/base.location;
+}

@@ -3,6 +3,12 @@ version: "3"
 services:
   app:
     restart: always
+    environment:
+      spring_security_oauth2_client_registration_google_client-id: ${GOOGLE_CLIENT_ID:-}
+      spring_security_oauth2_client_registration_google_client-secret: ${GOOGLE_CLIENT_SECRET:-}
+
+      spring_security_oauth2_client_registration_github_client-id: ${GITHUB_CLIENT_ID:-}
+      spring_security_oauth2_client_registration_github_client-secret: ${GITHUB_CLIENT_SECRET:-}
 
   nginx:
     image: jonasal/nginx-certbot:latest-alpine
@@ -13,7 +19,7 @@ services:
       STAGING: ${CERT_STAGING:-0}
       DEBUG: ${CERT_DEBUG:-0}
     volumes:
-      - ./hosting.conf.template:/etc/nginx/templates/default.conf.template
+      - ./conf/nginx/hosting.conf.template:/etc/nginx/templates/default.conf.template
       - nginx_volume:/etc/letsencrypt
     ports:
       - "443:443"

@@ -1,0 +1,20 @@
+location / {
+    root /usr/share/nginx/html;
+    try_files $uri /index.html;
+    index index.html;
+}
+
+location /api {
+    proxy_set_header Host $host;
+    proxy_pass  http://app;
+}
+
+location /oauth2 {
+    proxy_set_header Host $host;
+    proxy_pass  http://app;
+}
+
+location /login/oauth2 {
+    proxy_set_header Host $host;
+    proxy_pass  http://app;
+}
