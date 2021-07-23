@@ -12,6 +12,9 @@ export const api = generatedApi.enhanceEndpoints({
         updateAnimeStatus: {
             invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
         },
+        deleteAnimeStatus: {
+            invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+        },
     },
 });
 
@@ -31,6 +34,7 @@ export const {
     useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
-    useUpdateAnimeStatusMutation,
     useFindEpisodeStatusesQuery,
+    useUpdateAnimeStatusMutation,
+    useDeleteAnimeStatusMutation,
 } = api;

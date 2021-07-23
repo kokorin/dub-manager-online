@@ -1,6 +1,6 @@
 import React, { CSSProperties, FC, useState } from "react";
 import { useFindAnimeQuery } from "../api";
-import { DataGrid, GridColDef, GridSelectionModelChangeParams } from "@material-ui/data-grid";
+import { DataGrid, GridColDef, GridRowId } from "@material-ui/data-grid";
 import { resolveAnimeTitle } from "../service";
 import { Anime } from "../domain";
 import { Search } from "../components/Search";
@@ -11,6 +11,7 @@ const columns: GridColDef[] = [
     { field: "type", headerName: "TYPE", flex: 3 },
     {
         field: "titles",
+
         headerName: "TITLE",
         flex: 10,
         valueGetter: (params) => resolveAnimeTitle((params.row as Anime).titles),
@@ -34,8 +35,8 @@ export const AnimeTable: FC<OwnProps> = (props) => {
         setFilter(text);
     };
 
-    const handleSelectionModelChange = (params: GridSelectionModelChangeParams) => {
-        props.onAnimeSelected(params.selectionModel as number[]);
+    const handleSelectionModelChange = (selectionModel: GridRowId[]) => {
+        props.onAnimeSelected(selectionModel as number[]);
     };
 
     return (
