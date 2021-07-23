@@ -18,17 +18,5 @@ server {
     # Load the Diffie-Hellman parameter.
     ssl_dhparam /etc/letsencrypt/dhparams/dhparam.pem;
 
-    location / {
-        root /usr/share/nginx/html;
-        try_files $uri /index.html;
-        index index.html;
-    }
-
-    location /api {
-        proxy_pass  http://app;
-    }
-
-    location ~* /oauth2/.+ {
-        proxy_pass  http://app;
-    }
+    include conf.d/base.location;
 }
