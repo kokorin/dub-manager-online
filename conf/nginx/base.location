@@ -6,15 +6,18 @@ location / {
 
 location /api {
     proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
     proxy_pass  http://app;
 }
 
 location /oauth2 {
     proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
     proxy_pass  http://app;
 }
 
 location /login/oauth2 {
     proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
     proxy_pass  http://app;
 }
