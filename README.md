@@ -17,7 +17,6 @@ docker-compose -f .\docker-compose.yml up -d mariadb
 The following variables must present either as ENV variables or in `.env` file in project root:
   1. ANIDB_CLIENT_ID 
   2. ANIDB_CLIENT_VERSION
-  3. GOOGLE_OAUTH_CLIENT_ID
 
 ```sh
 docker-compose -f docker-compose.yml up -d

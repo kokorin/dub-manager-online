@@ -14,8 +14,6 @@ services:
       spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
       spring_datasource_username: dmo
       spring_datasource_password: dmo
-
-      jwt_key: ${JWT_KEY:-}
     ports:
       - "8080:8080"
 
