@@ -3,9 +3,11 @@ import AnimeStatusTable from "./AnimeStatusTable";
 import { Box, Button, CircularProgress, Modal, Paper } from "@material-ui/core";
 import AnimeSelect from "./AnimeSelect";
 import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
+import AnimeStatusView from "./AnimeStatusView";
 
 const AnimeStatusScreen: FC = () => {
     const [selectedAnimeStatuses, setSelectedAnimeStatuses] = useState([] as number[]);
+    const [animeEditOpen, setAnimeEditOpen] = useState(0);
     const [animeSelectOpen, setAnimeSelectOpen] = useState(false);
 
     const [updateAnimeStatus, { isLoading: isUpdating }] = useUpdateAnimeStatusMutation();
@@ -37,10 +39,22 @@ const AnimeStatusScreen: FC = () => {
                     />
                 </Paper>
             </Modal>
+            <Modal style={{ margin: "10%" }} open={animeEditOpen !== 0} onClose={() => setAnimeEditOpen(0)}>
+                <Paper style={{ height: "100%", width: "100%" }}>
+                    <AnimeStatusView animeId={animeEditOpen} style={{ height: "100%", width: "100%" }} />
+                </Paper>
+            </Modal>
             <div className="status_table_parent" style={{ height: "100%", width: "100%" }}>
                 <Box justifyContent="right">
                     <Button color="primary" onClick={() => setAnimeSelectOpen(true)}>
                         Add Anime
+                    </Button>
+                    <Button
+                        color="secondary"
+                        disabled={selectedAnimeStatuses.length !== 1}
+                        onClick={() => setAnimeEditOpen(selectedAnimeStatuses[0])}
+                    >
+                        Edit Anime
                     </Button>
                     <Button color="secondary" disabled={!selectedAnimeStatuses.length} onClick={handleDeleteClick}>
                         Delete Anime

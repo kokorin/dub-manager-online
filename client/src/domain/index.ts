@@ -1,4 +1,4 @@
-import { AnimeDto, AnimeStatusDto, AnimeTitleDto, EpisodeDto, EpisodeTitleDto } from "../api";
+import { AnimeDto, AnimeStatusDto, AnimeTitleDto, EpisodeDto, EpisodeStatusDto, EpisodeTitleDto } from "../api";
 
 export type Anime = AnimeDto;
 
@@ -29,5 +29,6 @@ export type Episode = EpisodeDto;
 export type EpisodeTitle = EpisodeTitleDto;
 
 export type AnimeStatus = AnimeStatusDto;
+export type EpisodeStatus = EpisodeStatusDto;
 
 export * from "./Page";

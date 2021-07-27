@@ -25,6 +25,14 @@ const columns: GridColDef[] = [
         flex: 5,
     },
     {
+        field: "episodes",
+        flex: 2,
+        valueGetter: (params) => {
+            const status = params.row as AnimeStatus;
+            return `${status.completedRegularEpisodes}/${status.totalRegularEpisodes}`;
+        },
+    },
+    {
         field: "comment",
         flex: 5,
     },
