@@ -3,17 +3,16 @@ version: "3"
 services:
   app:
     restart: always
+    env_file:
+      - conf/app/app.env
 
   nginx:
     image: jonasal/nginx-certbot:latest-alpine
     restart: always
-    environment:
-      HOSTNAME: ${HOSTNAME}
-      CERTBOT_EMAIL: ${CERT_MAIL}
-      STAGING: ${CERT_STAGING:-0}
-      DEBUG: ${CERT_DEBUG:-0}
+    env_file:
+      - conf/nginx/nginx.env
     volumes:
-      - ./hosting.conf.template:/etc/nginx/templates/default.conf.template
+      - ./conf/nginx/hosting.conf.template:/etc/nginx/templates/default.conf.template
       - nginx_volume:/etc/letsencrypt
     ports:
       - "443:443"

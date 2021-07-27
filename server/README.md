@@ -8,6 +8,8 @@ https://docs.spring.io/spring-security/site/docs/current/reference/html5/#oauth2
 
 ## Google Auth Provider
 
+Create client ID and secret: https://console.cloud.google.com/apis/credentials
+
 ## GitHub Auth Provider
 
 Create client ID and secret: https://github.com/settings/applications/new

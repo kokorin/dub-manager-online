@@ -1,3 +1,6 @@
 .idea
 *.iml
 .env
+
+conf/app/app.env
+conf/nginx/nginx.env
