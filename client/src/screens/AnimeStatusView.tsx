@@ -2,11 +2,11 @@ import React, { CSSProperties, FC, useState } from "react";
 import { DataGrid, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
 import { useFindEpisodeStatusesQuery } from "../api";
 import { CircularProgress, Modal } from "@material-ui/core";
-import { EpisodeStatus } from "../domain";
+import { AnimeStatus, EpisodeStatus } from "../domain";
 import { resolveEpisodeTitle } from "../service";
 
 interface OwnProps {
-    animeId: number;
+    animeStatus: AnimeStatus;
     style?: CSSProperties;
 }
 
@@ -42,7 +42,7 @@ const columns: GridColDef[] = [
 const AnimeStatusView: FC<OwnProps> = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const { data, isLoading } = useFindEpisodeStatusesQuery({ id: props.animeId, page, size: pageSize });
+    const { data, isLoading } = useFindEpisodeStatusesQuery({ id: props.animeStatus.anime.id, page, size: pageSize });
 
     return (
         <div style={props.style}>
