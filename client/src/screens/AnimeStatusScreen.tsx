@@ -41,7 +41,7 @@ const AnimeStatusScreen: FC = () => {
                 </Paper>
             </Modal>
             <Modal
-                style={{ margin: "10%" }}
+                style={{ margin: "5%" }}
                 open={!!animeShown}
                 onClose={() => setAnimeShown(null as unknown as AnimeStatus)}
             >
