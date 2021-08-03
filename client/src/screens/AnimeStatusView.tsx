@@ -1,16 +1,17 @@
 import React, { CSSProperties, FC, useState } from "react";
-import { DataGrid, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
 import { useFindEpisodeStatusesQuery } from "../api";
 import {
-    Box,
     CircularProgress,
     FormControl,
+    FormControlLabel,
     FormGroup,
     Input,
     InputLabel,
     MenuItem,
     Modal,
     Select,
+    Switch,
 } from "@material-ui/core";
 import { AnimeStatus, EpisodeStatus } from "../domain";
 import { resolveAnimeTitle, resolveEpisodeTitle } from "../service";
@@ -30,7 +31,12 @@ const columns: GridColDef[] = [
     },
     {
         field: "progress",
-        flex: 5,
+        flex: 2,
+        // see https://github.com/mui-org/material-ui-x/issues/951
+        // eslint-disable-next-line react/display-name
+        renderCell: (params: GridCellParams) => (
+            <FormControlLabel control={<Switch color="secondary" />} label={(params.row as EpisodeStatus).progress} />
+        ),
     },
     {
         field: "episode.number",
@@ -101,7 +107,8 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
                     onPageSizeChange={(params) => setPageSize(params.pageSize)}
                     paginationMode="server"
                     sortingMode="server"
-                    checkboxSelection={true}
+                    checkboxSelection={false}
+                    disableSelectionOnClick={true}
                 />
             </div>
         </div>
