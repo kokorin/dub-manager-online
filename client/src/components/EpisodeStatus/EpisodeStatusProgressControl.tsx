@@ -18,7 +18,7 @@ const EpisodeStatusProgressControl: FC<OwnProps> = (props) => {
     const switchControl = (
         <Switch
             color="secondary"
-            checked={props.episodeStatus.progress == EpisodeStatusProgress.COMPLETED}
+            checked={props.episodeStatus.progress === EpisodeStatusProgress.COMPLETED}
             onChange={(event) => onCheckedChange(event.target.checked)}
         />
     );
