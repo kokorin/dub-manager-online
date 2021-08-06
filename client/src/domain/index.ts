@@ -31,4 +31,9 @@ export type EpisodeTitle = EpisodeTitleDto;
 export type AnimeStatus = AnimeStatusDto;
 export type EpisodeStatus = EpisodeStatusDto;
 
+export enum EpisodeStatusProgress {
+    COMPLETED = "COMPLETED",
+    NOT_STARTED = "NOT_STARTED",
+}
+
 export * from "./Page";

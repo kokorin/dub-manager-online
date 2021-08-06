@@ -1,20 +1,19 @@
-import React, { CSSProperties, FC, useState } from "react";
+import React, { CSSProperties, FC, useCallback, useMemo, useState } from "react";
 import { DataGrid, GridCellParams, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
-import { useFindEpisodeStatusesQuery } from "../api";
+import { useFindEpisodeStatusesQuery, useUpdateEpisodeStatusMutation } from "../api";
 import {
     CircularProgress,
     FormControl,
-    FormControlLabel,
     FormGroup,
     Input,
     InputLabel,
     MenuItem,
     Modal,
     Select,
-    Switch,
 } from "@material-ui/core";
-import { AnimeStatus, EpisodeStatus } from "../domain";
+import { AnimeStatus, EpisodeStatus, EpisodeStatusProgress } from "../domain";
 import { resolveAnimeTitle, resolveEpisodeTitle } from "../service";
+import EpisodeStatusProgressControl from "../components/EpisodeStatus/EpisodeStatusProgressControl";
 
 interface OwnProps {
     animeStatus: AnimeStatus;
@@ -23,7 +22,11 @@ interface OwnProps {
 
 const getRowId: GridRowIdGetter = (data) => (data as EpisodeStatus).episode.id;
 
-const columns: GridColDef[] = [
+type ColumnsProvider = (onUpdateProgress: (episodeId: number, progress: EpisodeStatusProgress) => void) => GridColDef[];
+
+const createColumns: ColumnsProvider = (
+    onUpdateProgress: (episodeId: number, progress: EpisodeStatusProgress) => void,
+) => [
     {
         field: "id",
         flex: 1,
@@ -35,7 +38,10 @@ const columns: GridColDef[] = [
         // see https://github.com/mui-org/material-ui-x/issues/951
         // eslint-disable-next-line react/display-name
         renderCell: (params: GridCellParams) => (
-            <FormControlLabel control={<Switch color="secondary" />} label={(params.row as EpisodeStatus).progress} />
+            <EpisodeStatusProgressControl
+                episodeStatus={params.row as EpisodeStatus}
+                onUpdateProgress={onUpdateProgress}
+            />
         ),
     },
     {
@@ -59,13 +65,22 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
     const { animeStatus } = props;
     const { anime } = animeStatus;
 
+    const [updateEpisodeStatus, { isLoading: isUpdating }] = useUpdateEpisodeStatusMutation();
+    const onUpdateProgress = useCallback(
+        (episodeId: number, progress: EpisodeStatusProgress) => {
+            updateEpisodeStatus({ id: anime.id, eid: episodeId, updateEpisodeStatusDto: { progress } });
+        },
+        [anime, updateEpisodeStatus],
+    );
+    const columns = useMemo(() => createColumns(onUpdateProgress), [onUpdateProgress]);
+
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const { data, isLoading } = useFindEpisodeStatusesQuery({ id: anime.id, page, size: pageSize });
 
     return (
         <div className="anime-status-view" style={props.style}>
-            <Modal open={isLoading}>
+            <Modal open={isLoading || isUpdating}>
                 <CircularProgress />
             </Modal>
             <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>

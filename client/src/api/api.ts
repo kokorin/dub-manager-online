@@ -4,7 +4,7 @@ import { notAuthorized } from "../auth";
 import store from "../store";
 
 export const api = generatedApi.enhanceEndpoints({
-    addTagTypes: ["AnimeStatus"],
+    addTagTypes: ["AnimeStatus", "EpisodeStatus"],
     endpoints: {
         findAnimeStatuses: {
             providesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
@@ -14,6 +14,12 @@ export const api = generatedApi.enhanceEndpoints({
         },
         deleteAnimeStatus: {
             invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+        },
+        findEpisodeStatuses: {
+            providesTags: (result, error, arg) => [{ type: "EpisodeStatus", id: "LIST" }],
+        },
+        updateEpisodeStatus: {
+            invalidatesTags: (result, error, arg) => [{ type: "EpisodeStatus", id: "LIST" }],
         },
     },
 });
@@ -37,4 +43,5 @@ export const {
     useFindEpisodeStatusesQuery,
     useUpdateAnimeStatusMutation,
     useDeleteAnimeStatusMutation,
+    useUpdateEpisodeStatusMutation,
 } = api;
