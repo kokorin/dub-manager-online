@@ -29,7 +29,6 @@ public class UserRegistrar {
 
         var principal = auth.getPrincipal();
         if (!(principal instanceof OidcUser)) {
-            log.warn("Principal {} is not OidcUser", principal);
             return;
         }
 

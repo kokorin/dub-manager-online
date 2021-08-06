@@ -20,6 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -61,15 +62,13 @@ public class AnimeStatusService {
                     result.setUser(user);
                     result.setAnime(anime);
                     result.setCompletedRegularEpisodes(0L);
-                    result.setTotalRegularEpisodes(0L);
+                    result.setTotalRegularEpisodes(Optional.ofNullable(anime.getEpisodeCount()).orElse(0L));
                     result.setProgress(AnimeStatus.Progress.NOT_STARTED);
                     // If AnimeStatus was created we have to save it
-                    animeStatusRepository.save(result);
-                    return result;
+                    return animeStatusRepository.save(result);
                 });
 
         updater.accept(animeStatus);
-
 
         eventPublisher.publishEvent(new AnimeRequested(anime));
 

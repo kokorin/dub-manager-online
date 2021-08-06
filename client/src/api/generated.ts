@@ -47,6 +47,13 @@ export const api = createApi({
                 params: { page: queryArg.page, size: queryArg.size },
             }),
         }),
+        updateEpisodeStatus: build.mutation<UpdateEpisodeStatusApiResponse, UpdateEpisodeStatusApiArg>({
+            query: (queryArg) => ({
+                url: `/api/v1/users/current/anime/${queryArg.id}/episodes/${queryArg.eid}`,
+                method: "POST",
+                body: queryArg.updateEpisodeStatusDto,
+            }),
+        }),
     }),
 });
 export type FindAnimeApiResponse = /** status 200 OK */ PageDtoOfAnimeDto;
@@ -103,6 +110,17 @@ export type FindEpisodeStatusesApiArg = {
     page: number;
     /** size */
     size: number;
+};
+export type UpdateEpisodeStatusApiResponse = /** status 200 OK */
+    | EpisodeStatusDto
+    | /** status 201 Created */ undefined;
+export type UpdateEpisodeStatusApiArg = {
+    /** eid */
+    eid: number;
+    /** id */
+    id: number;
+    /** updateEpisodeStatusDto */
+    updateEpisodeStatusDto: UpdateEpisodeStatusDto;
 };
 export type AnimeTitleDto = {
     lang: string;
@@ -184,6 +202,9 @@ export type PageDtoOfEpisodeStatusDto = {
     totalElements: number;
     totalPages: number;
 };
+export type UpdateEpisodeStatusDto = {
+    progress: "COMPLETED" | "NOT_STARTED";
+};
 export const {
     useFindAnimeQuery,
     useGetAnimeQuery,
@@ -194,4 +215,5 @@ export const {
     useUpdateAnimeStatusMutation,
     useDeleteAnimeStatusMutation,
     useFindEpisodeStatusesQuery,
+    useUpdateEpisodeStatusMutation,
 } = api;

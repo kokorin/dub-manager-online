@@ -1,21 +1,28 @@
 package dmo.server;
 
+import com.p6spy.engine.spy.P6SpyDriver;
 import dmo.server.api.v1.dto.*;
+import dmo.server.domain.Anime;
+import dmo.server.event.AnimeListUpdateScheduled;
+import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.integration.anidb.MockAnidbConf;
 import dmo.server.okhttp.InMemoryCookieJar;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import no.nav.security.mock.oauth2.MockOAuth2Server;
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback;
 import okhttp3.OkHttpClient;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mariadb.jdbc.Driver;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +46,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
@@ -47,18 +55,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = MockAnidbConf.class)
 @SpringJUnitConfig
 @Testcontainers
-@TestPropertySource(properties = {
-        "logging.level.ROOT=INFO",
-        "dmo.anidb.client=test",
-        "dmo.anidb.client.version=1",
-        "google.oauth.client.id=GoogleAuthClientId",
-        "spring.main.allow-bean-definition-overriding=true",
-        "anime.update.delay=PT1S"
-})
+@TestPropertySource(locations = {"classpath:application.properties", "classpath:application-test.properties"})
+@Slf4j
 public class ApiTest {
 
     @LocalServerPort
     private int port;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     private static final DockerImageName MARIA_ALPINE = DockerImageName
             .parse("yobasystems/alpine-mariadb")
@@ -82,7 +86,9 @@ public class ApiTest {
 
     @DynamicPropertySource
     public static void updateConfig(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", database::getJdbcUrl);
+        registry.add("spring.datasource.driver-class-name", P6SpyDriver.class::getName);
+        registry.add("spring.datasource.url",
+                () -> database.getJdbcUrl().replaceFirst("jdbc:", "jdbc:p6spy:"));
         registry.add("spring.datasource.username", database::getUsername);
         registry.add("spring.datasource.password", database::getPassword);
 
@@ -102,7 +108,20 @@ public class ApiTest {
     public void waitUntilAnimeListIsUpdated() throws InterruptedException {
         if (!animeListUpdated) {
             animeListUpdated = true;
+
             TimeUnit.SECONDS.sleep(1);
+
+            log.info("Initializing anime list");
+            Stream.of(1L, 2L, 3L, 357L, 979L, 11681L)
+                    .map(id -> {
+                        var a = new Anime();
+                        a.setId(id);
+                        return a;
+                    })
+                    .map(AnimeUpdateScheduled::new)
+                    .forEach(eventPublisher::publishEvent);
+            TimeUnit.SECONDS.sleep(3);
+            log.info("Initialization complete");
         }
     }
 
@@ -217,7 +236,7 @@ public class ApiTest {
         assertNotNull(animeStatus);
         assertEquals((Long) animeId, animeStatus.getAnime().getId());
         assertEquals(10, animeStatus.getAnime().getTitles().size());
-        assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
+        assertEquals(AnimeTypeDto.TV_SERIES, animeStatus.getAnime().getType());
         assertEquals(AnimeProgressDto.IN_PROGRESS, animeStatus.getProgress());
         assertEquals("Comment can be stored!", animeStatus.getComment());
 
@@ -233,7 +252,7 @@ public class ApiTest {
         assertNotNull(animeStatus);
         assertEquals((Long) animeId, animeStatus.getAnime().getId());
         assertEquals(10, animeStatus.getAnime().getTitles().size());
-        assertEquals(AnimeTypeDto.UNKNOWN, animeStatus.getAnime().getType());
+        assertEquals(AnimeTypeDto.TV_SERIES, animeStatus.getAnime().getType());
         assertEquals(AnimeProgressDto.COMPLETED, animeStatus.getProgress());
         assertEquals("Comment can be stored!", animeStatus.getComment());
     }
@@ -315,9 +334,13 @@ public class ApiTest {
         var restTemplate = getRestTemplate(false);
         var animeId = 1L;
 
-        var response = restTemplate.getForEntity(
-                "http://localhost:" + port + "/api/v1/users/current/anime/" + animeId + "/episode/42",
-                Void.class
+        var response = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/1/episodes?page=0&size=100",
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                new ParameterizedTypeReference<PageDto<AnimeStatusDto>>() {
+                },
+                Map.of("port", port)
         );
 
         assertNotNull(response);
@@ -327,9 +350,15 @@ public class ApiTest {
     @Test
     void episodeStatusNotAvailableIfNoAnimeStatusSet() throws InterruptedException {
         var restTemplate = getRestTemplate(true);
-        var animeId = 1L;
 
-        var response = restTemplate.getForEntity("http://localhost:" + port + "/api/v1/users/current/anime/" + animeId + "/episode/42", Void.class);
+        var response = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/1/episodes?page=0&size=100",
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                new ParameterizedTypeReference<PageDto<AnimeStatusDto>>() {
+                },
+                Map.of("port", port)
+        );
 
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -355,16 +384,13 @@ public class ApiTest {
         assertNotNull(animeResponse);
         assertEquals(HttpStatus.OK, animeResponse.getStatusCode(), animeResponse.toString());
 
-        // Wait until anime is fetched and episodes are stored
-        TimeUnit.SECONDS.sleep(2);
-
         var episodesResponse = restTemplate.exchange(
                 "http://localhost:{port}/api/v1/users/current/anime/{animeId}/episodes?page=0&size=100",
                 HttpMethod.GET,
                 HttpEntity.EMPTY,
                 new ParameterizedTypeReference<PageDto<EpisodeStatusDto>>() {
                 },
-                Map.of("port", port, "animeId", animeId, "episodeId", episodeId)
+                Map.of("port", port, "animeId", animeId)
         );
 
         assertNotNull(episodesResponse);
@@ -381,6 +407,94 @@ public class ApiTest {
         assertEquals(17, episodes.size());
         var distinctProgress = episodes.stream().map(EpisodeStatusDto::getProgress).collect(Collectors.toSet());
         assertEquals(Collections.singleton(EpisodeProgressDto.NOT_STARTED), distinctProgress);
+    }
+
+    @Test
+    void episodeStatusUpdateRequiresAuthentication() throws InterruptedException {
+        var restTemplate = getRestTemplate(false);
+        var animeId = 1L;
+        var updateEpisodeStatus = new UpdateEpisodeStatusDto();
+        updateEpisodeStatus.setProgress(EpisodeProgressDto.COMPLETED);
+
+        var response = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/v1/users/current/anime/{animeId}/episodes/42",
+                updateEpisodeStatus,
+                EpisodeStatusDto.class,
+                Map.of("animeId", animeId)
+        );
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    void episodeStatusCanBeUpdated() throws InterruptedException {
+        var restTemplate = getRestTemplate(true);
+        var animeId = 979L;
+        var episodeId = 22416L;
+
+        var updateAnimeStatus = new UpdateAnimeStatusDto();
+        updateAnimeStatus.setProgress(AnimeProgressDto.IN_PROGRESS);
+        updateAnimeStatus.setComment("Abra-Kadabra!");
+
+        var animeResponse = restTemplate.postForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                new HttpEntity<>(updateAnimeStatus),
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(animeResponse);
+        assertEquals(HttpStatus.OK, animeResponse.getStatusCode(), animeResponse.toString());
+        var animeStatus = animeResponse.getBody();
+        assertNotNull(animeStatus);
+        assertEquals(animeId, animeStatus.getAnime().getId());
+        assertEquals(51L, animeStatus.getTotalRegularEpisodes());
+        assertEquals(0L, animeStatus.getCompletedRegularEpisodes());
+
+        var updateEpisodeStatus = new UpdateEpisodeStatusDto();
+        updateEpisodeStatus.setProgress(EpisodeProgressDto.COMPLETED);
+
+        var response = restTemplate.postForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}/episodes/{episodeId}",
+                updateEpisodeStatus,
+                EpisodeStatusDto.class,
+                Map.of("port", port, "animeId", animeId, "episodeId", episodeId)
+        );
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), response.toString());
+
+        var updated = response.getBody();
+        assertNotNull(updated);
+        assertNotNull(updated.getEpisode());
+        assertEquals(episodeId, updated.getEpisode().getId());
+        assertNotNull(updated.getEpisode().getTitles());
+        assertEquals(EpisodeProgressDto.COMPLETED, updated.getProgress());
+
+        var animePageResponse = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/?page=0&size=100",
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                new ParameterizedTypeReference<PageDto<AnimeStatusDto>>() {
+                },
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(animePageResponse);
+        assertEquals(HttpStatus.OK, animePageResponse.getStatusCode(), animePageResponse.toString());
+
+        var animePage = animePageResponse.getBody();
+        assertNotNull(animePage);
+        assertEquals(1L, animePage.getTotalElements());
+
+        var animeStatuses = animePage.getContent();
+        assertNotNull(animeStatuses);
+        assertEquals(1, animeStatuses.size());
+        animeStatus = animeStatuses.get(0);
+
+        assertEquals(51L, animeStatus.getTotalRegularEpisodes());
+        assertEquals(1L, animeStatus.getCompletedRegularEpisodes());
     }
 
     @Test
