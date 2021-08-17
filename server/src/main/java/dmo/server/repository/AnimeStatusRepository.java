@@ -24,16 +24,17 @@ public interface AnimeStatusRepository extends JpaRepository<AnimeStatus, AnimeS
     @Modifying
     int updateTotalRegularEpisodes(Anime anime);
 
-    @Query("UPDATE AnimeStatus a\n" +
-            "SET a.completedRegularEpisodes = (\n" +
-            "  SELECT COUNT(1)\n" +
-            "  FROM EpisodeStatus e\n" +
-            "  WHERE e.episode.anime = :anime\n" +
-            "  AND e.user = :user" +
-            "  AND e.progress = 'COMPLETED'" +
-            ")\n" +
-            "WHERE a.anime = :anime\n" +
-            "AND a.user = :user")
+    @Query("UPDATE AnimeStatus a" +
+            " SET a.completedRegularEpisodes = (" +
+            " SELECT COUNT(1)" +
+            " FROM EpisodeStatus e" +
+            " WHERE e.episode.anime = :anime" +
+            " AND e.user = :user" +
+            " AND e.episode.type = 'REGULAR'" +
+            " AND e.progress = 'COMPLETED'" +
+            ")" +
+            " WHERE a.anime = :anime" +
+            " AND a.user = :user")
     @Modifying
     int updateCompletedRegularEpisodes(Anime anime, User user);
 }

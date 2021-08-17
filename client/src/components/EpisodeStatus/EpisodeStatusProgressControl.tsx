@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { ChangeEvent, FC, useCallback } from "react";
 import { FormControlLabel, Switch } from "@material-ui/core";
 import { EpisodeStatus, EpisodeStatusProgress } from "../../domain";
 
@@ -8,18 +8,22 @@ interface OwnProps {
 }
 
 const EpisodeStatusProgressControl: FC<OwnProps> = (props) => {
-    const onCheckedChange = (checked: boolean) => {
-        props.onUpdateProgress(
-            props.episodeStatus.episode.id,
-            checked ? EpisodeStatusProgress.COMPLETED : EpisodeStatusProgress.NOT_STARTED,
-        );
-    };
+    const onCheckedChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const checked = event.target.checked;
+            props.onUpdateProgress(
+                props.episodeStatus.episode.id,
+                checked ? EpisodeStatusProgress.COMPLETED : EpisodeStatusProgress.NOT_STARTED,
+            );
+        },
+        [props],
+    );
 
     const switchControl = (
         <Switch
             color="secondary"
             checked={props.episodeStatus.progress === EpisodeStatusProgress.COMPLETED}
-            onChange={(event) => onCheckedChange(event.target.checked)}
+            onChange={onCheckedChange}
         />
     );
 
