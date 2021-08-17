@@ -1,11 +1,9 @@
 package dmo.server.api.v1.controller;
 
-import dmo.server.api.v1.dto.AnimeStatusDto;
-import dmo.server.api.v1.dto.EpisodeStatusDto;
-import dmo.server.api.v1.dto.PageDto;
-import dmo.server.api.v1.dto.UpdateAnimeStatusDto;
+import dmo.server.api.v1.dto.*;
 import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.AnimeStatus;
+import dmo.server.domain.EpisodeStatus;
 import dmo.server.security.JwtUser;
 import dmo.server.service.AnimeStatusService;
 import dmo.server.service.EpisodeStatusService;
@@ -84,5 +82,23 @@ public class AnimeStatusController {
                 user.getEmail(),
                 animeId
         );
+    }
+
+    @PostMapping("{id}/episodes/{eid}")
+    @ApiOperation(value = "Update status of Anime Episode tracked by current user", nickname = "updateEpisodeStatus")
+    public EpisodeStatusDto updateEpisodeStatus(@AuthenticationPrincipal JwtUser user,
+                                                @PathVariable("id") @NotNull Long animeId,
+                                                @PathVariable("eid") @NotNull Long episodeId,
+                                                @RequestBody UpdateEpisodeStatusDto updateEpisodeStatusDto) {
+        Consumer<EpisodeStatus> updater = episodeStatus -> animeMapper.updateEpisodeStatus(updateEpisodeStatusDto, episodeStatus);
+
+        var episodeStatus = episodeStatusService.updateEpisodeStatus(
+                animeId,
+                episodeId,
+                user.getEmail(),
+                updater
+        );
+
+        return animeMapper.toEpisodeStatusDto(episodeStatus);
     }
 }

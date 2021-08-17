@@ -82,4 +82,8 @@ public interface AnimeMapper {
                 toEpisodeStatusDtoList(page.getContent())
         );
     }
+
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "episode", ignore = true)
+    void updateEpisodeStatus(UpdateEpisodeStatusDto update, @MappingTarget EpisodeStatus entity);
 }

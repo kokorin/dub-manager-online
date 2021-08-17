@@ -15,4 +15,5 @@ export const {
     useFindEpisodeStatusesQuery,
     useUpdateAnimeStatusMutation,
     useDeleteAnimeStatusMutation,
+    useUpdateEpisodeStatusMutation,
 } = api;
