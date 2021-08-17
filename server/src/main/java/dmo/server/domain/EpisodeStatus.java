@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 @Entity
+@Getter
 public class EpisodeStatus {
 
     @EmbeddedId
@@ -14,7 +15,6 @@ public class EpisodeStatus {
 
     @ManyToOne(optional = false)
     @MapsId("episodeId")
-    @Getter
     @Setter
     private Episode episode;
 
@@ -23,7 +23,6 @@ public class EpisodeStatus {
 
     @ManyToOne(optional = false)
     @MapsId("userEmail")
-    @Getter
     @Setter
     private User user;
 
@@ -32,7 +31,6 @@ public class EpisodeStatus {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Getter
     @Setter
     private Progress progress = Progress.NOT_STARTED;
 

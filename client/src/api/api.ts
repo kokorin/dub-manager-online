@@ -7,7 +7,16 @@ export const api = generatedApi.enhanceEndpoints({
     addTagTypes: ["AnimeStatus", "EpisodeStatus"],
     endpoints: {
         findAnimeStatuses: {
-            providesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+            providesTags: (result, error, arg) => [
+                ...(result?.content || []).map((animeStatus) => ({
+                    type: "AnimeStatus" as const,
+                    id: animeStatus.anime.id,
+                })),
+                {
+                    type: "AnimeStatus",
+                    id: "LIST",
+                },
+            ],
         },
         updateAnimeStatus: {
             invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
@@ -19,7 +28,16 @@ export const api = generatedApi.enhanceEndpoints({
             providesTags: (result, error, arg) => [{ type: "EpisodeStatus", id: "LIST" }],
         },
         updateEpisodeStatus: {
-            invalidatesTags: (result, error, arg) => [{ type: "EpisodeStatus", id: "LIST" }],
+            invalidatesTags: (result, error, arg) => [
+                {
+                    type: "EpisodeStatus",
+                    id: "LIST",
+                },
+                {
+                    type: "AnimeStatus",
+                    id: result?.episode.animeId,
+                },
+            ],
         },
     },
 });

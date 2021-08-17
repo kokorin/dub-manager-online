@@ -517,16 +517,19 @@
       "properties": {
         "id": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "titles": {
           "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/AnimeTitleDto"
           }
         },
         "type": {
           "type": "string",
+          "readOnly": true,
           "enum": [
             "DELETED",
             "MOVIE",
@@ -553,17 +556,21 @@
       ],
       "properties": {
         "anime": {
+          "readOnly": true,
           "$ref": "#/definitions/AnimeDto"
         },
         "comment": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "completedRegularEpisodes": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "progress": {
           "type": "string",
+          "readOnly": true,
           "enum": [
             "COMPLETED",
             "IN_PROGRESS",
@@ -572,7 +579,8 @@
         },
         "totalRegularEpisodes": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         }
       },
       "title": "AnimeStatusDto"
@@ -586,13 +594,16 @@
       ],
       "properties": {
         "lang": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "text": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "type": {
           "type": "string",
+          "readOnly": true,
           "enum": [
             "CARD",
             "KANA",
@@ -609,6 +620,7 @@
       "type": "object",
       "required": [
         "airDate",
+        "animeId",
         "id",
         "length",
         "number",
@@ -618,28 +630,39 @@
       "properties": {
         "airDate": {
           "type": "string",
-          "format": "date"
+          "format": "date",
+          "readOnly": true
+        },
+        "animeId": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
         },
         "id": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "length": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "number": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "titles": {
           "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/EpisodeTitleDto"
           }
         },
         "type": {
           "type": "string",
+          "readOnly": true,
           "enum": [
             "CREDIT",
             "OTHER",
@@ -660,10 +683,12 @@
       ],
       "properties": {
         "episode": {
+          "readOnly": true,
           "$ref": "#/definitions/EpisodeDto"
         },
         "progress": {
           "type": "string",
+          "readOnly": true,
           "enum": [
             "COMPLETED",
             "NOT_STARTED"
@@ -680,10 +705,12 @@
       ],
       "properties": {
         "lang": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "text": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         }
       },
       "title": "EpisodeTitleDto"
@@ -701,29 +728,35 @@
       "properties": {
         "content": {
           "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/AnimeDto"
           }
         },
         "number": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "numberOfElements": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "size": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "totalElements": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "totalPages": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         }
       },
       "title": "PageDtoOfAnimeDto"
@@ -741,29 +774,35 @@
       "properties": {
         "content": {
           "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/AnimeStatusDto"
           }
         },
         "number": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "numberOfElements": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "size": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "totalElements": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "totalPages": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         }
       },
       "title": "PageDtoOfAnimeStatusDto"
@@ -781,29 +820,35 @@
       "properties": {
         "content": {
           "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/EpisodeDto"
           }
         },
         "number": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "numberOfElements": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "size": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "totalElements": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "totalPages": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         }
       },
       "title": "PageDtoOfEpisodeDto"
@@ -821,29 +866,35 @@
       "properties": {
         "content": {
           "type": "array",
+          "readOnly": true,
           "items": {
             "$ref": "#/definitions/EpisodeStatusDto"
           }
         },
         "number": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "numberOfElements": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "size": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         },
         "totalElements": {
           "type": "integer",
-          "format": "int64"
+          "format": "int64",
+          "readOnly": true
         },
         "totalPages": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "readOnly": true
         }
       },
       "title": "PageDtoOfEpisodeStatusDto"
@@ -888,35 +939,52 @@
     "UserDto": {
       "type": "object",
       "required": [
-        "email"
+        "email",
+        "familyName",
+        "fullName",
+        "givenName",
+        "locale",
+        "middleName",
+        "nickName",
+        "picture",
+        "preferredUsername"
       ],
       "properties": {
         "email": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "familyName": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "fullName": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "givenName": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "locale": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "middleName": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "nickName": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "picture": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "preferredUsername": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         }
       },
       "title": "UserDto"
