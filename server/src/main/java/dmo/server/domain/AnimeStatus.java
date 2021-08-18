@@ -4,54 +4,63 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Entity
 @Getter
-@Setter
 public class AnimeStatus {
     @EmbeddedId
     private AnimeStatusId id;
 
     @ManyToOne(optional = false)
     @MapsId("animeId")
+    @Setter
     private Anime anime;
 
     @ManyToOne(optional = false)
     @MapsId("userEmail")
+    @Setter
     private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Setter
     private Progress progress = Progress.NOT_STARTED;
 
     @Column(length = 4_096)
+    @Setter
     private String comment;
 
     /**
-     * Number of completed regular episodes.
+     * Number of completed {@link Episode.Type#REGULAR regular} episodes.
      */
     @Column(nullable = false)
-    private Long completedRegularEpisodes;
+    @Setter
+    private Long regularEpisodeCompleteCount;
 
     /**
-     * Total number of regular episodes.
+     * Total number of {@link Episode.Type#REGULAR regular} episodes.
      */
     @Column(nullable = false)
-    private Long totalRegularEpisodes;
+    @Setter
+    private Long regularEpisodeTotalCount;
 
-    // Suppress Lombok setter generation
-    private void setId(AnimeStatusId id) {
-        this.id = id;
-    }
+    /**
+     * Next {@link Episode.Type#REGULAR regular} {@link EpisodeStatus.Progress#NOT_STARTED not started} episode
+     * air date.
+     */
+    @Column
+    @Setter
+    private LocalDate regularEpisodeNextAirDate;
 
     @PrePersist
     @PreUpdate
     private void updateId() {
-        setId(new AnimeStatusId(
+        this.id = new AnimeStatusId(
                 Optional.ofNullable(anime).map(Anime::getId).orElse(null),
                 Optional.ofNullable(user).map(User::getEmail).orElse(null)
-        ));
+        );
     }
 
     public enum Progress {

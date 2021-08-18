@@ -550,9 +550,9 @@
       "required": [
         "anime",
         "comment",
-        "completedRegularEpisodes",
         "progress",
-        "totalRegularEpisodes"
+        "regularEpisodeCompleteCount",
+        "regularEpisodeTotalCount"
       ],
       "properties": {
         "anime": {
@@ -561,11 +561,6 @@
         },
         "comment": {
           "type": "string",
-          "readOnly": true
-        },
-        "completedRegularEpisodes": {
-          "type": "integer",
-          "format": "int64",
           "readOnly": true
         },
         "progress": {
@@ -577,7 +572,17 @@
             "NOT_STARTED"
           ]
         },
-        "totalRegularEpisodes": {
+        "regularEpisodeCompleteCount": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        },
+        "regularEpisodeNextAirDate": {
+          "type": "string",
+          "format": "date",
+          "readOnly": true
+        },
+        "regularEpisodeTotalCount": {
           "type": "integer",
           "format": "int64",
           "readOnly": true

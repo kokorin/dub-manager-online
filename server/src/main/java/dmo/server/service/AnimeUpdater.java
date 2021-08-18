@@ -130,10 +130,10 @@ public class AnimeUpdater {
             episodes.forEach(e -> e.setAnime(savedAnime));
             episodeRepository.saveAll(episodes);
             episodeRepository.flush();
-            episodeStatusRepository.fillEpisodeStatuses(savedAnime);
+            episodeStatusRepository.fillEpisodeStatusesForAllUsers(savedAnime);
         }
 
-        animeStatusRepository.updateTotalRegularEpisodes(savedAnime);
+        animeStatusRepository.updateRegularEpisodeTotalCount(savedAnime);
 
         var animeUpdate = new AnimeUpdate();
         // No need to set animeUpdate.id
