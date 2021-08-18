@@ -12,21 +12,21 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Data
 public class PageDto<T> {
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private int number;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private int size;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private int numberOfElements;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private int totalPages;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private long totalElements;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private List<T> content;
 }

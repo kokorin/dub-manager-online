@@ -7,12 +7,12 @@ import java.util.List;
 
 @Data
 public class AnimeDto {
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private Long id;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private List<AnimeTitleDto> titles;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private AnimeTypeDto type;
 }

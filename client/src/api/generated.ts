@@ -146,6 +146,7 @@ export type EpisodeTitleDto = {
 };
 export type EpisodeDto = {
     airDate: string;
+    animeId: number;
     id: number;
     length: number;
     number: number;
@@ -162,14 +163,14 @@ export type PageDtoOfEpisodeDto = {
 };
 export type UserDto = {
     email: string;
-    familyName?: string;
-    fullName?: string;
-    givenName?: string;
-    locale?: string;
-    middleName?: string;
-    nickName?: string;
-    picture?: string;
-    preferredUsername?: string;
+    familyName: string;
+    fullName: string;
+    givenName: string;
+    locale: string;
+    middleName: string;
+    nickName: string;
+    picture: string;
+    preferredUsername: string;
 };
 export type AnimeStatusDto = {
     anime: AnimeDto;

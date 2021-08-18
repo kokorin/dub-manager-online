@@ -8,22 +8,25 @@ import java.util.List;
 
 @Data
 public class EpisodeDto {
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private Long id;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
+    private Long animeId;
+
+    @ApiModelProperty(required = true, readOnly = true)
     private Long number;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private List<EpisodeTitleDto> titles;
 
-    @ApiModelProperty(required = true,
+    @ApiModelProperty(required = true, readOnly = true,
             allowableValues = "REGULAR, SPECIAL, CREDIT, TRAILER, PARODY, OTHER")
     private String type;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private Long length;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private LocalDate airDate;
 }

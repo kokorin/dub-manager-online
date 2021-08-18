@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 public class EpisodeStatusDto {
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private EpisodeDto episode;
 
-    @ApiModelProperty(required = true)
+    @ApiModelProperty(required = true, readOnly = true)
     private EpisodeProgressDto progress;
 }
