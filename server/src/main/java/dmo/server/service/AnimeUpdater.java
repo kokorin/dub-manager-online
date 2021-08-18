@@ -3,10 +3,7 @@ package dmo.server.service;
 import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeUpdate;
 import dmo.server.event.*;
-import dmo.server.repository.AnimeRepository;
-import dmo.server.repository.AnimeUpdateRepository;
-import dmo.server.repository.EpisodeRepository;
-import dmo.server.repository.EpisodeStatusRepository;
+import dmo.server.repository.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +29,8 @@ public class AnimeUpdater {
     private final AnimeRepository animeRepository;
     @NonNull
     private final EpisodeRepository episodeRepository;
+    @NonNull
+    private final AnimeStatusRepository animeStatusRepository;
     @NonNull
     private final EpisodeStatusRepository episodeStatusRepository;
     @NonNull
@@ -120,17 +119,21 @@ public class AnimeUpdater {
     @EventListener
     @Transactional
     public void onAnimeUpdated(AnimeUpdated event) {
+        log.info("Got Anime Update: {}", event);
         var anime = event.getAnime();
         var episodes = event.getEpisodes();
 
         var savedAnime = animeRepository.save(anime);
+        animeRepository.flush();
 
         if (episodes != null) {
             episodes.forEach(e -> e.setAnime(savedAnime));
             episodeRepository.saveAll(episodes);
             episodeRepository.flush();
-            episodeStatusRepository.fillEpisodeStatuses(savedAnime);
+            episodeStatusRepository.fillEpisodeStatusesForAllUsers(savedAnime);
         }
+
+        animeStatusRepository.updateRegularEpisodeTotalCount(savedAnime);
 
         var animeUpdate = new AnimeUpdate();
         // No need to set animeUpdate.id

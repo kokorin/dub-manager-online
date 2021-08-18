@@ -47,6 +47,13 @@ export const api = createApi({
                 params: { page: queryArg.page, size: queryArg.size },
             }),
         }),
+        updateEpisodeStatus: build.mutation<UpdateEpisodeStatusApiResponse, UpdateEpisodeStatusApiArg>({
+            query: (queryArg) => ({
+                url: `/api/v1/users/current/anime/${queryArg.id}/episodes/${queryArg.eid}`,
+                method: "POST",
+                body: queryArg.updateEpisodeStatusDto,
+            }),
+        }),
     }),
 });
 export type FindAnimeApiResponse = /** status 200 OK */ PageDtoOfAnimeDto;
@@ -104,6 +111,17 @@ export type FindEpisodeStatusesApiArg = {
     /** size */
     size: number;
 };
+export type UpdateEpisodeStatusApiResponse = /** status 200 OK */
+    | EpisodeStatusDto
+    | /** status 201 Created */ undefined;
+export type UpdateEpisodeStatusApiArg = {
+    /** eid */
+    eid: number;
+    /** id */
+    id: number;
+    /** updateEpisodeStatusDto */
+    updateEpisodeStatusDto: UpdateEpisodeStatusDto;
+};
 export type AnimeTitleDto = {
     lang: string;
     text: string;
@@ -128,6 +146,7 @@ export type EpisodeTitleDto = {
 };
 export type EpisodeDto = {
     airDate: string;
+    animeId: number;
     id: number;
     length: number;
     number: number;
@@ -144,21 +163,22 @@ export type PageDtoOfEpisodeDto = {
 };
 export type UserDto = {
     email: string;
-    familyName?: string;
-    fullName?: string;
-    givenName?: string;
-    locale?: string;
-    middleName?: string;
-    nickName?: string;
-    picture?: string;
-    preferredUsername?: string;
+    familyName: string;
+    fullName: string;
+    givenName: string;
+    locale: string;
+    middleName: string;
+    nickName: string;
+    picture: string;
+    preferredUsername: string;
 };
 export type AnimeStatusDto = {
     anime: AnimeDto;
     comment: string;
-    completedRegularEpisodes: number;
     progress: "COMPLETED" | "IN_PROGRESS" | "NOT_STARTED";
-    totalRegularEpisodes: number;
+    regularEpisodeCompleteCount: number;
+    regularEpisodeNextAirDate?: string;
+    regularEpisodeTotalCount: number;
 };
 export type PageDtoOfAnimeStatusDto = {
     content: AnimeStatusDto[];
@@ -184,6 +204,9 @@ export type PageDtoOfEpisodeStatusDto = {
     totalElements: number;
     totalPages: number;
 };
+export type UpdateEpisodeStatusDto = {
+    progress: "COMPLETED" | "NOT_STARTED";
+};
 export const {
     useFindAnimeQuery,
     useGetAnimeQuery,
@@ -194,4 +217,5 @@ export const {
     useUpdateAnimeStatusMutation,
     useDeleteAnimeStatusMutation,
     useFindEpisodeStatusesQuery,
+    useUpdateEpisodeStatusMutation,
 } = api;

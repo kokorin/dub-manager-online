@@ -10,7 +10,7 @@
             </column>
         </createTable>
     </changeSet>
-    
+
     <changeSet id="1600322529438" author="kokorin">
         <insert tableName="anime_progress_enum">
             <column name="progress" value="NOT_STARTED"/>
@@ -42,7 +42,7 @@
 
     <!-- DROP PREVIOUS VERSIONS OF TABLES IF THEY EXIST -->
 
-    <changeSet id="1624515626882-drop" author="kokorin">
+    <changeSet id="1629268939212-drop" author="kokorin">
         <preConditions onFail="MARK_RAN">
             <tableExists tableName="anime_status"/>
         </preConditions>
@@ -73,7 +73,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="create_anime_status" author="kokorin">
+    <changeSet id="create_anime_status-1629268939212" author="kokorin">
         <createTable tableName="anime_status">
             <column name="anime_id" type="BIGINT">
                 <constraints primaryKey="true"
@@ -90,12 +90,13 @@
                              foreignKeyName="fk_anime_status_to_anime_progress_enum"
                              referencedTableName="anime_progress_enum" referencedColumnNames="progress"/>
             </column>
-            <column name="completed_regular_episodes" type="BIGINT" defaultValue="0">
+            <column name="regular_episode_complete_count" type="BIGINT" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
-            <column name="total_regular_episodes" type="BIGINT" defaultValue="0">
+            <column name="regular_episode_total_count" type="BIGINT" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
+            <column name="regular_episode_next_air_date" type="DATE"/>
             <column name="comment" type="VARCHAR(4096)"/>
         </createTable>
     </changeSet>

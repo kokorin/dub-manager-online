@@ -64,8 +64,9 @@ public interface AnimeMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "anime", ignore = true)
-    @Mapping(target = "completedRegularEpisodes", ignore = true)
-    @Mapping(target = "totalRegularEpisodes", ignore = true)
+    @Mapping(target = "regularEpisodeCompleteCount", ignore = true)
+    @Mapping(target = "regularEpisodeTotalCount", ignore = true)
+    @Mapping(target = "regularEpisodeNextAirDate", ignore = true)
     void updateAnimeStatus(UpdateAnimeStatusDto update, @MappingTarget AnimeStatus entity);
 
     EpisodeStatusDto toEpisodeStatusDto(EpisodeStatus entity);
@@ -82,4 +83,8 @@ public interface AnimeMapper {
                 toEpisodeStatusDtoList(page.getContent())
         );
     }
+
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "episode", ignore = true)
+    void updateEpisodeStatus(UpdateEpisodeStatusDto update, @MappingTarget EpisodeStatus entity);
 }

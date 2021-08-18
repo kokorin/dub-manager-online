@@ -20,6 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -55,26 +56,28 @@ public class AnimeStatusService {
         var anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
 
+        eventPublisher.publishEvent(new AnimeRequested(anime));
+
+        var updateEpisodeCount = episodeStatusRepository.fillEpisodeStatusesForUser(anime, user);
+
         var animeStatus = animeStatusRepository.findByUserAndAnime(user, anime)
                 .orElseGet(() -> {
                     var result = new AnimeStatus();
                     result.setUser(user);
                     result.setAnime(anime);
-                    result.setCompletedRegularEpisodes(0L);
-                    result.setTotalRegularEpisodes(0L);
+                    result.setRegularEpisodeCompleteCount(0L);
+                    result.setRegularEpisodeTotalCount(Optional.ofNullable(anime.getEpisodeCount()).orElse(0L));
+                    result.setRegularEpisodeNextAirDate(
+                            episodeStatusRepository.getRegularEpisodeNextAirDate(anime, user)
+                    );
                     result.setProgress(AnimeStatus.Progress.NOT_STARTED);
                     // If AnimeStatus was created we have to save it
-                    animeStatusRepository.save(result);
-                    return result;
+                    return animeStatusRepository.save(result);
                 });
 
         updater.accept(animeStatus);
 
-
-        eventPublisher.publishEvent(new AnimeRequested(anime));
-
-        var updateCount = episodeStatusRepository.fillEpisodeStatuses(anime, user);
-        log.info("Updated EpisodeStatus: {}", updateCount);
+        log.info("Updated anime status {} for {}: episodes {}", anime, user, updateEpisodeCount);
 
         return animeStatus;
     }
