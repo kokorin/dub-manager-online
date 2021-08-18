@@ -53,8 +53,13 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
             flex: 2,
             valueGetter: (params) => {
                 const status = params.row as AnimeStatus;
-                return `${status.completedRegularEpisodes}/${status.totalRegularEpisodes}`;
+                return `${status.regularEpisodeCompleteCount}/${status.regularEpisodeTotalCount}`;
             },
+        },
+        {
+            field: "regularEpisodeNextAirDate",
+            headerName: "NEXT",
+            flex: 2,
         },
         {
             field: "comment",

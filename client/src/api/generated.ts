@@ -175,9 +175,10 @@ export type UserDto = {
 export type AnimeStatusDto = {
     anime: AnimeDto;
     comment: string;
-    completedRegularEpisodes: number;
     progress: "COMPLETED" | "IN_PROGRESS" | "NOT_STARTED";
-    totalRegularEpisodes: number;
+    regularEpisodeCompleteCount: number;
+    regularEpisodeNextAirDate?: string;
+    regularEpisodeTotalCount: number;
 };
 export type PageDtoOfAnimeStatusDto = {
     content: AnimeStatusDto[];

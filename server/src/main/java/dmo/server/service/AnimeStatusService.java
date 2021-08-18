@@ -56,13 +56,20 @@ public class AnimeStatusService {
         var anime = animeRepository.findById(animeId)
                 .orElseThrow(() -> new AnimeNotFoundException(animeId));
 
+        eventPublisher.publishEvent(new AnimeRequested(anime));
+
+        var updateEpisodeCount = episodeStatusRepository.fillEpisodeStatusesForUser(anime, user);
+
         var animeStatus = animeStatusRepository.findByUserAndAnime(user, anime)
                 .orElseGet(() -> {
                     var result = new AnimeStatus();
                     result.setUser(user);
                     result.setAnime(anime);
-                    result.setCompletedRegularEpisodes(0L);
-                    result.setTotalRegularEpisodes(Optional.ofNullable(anime.getEpisodeCount()).orElse(0L));
+                    result.setRegularEpisodeCompleteCount(0L);
+                    result.setRegularEpisodeTotalCount(Optional.ofNullable(anime.getEpisodeCount()).orElse(0L));
+                    result.setRegularEpisodeNextAirDate(
+                            episodeStatusRepository.getRegularEpisodeNextAirDate(anime, user)
+                    );
                     result.setProgress(AnimeStatus.Progress.NOT_STARTED);
                     // If AnimeStatus was created we have to save it
                     return animeStatusRepository.save(result);
@@ -70,10 +77,7 @@ public class AnimeStatusService {
 
         updater.accept(animeStatus);
 
-        eventPublisher.publishEvent(new AnimeRequested(anime));
-
-        var updateCount = episodeStatusRepository.fillEpisodeStatuses(anime, user);
-        log.info("Updated EpisodeStatus: {}", updateCount);
+        log.info("Updated anime status {} for {}: episodes {}", anime, user, updateEpisodeCount);
 
         return animeStatus;
     }

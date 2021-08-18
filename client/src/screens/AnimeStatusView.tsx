@@ -50,6 +50,11 @@ const createColumns: ColumnsProvider = (
         valueGetter: (params) => (params.row as EpisodeStatus).episode.number,
     },
     {
+        field: "episode.airDate",
+        flex: 2,
+        valueGetter: (params) => (params.row as EpisodeStatus).episode.airDate,
+    },
+    {
         field: "episode.type",
         flex: 3,
         valueGetter: (params) => (params.row as EpisodeStatus).episode.type,
@@ -102,7 +107,7 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
                         <Input
                             id="episodeProgressInput"
                             contentEditable={false}
-                            value={`${animeStatus.completedRegularEpisodes}/${animeStatus.totalRegularEpisodes}`}
+                            value={`${animeStatus.regularEpisodeCompleteCount}/${animeStatus.regularEpisodeTotalCount}`}
                         />
                     </FormControl>
                     <FormControl>

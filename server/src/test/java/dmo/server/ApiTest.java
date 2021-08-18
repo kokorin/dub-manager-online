@@ -43,6 +43,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -431,7 +432,7 @@ public class ApiTest {
     void episodeStatusCanBeUpdated() throws InterruptedException {
         var restTemplate = getRestTemplate(true);
         var animeId = 979L;
-        var episodeId = 22416L;
+        var episodeId = 11593L;
 
         var updateAnimeStatus = new UpdateAnimeStatusDto();
         updateAnimeStatus.setProgress(AnimeProgressDto.IN_PROGRESS);
@@ -449,8 +450,9 @@ public class ApiTest {
         var animeStatus = animeResponse.getBody();
         assertNotNull(animeStatus);
         assertEquals(animeId, animeStatus.getAnime().getId());
-        assertEquals(51L, animeStatus.getTotalRegularEpisodes());
-        assertEquals(0L, animeStatus.getCompletedRegularEpisodes());
+        assertEquals(51L, animeStatus.getRegularEpisodeTotalCount());
+        assertEquals(0L, animeStatus.getRegularEpisodeCompleteCount());
+        assertEquals(LocalDate.of(2003, 10, 4), animeStatus.getRegularEpisodeNextAirDate());
 
         var updateEpisodeStatus = new UpdateEpisodeStatusDto();
         updateEpisodeStatus.setProgress(EpisodeProgressDto.COMPLETED);
@@ -493,8 +495,9 @@ public class ApiTest {
         assertEquals(1, animeStatuses.size());
         animeStatus = animeStatuses.get(0);
 
-        assertEquals(51L, animeStatus.getTotalRegularEpisodes());
-        assertEquals(1L, animeStatus.getCompletedRegularEpisodes());
+        assertEquals(51L, animeStatus.getRegularEpisodeTotalCount());
+        assertEquals(1L, animeStatus.getRegularEpisodeCompleteCount());
+        assertEquals(LocalDate.of(2003, 10, 11), animeStatus.getRegularEpisodeNextAirDate());
     }
 
     @Test

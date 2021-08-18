@@ -39,7 +39,7 @@ public class EpisodeStatusService {
     @Transactional
     public EpisodeStatus updateEpisodeStatus(Long animeId, Long episodeId, String userEmail, Consumer<EpisodeStatus> updater) {
         var animeStatusId = new AnimeStatus.AnimeStatusId(animeId, userEmail);
-        animeStatusRepository.findById(animeStatusId)
+        var animeStatus = animeStatusRepository.findById(animeStatusId)
                 .orElseThrow(() -> new AnimeStatusNotFoundException(animeStatusId));
 
         var episodeStatusId = new EpisodeStatus.EpisodeStatusId(episodeId, userEmail);
@@ -50,12 +50,19 @@ public class EpisodeStatusService {
         updater.accept(episodeStatus);
         episodeStatusRepository.flush();
 
-        var updated = animeStatusRepository.updateCompletedRegularEpisodes(
-                episodeStatus.getEpisode().getAnime(),
-                episodeStatus.getUser()
+        var completeCount = episodeStatusRepository.getRegularEpisodeCompleteCount(
+                animeStatus.getAnime(),
+                animeStatus.getUser()
         );
+        animeStatus.setRegularEpisodeCompleteCount(completeCount);
 
-        log.debug("Completed episode count updated: anime {}, user: {}, updated: {}", animeId, userEmail, updated > 0);
+        var airDate = episodeStatusRepository.getRegularEpisodeNextAirDate(
+                animeStatus.getAnime(),
+                animeStatus.getUser()
+        );
+        animeStatus.setRegularEpisodeNextAirDate(airDate);
+
+        log.debug("Updated EpisodeStatus: {}", episodeStatus);
 
         return episodeStatus;
     }
