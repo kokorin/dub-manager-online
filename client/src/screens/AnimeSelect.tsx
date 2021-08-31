@@ -11,7 +11,7 @@ const AnimeSelect: FC<OwnProps> = (props) => {
     const [selectedAnimeIds, setSelectedAnimeIds] = useState([] as number[]);
 
     return (
-        <div className="anime_select" style={{ height: "80%", width: "100%" }}>
+        <div className="anime-selector" style={{ height: "80%", width: "100%" }}>
             <AnimeTable style={{ height: "100%", flexGrow: 1 }} onAnimeSelected={setSelectedAnimeIds} />
             <Box className="anime_select_buttons" style={{ width: "100%" }} display="flex" justifyContent="center">
                 <Button

@@ -89,8 +89,8 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const columns = useMemo(() => createColumns(props.onAnimeStatusEdit), [props.onAnimeStatusEdit]);
 
     return (
-        <div className="anime_status_table" style={props.style}>
-            <Modal open={isLoading}>
+        <div className="status-table" style={props.style}>
+            <Modal className="loader-popup" open={isLoading}>
                 <CircularProgress />
             </Modal>
             <Search text={filter} onChangeSearch={setFilter} />

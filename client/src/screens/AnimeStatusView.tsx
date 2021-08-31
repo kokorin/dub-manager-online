@@ -84,7 +84,7 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
     const { data, isLoading } = useFindEpisodeStatusesQuery({ id: anime.id, page, size: pageSize });
 
     return (
-        <div className="anime-status-view" style={props.style}>
+        <div className="status-view" style={props.style}>
             <Modal open={isLoading || isUpdating}>
                 <CircularProgress />
             </Modal>

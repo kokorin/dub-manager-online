@@ -35,22 +35,22 @@ const AnimeStatusScreen: FC = () => {
     );
 
     return (
-        <div className="anime_status_screen">
-            <Modal open={isUpdating || isDeleting}>
+        <div className="status-screen">
+            <Modal className="loader-popup" open={isUpdating || isDeleting}>
                 <CircularProgress />
             </Modal>
-            <Modal style={{ margin: "10%" }} open={animeSelectOpen} onClose={closeAnimeSelect}>
-                <Paper style={{ height: "100%", width: "100%" }}>
+            <Modal className="search-popup" open={animeSelectOpen} onClose={closeAnimeSelect}>
+                <Paper>
                     <AnimeSelect onAnimeSelected={handleAnimeSelected} onSelectCancelled={closeAnimeSelect} />
                 </Paper>
             </Modal>
-            <Modal style={{ margin: "5%" }} open={!!animeShown} onClose={closeAnimeStatus}>
-                <Paper style={{ height: "100%", width: "100%" }}>
-                    <AnimeStatusView animeStatus={animeShown} style={{ height: "100%", width: "100%" }} />
+            <Modal className="status-popup" open={!!animeShown} onClose={closeAnimeStatus}>
+                <Paper>
+                    <AnimeStatusView animeStatus={animeShown} />
                 </Paper>
             </Modal>
-            <div className="status_table_parent" style={{ height: "100%", width: "100%" }}>
-                <Box justifyContent="right">
+            <div className="status-table-view">
+                <Box className="status-table-control">
                     <Button color="primary" onClick={openAnimeSelect}>
                         Add Anime
                     </Button>
@@ -58,13 +58,7 @@ const AnimeStatusScreen: FC = () => {
                         Delete Anime
                     </Button>
                 </Box>
-                <div style={{ display: "flex", height: "100%" }}>
-                    <AnimeStatusTable
-                        style={{ height: "100%", width: "100%" }}
-                        onAnimeStatusSelected={setSelectedAnimeStatuses}
-                        onAnimeStatusEdit={setAnimeShown}
-                    />
-                </div>
+                <AnimeStatusTable onAnimeStatusSelected={setSelectedAnimeStatuses} onAnimeStatusEdit={setAnimeShown} />
             </div>
         </div>
     );
