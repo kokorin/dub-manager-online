@@ -35,7 +35,7 @@ const AnimeStatusScreen: FC = () => {
     );
 
     return (
-        <div className="status-screen">
+        <>
             <Modal className="loader-popup" open={isUpdating || isDeleting}>
                 <CircularProgress />
             </Modal>
@@ -49,7 +49,7 @@ const AnimeStatusScreen: FC = () => {
                     <AnimeStatusView animeStatus={animeShown} />
                 </Paper>
             </Modal>
-            <div className="status-table-view">
+            <div className="status-screen">
                 <Box className="status-table-control">
                     <Button color="primary" onClick={openAnimeSelect}>
                         Add Anime
@@ -60,7 +60,7 @@ const AnimeStatusScreen: FC = () => {
                 </Box>
                 <AnimeStatusTable onAnimeStatusSelected={setSelectedAnimeStatuses} onAnimeStatusEdit={setAnimeShown} />
             </div>
-        </div>
+        </>
     );
 };
 

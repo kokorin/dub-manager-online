@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useCallback, useMemo, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import { DataGrid, GridCellParams, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
 import { useFindEpisodeStatusesQuery, useUpdateEpisodeStatusMutation } from "../api";
 import {
@@ -17,7 +17,6 @@ import EpisodeStatusProgressControl from "../components/EpisodeStatus/EpisodeSta
 
 interface OwnProps {
     animeStatus: AnimeStatus;
-    style?: CSSProperties;
 }
 
 const getRowId: GridRowIdGetter = (data) => (data as EpisodeStatus).episode.id;
@@ -84,11 +83,11 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
     const { data, isLoading } = useFindEpisodeStatusesQuery({ id: anime.id, page, size: pageSize });
 
     return (
-        <div className="status-view" style={props.style}>
-            <Modal open={isLoading || isUpdating}>
+        <>
+            <Modal className="loader-popup" open={isLoading || isUpdating}>
                 <CircularProgress />
             </Modal>
-            <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+            <div className="status-view">
                 <FormGroup>
                     <FormControl>
                         <InputLabel htmlFor="titleInput">Title</InputLabel>
@@ -116,7 +115,7 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
                     </FormControl>
                 </FormGroup>
                 <DataGrid
-                    style={{ flexGrow: 1 }}
+                    className="episode-table"
                     columns={columns}
                     getRowId={getRowId}
                     page={page}
@@ -131,7 +130,7 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
                     disableSelectionOnClick={true}
                 />
             </div>
-        </div>
+        </>
     );
 };
 
