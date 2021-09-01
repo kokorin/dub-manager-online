@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from "react";
-import { DataGrid, GridCellParams, GridColDef, GridRowIdGetter } from "@material-ui/data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridRowIdGetter } from "@mui/x-data-grid";
 import { useFindEpisodeStatusesQuery, useUpdateEpisodeStatusMutation } from "../api";
 import {
     CircularProgress,
@@ -122,8 +122,8 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
                     pageSize={pageSize}
                     rows={data?.content || []}
                     rowCount={data?.totalElements || 0}
-                    onPageChange={(params) => setPage(params.page)}
-                    onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                    onPageChange={setPage}
+                    onPageSizeChange={setPageSize}
                     paginationMode="server"
                     sortingMode="server"
                     checkboxSelection={false}

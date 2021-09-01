@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useFindAnimeQuery } from "../api";
-import { DataGrid, GridColDef, GridRowId } from "@material-ui/data-grid";
+import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { resolveAnimeTitle } from "../service";
 import { Anime } from "../domain";
 import { Search } from "../components/Search";
@@ -52,8 +52,8 @@ export const AnimeTable: FC<OwnProps> = (props) => {
                     pageSize={pageSize}
                     rows={data?.content || []}
                     rowCount={data?.totalElements || 0}
-                    onPageChange={(params) => setPage(params.page)}
-                    onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                    onPageChange={setPage}
+                    onPageSizeChange={setPageSize}
                     paginationMode="server"
                     checkboxSelection={true}
                     onSelectionModelChange={handleSelectionModelChange}

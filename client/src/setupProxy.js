@@ -1,4 +1,4 @@
-const createProxyMiddleware = require("http-proxy-middleware");
+const {createProxyMiddleware} = require("http-proxy-middleware");
 
 const backend = {
     target: "http://localhost:8080",
