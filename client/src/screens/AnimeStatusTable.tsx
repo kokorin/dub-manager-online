@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
-import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@material-ui/data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@mui/x-data-grid";
 import { Search } from "../components/Search";
 import { Button, CircularProgress, Modal } from "@material-ui/core";
 import { AnimeStatus } from "../domain";
@@ -100,8 +100,8 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
                 pageSize={pageSize}
                 rows={data?.content || []}
                 rowCount={data?.totalElements || 0}
-                onPageChange={(params) => setPage(params.page)}
-                onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                onPageChange={setPage}
+                onPageSizeChange={setPageSize}
                 paginationMode="server"
                 checkboxSelection={true}
                 onSelectionModelChange={handleSelectionModelChange}
