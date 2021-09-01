@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { useFindAnimeQuery } from "../api";
 import { DataGrid, GridColDef, GridRowId } from "@material-ui/data-grid";
 import { resolveAnimeTitle } from "../service";
@@ -20,7 +20,6 @@ const columns: GridColDef[] = [
 
 interface OwnProps {
     onAnimeSelected: (animeIds: number[]) => void;
-    style?: CSSProperties;
 }
 
 export const AnimeTable: FC<OwnProps> = (props) => {
@@ -40,24 +39,26 @@ export const AnimeTable: FC<OwnProps> = (props) => {
     };
 
     return (
-        <div className="anime_table" style={props.style}>
-            <Modal open={isLoading}>
+        <>
+            <Modal className="loader-popup" open={isLoading}>
                 <CircularProgress />
             </Modal>
-            <Search label="Anime Title" text={filter} onChangeSearch={handleSearchChange} />
-            <DataGrid
-                rowsPerPageOptions={[5, 10, 25]}
-                columns={columns}
-                page={page}
-                pageSize={pageSize}
-                rows={data?.content || []}
-                rowCount={data?.totalElements || 0}
-                onPageChange={(params) => setPage(params.page)}
-                onPageSizeChange={(params) => setPageSize(params.pageSize)}
-                paginationMode="server"
-                checkboxSelection={true}
-                onSelectionModelChange={handleSelectionModelChange}
-            />
-        </div>
+            <div className="anime-table">
+                <Search label="Anime Title" text={filter} onChangeSearch={handleSearchChange} />
+                <DataGrid
+                    rowsPerPageOptions={[5, 10, 25]}
+                    columns={columns}
+                    page={page}
+                    pageSize={pageSize}
+                    rows={data?.content || []}
+                    rowCount={data?.totalElements || 0}
+                    onPageChange={(params) => setPage(params.page)}
+                    onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                    paginationMode="server"
+                    checkboxSelection={true}
+                    onSelectionModelChange={handleSelectionModelChange}
+                />
+            </div>
+        </>
     );
 };

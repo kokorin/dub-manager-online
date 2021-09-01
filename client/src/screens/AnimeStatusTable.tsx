@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useMemo, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
 import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@material-ui/data-grid";
 import { Search } from "../components/Search";
@@ -28,7 +28,6 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
             renderCell: (params: GridCellParams) => (
                 <Button
                     startIcon={<Edit />}
-                    style={{ textTransform: "none" }}
                     onClick={(event) => {
                         event.stopPropagation();
                         onEditAnimeStatus(params.row as AnimeStatus);
@@ -73,7 +72,6 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
 interface OwnProps {
     onAnimeStatusSelected: (animeIds: number[]) => void;
     onAnimeStatusEdit: (status: AnimeStatus) => void;
-    style?: CSSProperties;
 }
 
 const AnimeStatusTable: FC<OwnProps> = (props) => {
@@ -89,8 +87,8 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const columns = useMemo(() => createColumns(props.onAnimeStatusEdit), [props.onAnimeStatusEdit]);
 
     return (
-        <div className="anime_status_table" style={props.style}>
-            <Modal open={isLoading}>
+        <div className="status-table">
+            <Modal className="loader-popup" open={isLoading}>
                 <CircularProgress />
             </Modal>
             <Search text={filter} onChangeSearch={setFilter} />
