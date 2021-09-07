@@ -1,19 +1,11 @@
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { DataGrid, GridCellParams, GridColDef, GridRowIdGetter } from "@mui/x-data-grid";
 import { useFindEpisodeStatusesQuery, useUpdateEpisodeStatusMutation } from "../api";
-import {
-    CircularProgress,
-    FormControl,
-    FormGroup,
-    Input,
-    InputLabel,
-    MenuItem,
-    Modal,
-    Select,
-} from "@material-ui/core";
+import { FormControl, FormGroup, Input, InputLabel, MenuItem, Modal, Select } from "@material-ui/core";
 import { AnimeStatus, EpisodeStatus, EpisodeStatusProgress } from "../domain";
 import { resolveAnimeTitle, resolveEpisodeTitle } from "../service";
 import EpisodeStatusProgressControl from "../components/EpisodeStatus/EpisodeStatusProgressControl";
+import Loader from "../components/Loader";
 
 interface OwnProps {
     animeStatus: AnimeStatus;
@@ -80,12 +72,12 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
 
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const { data, isLoading } = useFindEpisodeStatusesQuery({ id: anime.id, page, size: pageSize });
+    const { data, isFetching } = useFindEpisodeStatusesQuery({ id: anime.id, page, size: pageSize });
 
     return (
         <>
-            <Modal className="loader-popup" open={isLoading || isUpdating}>
-                <CircularProgress />
+            <Modal open={isFetching || isUpdating}>
+                <Loader />
             </Modal>
             <div className="status-view">
                 <FormGroup>

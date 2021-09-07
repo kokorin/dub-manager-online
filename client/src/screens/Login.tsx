@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { useGetOAuthClientsQuery } from "../api";
+import { Modal } from "@material-ui/core";
 import Loader from "../components/Loader";
 
 export const Login: FC = () => {
@@ -15,19 +16,24 @@ export const Login: FC = () => {
         window.location.href = to;
     };
 
-    if (!clients || isLoading) {
-        return <Loader />;
-    }
-
     const buttons = [];
 
-    if (clients.includes("google")) {
-        buttons.push(<GoogleLoginButton onClick={() => loginWith("google")} />);
+    if (clients) {
+        if (clients.includes("google")) {
+            buttons.push(<GoogleLoginButton onClick={() => loginWith("google")} />);
+        }
+
+        if (clients.includes("github")) {
+            buttons.push(<GithubLoginButton onClick={() => loginWith("github")} />);
+        }
     }
 
-    if (clients.includes("github")) {
-        buttons.push(<GithubLoginButton onClick={() => loginWith("github")} />);
-    }
-
-    return <div>{buttons}</div>;
+    return (
+        <>
+            <Modal open={isLoading}>
+                <Loader />
+            </Modal>
+            <div>{buttons}</div>
+        </>
+    );
 };

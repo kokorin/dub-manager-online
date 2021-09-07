@@ -1,10 +1,11 @@
 import React, { FC, useCallback, useState } from "react";
 import AnimeStatusTable from "./AnimeStatusTable";
-import { Box, Button, CircularProgress, Modal, Paper } from "@material-ui/core";
+import { Box, Button, Modal, Paper } from "@material-ui/core";
 import AnimeSelect from "./AnimeSelect";
 import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
 import AnimeStatusView from "./AnimeStatusView";
 import { AnimeStatus } from "../domain";
+import Loader from "../components/Loader";
 
 const AnimeStatusScreen: FC = () => {
     const [selectedAnimeStatuses, setSelectedAnimeStatuses] = useState([] as number[]);
@@ -36,8 +37,8 @@ const AnimeStatusScreen: FC = () => {
 
     return (
         <>
-            <Modal className="loader-popup" open={isUpdating || isDeleting}>
-                <CircularProgress />
+            <Modal open={isUpdating || isDeleting}>
+                <Loader />
             </Modal>
             <Modal className="search-popup" open={animeSelectOpen} onClose={closeAnimeSelect}>
                 <Paper>
