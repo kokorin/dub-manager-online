@@ -1,7 +1,6 @@
 import { api as generatedApi } from "./generated";
-import { isRejectedWithValue, Middleware, MiddlewareAPI } from "@reduxjs/toolkit";
-import { notAuthorized } from "../auth";
-import store from "../store";
+import { createAction, createReducer } from "@reduxjs/toolkit";
+import { AppState } from "../store";
 
 export const api = generatedApi.enhanceEndpoints({
     addTagTypes: ["AnimeStatus", "EpisodeStatus"],
@@ -42,14 +41,52 @@ export const api = generatedApi.enhanceEndpoints({
     },
 });
 
-export const authErrorHandler: Middleware = (api: MiddlewareAPI) => (next) => (action) => {
-    if (isRejectedWithValue(action)) {
-        if (401 === action.payload?.status) {
-            store.dispatch(notAuthorized());
-        }
-    }
-    return next(action);
+interface RejectedPayload {
+    status: number;
+}
+
+export const queryPending = createAction("api/executeQuery/pending");
+export const queryFulfilled = createAction("api/executeQuery/fulfilled");
+export const queryRejected = createAction<RejectedPayload>("api/executeQuery/rejected");
+
+export const mutationPending = createAction("api/executeMutation/pending");
+export const mutationFulfilled = createAction("api/executeMutation/fulfilled");
+export const mutationRejected = createAction<RejectedPayload>("api/executeMutation/rejected");
+
+interface ApiStats {
+    fetched: number;
+    completed: number;
+}
+
+const initialApiStatus: ApiStats = {
+    fetched: 0,
+    completed: 0,
 };
+
+export const apiStats = createReducer(initialApiStatus, (builder) => {
+    builder
+        .addCase(queryPending, (state, action) => {
+            state.fetched++;
+        })
+        .addCase(queryFulfilled, (state, action) => {
+            state.completed++;
+        })
+        .addCase(queryRejected, (state, action) => {
+            state.completed++;
+        })
+        .addCase(mutationPending, (state, action) => {
+            state.fetched++;
+        })
+        .addCase(mutationFulfilled, (state, action) => {
+            state.completed++;
+        })
+        .addCase(mutationRejected, (state, action) => {
+            state.completed++;
+        });
+});
+
+export const selectIsFetching: (_: AppState) => boolean = (state: AppState) =>
+    state.apiStats.fetched > state.apiStats.completed;
 
 export const {
     useFindAnimeQuery,

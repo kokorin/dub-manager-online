@@ -2,11 +2,10 @@ import React, { FC, useMemo, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
 import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@mui/x-data-grid";
 import { Search } from "../components/Search";
-import { Button, Modal } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { AnimeStatus } from "../domain";
 import { resolveAnimeTitle } from "../service";
 import { Edit } from "@material-ui/icons";
-import Loader from "../components/Loader";
 
 const getRowId: GridRowIdGetter = (data) => (data as AnimeStatus).anime.id;
 
@@ -79,7 +78,7 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [filter, setFilter] = useState("");
-    const { data, isFetching } = useFindAnimeStatusesQuery({ page, size: pageSize });
+    const { data } = useFindAnimeStatusesQuery({ page, size: pageSize });
 
     const handleSelectionModelChange = (selectionModel: GridRowId[]) => {
         props.onAnimeStatusSelected(selectionModel as number[]);
@@ -88,28 +87,23 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const columns = useMemo(() => createColumns(props.onAnimeStatusEdit), [props.onAnimeStatusEdit]);
 
     return (
-        <>
-            <Modal open={isFetching}>
-                <Loader />
-            </Modal>
-            <div className="status-table">
-                <Search text={filter} onChangeSearch={setFilter} />
+        <div className="status-table">
+            <Search text={filter} onChangeSearch={setFilter} />
 
-                <DataGrid
-                    columns={columns}
-                    getRowId={getRowId}
-                    page={page}
-                    pageSize={pageSize}
-                    rows={data?.content || []}
-                    rowCount={data?.totalElements || 0}
-                    onPageChange={setPage}
-                    onPageSizeChange={setPageSize}
-                    paginationMode="server"
-                    checkboxSelection={true}
-                    onSelectionModelChange={handleSelectionModelChange}
-                />
-            </div>
-        </>
+            <DataGrid
+                columns={columns}
+                getRowId={getRowId}
+                page={page}
+                pageSize={pageSize}
+                rows={data?.content || []}
+                rowCount={data?.totalElements || 0}
+                onPageChange={setPage}
+                onPageSizeChange={setPageSize}
+                paginationMode="server"
+                checkboxSelection={true}
+                onSelectionModelChange={handleSelectionModelChange}
+            />
+        </div>
     );
 };
 

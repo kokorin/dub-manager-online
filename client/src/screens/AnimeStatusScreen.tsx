@@ -5,7 +5,6 @@ import AnimeSelect from "./AnimeSelect";
 import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
 import AnimeStatusView from "./AnimeStatusView";
 import { AnimeStatus } from "../domain";
-import Loader from "../components/Loader";
 
 const AnimeStatusScreen: FC = () => {
     const [selectedAnimeStatuses, setSelectedAnimeStatuses] = useState([] as number[]);
@@ -17,8 +16,8 @@ const AnimeStatusScreen: FC = () => {
 
     const closeAnimeStatus = useCallback(() => setAnimeShown(null as unknown as AnimeStatus), [setAnimeShown]);
 
-    const [updateAnimeStatus, { isLoading: isUpdating }] = useUpdateAnimeStatusMutation();
-    const [deleteAnimeStatus, { isLoading: isDeleting }] = useDeleteAnimeStatusMutation();
+    const [updateAnimeStatus] = useUpdateAnimeStatusMutation();
+    const [deleteAnimeStatus] = useDeleteAnimeStatusMutation();
 
     const handleAnimeSelected = useCallback(
         (animeIds: number[]) => {
@@ -37,9 +36,6 @@ const AnimeStatusScreen: FC = () => {
 
     return (
         <>
-            <Modal open={isUpdating || isDeleting}>
-                <Loader />
-            </Modal>
             <Modal className="search-popup" open={animeSelectOpen} onClose={closeAnimeSelect}>
                 <Paper>
                     <AnimeSelect onAnimeSelected={handleAnimeSelected} onSelectCancelled={closeAnimeSelect} />
