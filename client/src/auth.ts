@@ -12,7 +12,7 @@ const initialState: Auth = {
 
 const auth = createReducer(initialState, (builder) => {
     builder.addCase(queryRejected, (state, action) => {
-        if (action.payload.status === 401) {
+        if (action.payload?.status === 401) {
             state.isAuthenticated = false;
         }
     });

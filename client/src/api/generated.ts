@@ -44,7 +44,7 @@ export const api = createApi({
         findEpisodeStatuses: build.query<FindEpisodeStatusesApiResponse, FindEpisodeStatusesApiArg>({
             query: (queryArg) => ({
                 url: `/api/v1/users/current/anime/${queryArg.id}/episodes`,
-                params: { page: queryArg.page, size: queryArg.size },
+                params: { page: queryArg.page, size: queryArg.size, type: queryArg["type"] },
             }),
         }),
         updateEpisodeStatus: build.mutation<UpdateEpisodeStatusApiResponse, UpdateEpisodeStatusApiArg>({
@@ -110,6 +110,8 @@ export type FindEpisodeStatusesApiArg = {
     page: number;
     /** size */
     size: number;
+    /** type */
+    type?: "CREDIT" | "OTHER" | "PARODY" | "REGULAR" | "SPECIAL" | "TRAILER";
 };
 export type UpdateEpisodeStatusApiResponse = /** status 200 OK */
     | EpisodeStatusDto

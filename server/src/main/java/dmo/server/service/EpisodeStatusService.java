@@ -1,6 +1,7 @@
 package dmo.server.service;
 
 import dmo.server.domain.AnimeStatus;
+import dmo.server.domain.Episode;
 import dmo.server.domain.EpisodeStatus;
 import dmo.server.exception.AnimeStatusNotFoundException;
 import dmo.server.exception.EpisodeStatusNotFoundException;
@@ -26,13 +27,18 @@ public class EpisodeStatusService {
 
     @Secured("ROLE_USER")
     @Transactional(readOnly = true)
-    public Page<EpisodeStatus> findByAnimeAndUser(Long animeId, String userEmail, PageRequest pageRequest) {
+    public Page<EpisodeStatus> findByAnimeAndUser(Long animeId, String userEmail, Episode.Type type, PageRequest pageRequest) {
         var id = new AnimeStatus.AnimeStatusId(animeId, userEmail);
         var animeStatus = animeStatusRepository.findById(id)
                 .orElseThrow(() -> new AnimeStatusNotFoundException(id));
 
         pageRequest = pageRequest.withSort(Sort.by("episode.type", "episode.number"));
-        return episodeStatusRepository.findAllByAnimeAndUser(animeStatus.getAnime(), animeStatus.getUser(), pageRequest);
+        return episodeStatusRepository.findAllByAnimeAndUser(
+                animeStatus.getAnime(),
+                animeStatus.getUser(),
+                type,
+                pageRequest
+        );
     }
 
     @Secured("ROLE_USER")

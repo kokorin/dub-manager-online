@@ -32,6 +32,8 @@ public interface AnimeMapper {
         );
     }
 
+    Episode.Type toEpisodeType(EpisodeTypeDto typeDto);
+
     EpisodeDto toEpisodeDto(Episode entity);
 
     List<EpisodeDto> toEpisodeDtoList(List<Episode> entities);

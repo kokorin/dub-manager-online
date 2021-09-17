@@ -366,11 +366,10 @@ public class ApiTest {
     }
 
     @Test
-    void episodeStatusIsSetToNotStartedByDefault() throws InterruptedException {
+    void episodeStatusIsSetToNotStartedByDefault() {
         var restTemplate = getRestTemplate(true);
 
         var animeId = 1L;
-        var episodeId = 1L;
         var request = new UpdateAnimeStatusDto();
         request.setProgress(AnimeProgressDto.IN_PROGRESS);
         request.setComment("Electrophoresis!");
@@ -408,6 +407,44 @@ public class ApiTest {
         assertEquals(17, episodes.size());
         var distinctProgress = episodes.stream().map(EpisodeStatusDto::getProgress).collect(Collectors.toSet());
         assertEquals(Collections.singleton(EpisodeProgressDto.NOT_STARTED), distinctProgress);
+    }
+
+    @Test
+    void episodeStatusesCanBeFilteredByType() throws InterruptedException {
+        var restTemplate = getRestTemplate(true);
+
+        var animeId = 1L;
+        var request = new UpdateAnimeStatusDto();
+        request.setProgress(AnimeProgressDto.IN_PROGRESS);
+        request.setComment("Will test filtering!");
+
+        var animeResponse = restTemplate.postForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                new HttpEntity<>(request),
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(animeResponse);
+        assertEquals(HttpStatus.OK, animeResponse.getStatusCode(), animeResponse.toString());
+
+        var episodesResponse = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}/episodes?page=0&size=100&type={type}",
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                new ParameterizedTypeReference<PageDto<EpisodeStatusDto>>() {
+                },
+                Map.of("port", port, "animeId", animeId, "type", EpisodeTypeDto.REGULAR)
+        );
+
+        assertNotNull(episodesResponse);
+        assertEquals(HttpStatus.OK, episodesResponse.getStatusCode());
+
+        var page = episodesResponse.getBody();
+        assertNotNull(page);
+        assertEquals(100, page.getSize());
+        assertEquals(13, page.getTotalElements());
+        assertEquals(13,  page.getContent().size());
     }
 
     @Test

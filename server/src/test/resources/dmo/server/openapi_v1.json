@@ -415,6 +415,21 @@
             "required": true,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "type",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "CREDIT",
+              "OTHER",
+              "PARODY",
+              "REGULAR",
+              "SPECIAL",
+              "TRAILER"
+            ]
           }
         ],
         "responses": {
