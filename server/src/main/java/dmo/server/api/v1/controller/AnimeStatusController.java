@@ -3,6 +3,7 @@ package dmo.server.api.v1.controller;
 import dmo.server.api.v1.dto.*;
 import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.AnimeStatus;
+import dmo.server.domain.Episode;
 import dmo.server.domain.EpisodeStatus;
 import dmo.server.security.JwtUser;
 import dmo.server.service.AnimeStatusService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @RestController
@@ -49,9 +51,11 @@ public class AnimeStatusController {
     public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal JwtUser user,
                                                  @PathVariable("id") Long animeId,
                                                  @RequestParam("page") @Min(0) int page,
-                                                 @RequestParam("size") @Min(1) @Max(100) int size) {
+                                                 @RequestParam("size") @Min(1) @Max(100) int size,
+                                                 @RequestParam(value = "type", required = false) EpisodeTypeDto type) {
         var pageRequest = PageRequest.of(page, size);
-        var result = episodeStatusService.findByAnimeAndUser(animeId, user.getEmail(), pageRequest);
+        var episodeType = animeMapper.toEpisodeType(type);
+        var result = episodeStatusService.findByAnimeAndUser(animeId, user.getEmail(), episodeType, pageRequest);
 
         return animeMapper.toEpisodeStatusPageDto(result);
     }

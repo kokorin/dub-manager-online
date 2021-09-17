@@ -1,6 +1,7 @@
 package dmo.server.repository;
 
 import dmo.server.domain.Anime;
+import dmo.server.domain.Episode;
 import dmo.server.domain.EpisodeStatus;
 import dmo.server.domain.User;
 import org.springframework.data.domain.Page;
@@ -18,8 +19,9 @@ public interface EpisodeStatusRepository extends JpaRepository<EpisodeStatus, Ep
             "FROM EpisodeStatus es " +
             "JOIN Episode e ON es.id.episodeId = e.id " +
             "WHERE e.anime = :anime " +
-            "AND es.user = :user")
-    Page<EpisodeStatus> findAllByAnimeAndUser(Anime anime, User user, Pageable pageable);
+            "AND es.user = :user " +
+            "AND (:type IS NULL OR e.type = :type)")
+    Page<EpisodeStatus> findAllByAnimeAndUser(Anime anime, User user, Episode.Type type, Pageable pageable);
 
     @Query("SELECT MIN(es.episode.airDate) " +
             "FROM EpisodeStatus es " +
