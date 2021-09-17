@@ -11,6 +11,7 @@ export const {
     useFindEpisodesQuery,
     useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
+    useFindAnimeStatusQuery,
     useFindAnimeStatusesQuery,
     useFindEpisodeStatusesQuery,
     useUpdateAnimeStatusMutation,

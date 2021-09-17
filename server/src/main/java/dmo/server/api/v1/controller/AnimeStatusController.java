@@ -36,7 +36,7 @@ public class AnimeStatusController {
     private final AnimeMapper animeMapper;
 
     @GetMapping
-    @ApiOperation(value = "Find all Anime tracked by current user", nickname = "findAnimeStatuses")
+    @ApiOperation(value = "Find all tracked Anime by current user", nickname = "findAnimeStatuses")
     public PageDto<AnimeStatusDto> findAll(@AuthenticationPrincipal JwtUser user,
                                            @RequestParam("page") @Min(0) int page,
                                            @RequestParam("size") @Min(1) @Max(100) int size) {
@@ -46,18 +46,13 @@ public class AnimeStatusController {
         return animeMapper.toAnimeStatusPageDto(result);
     }
 
-    @GetMapping("{id}/episodes")
-    @ApiOperation(value = "Find all Episode of Anime tracked by current user", nickname = "findEpisodeStatuses")
-    public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal JwtUser user,
-                                                 @PathVariable("id") Long animeId,
-                                                 @RequestParam("page") @Min(0) int page,
-                                                 @RequestParam("size") @Min(1) @Max(100) int size,
-                                                 @RequestParam(value = "type", required = false) EpisodeTypeDto type) {
-        var pageRequest = PageRequest.of(page, size);
-        var episodeType = animeMapper.toEpisodeType(type);
-        var result = episodeStatusService.findByAnimeAndUser(animeId, user.getEmail(), episodeType, pageRequest);
+    @GetMapping("{id}")
+    @ApiOperation(value = "Find tracked Anime by current user and ID", nickname = "findAnimeStatus")
+    public AnimeStatusDto findAll(@AuthenticationPrincipal JwtUser user,
+                                  @PathVariable("id") Long animeId) {
+        var result = animeStatusService.getAnimeStatus(user.getEmail(), animeId);
 
-        return animeMapper.toEpisodeStatusPageDto(result);
+        return animeMapper.toAnimeStatusDto(result);
     }
 
     @PostMapping("{id}")
@@ -86,6 +81,20 @@ public class AnimeStatusController {
                 user.getEmail(),
                 animeId
         );
+    }
+
+    @GetMapping("{id}/episodes")
+    @ApiOperation(value = "Find all Episode of Anime tracked by current user", nickname = "findEpisodeStatuses")
+    public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal JwtUser user,
+                                                 @PathVariable("id") Long animeId,
+                                                 @RequestParam("page") @Min(0) int page,
+                                                 @RequestParam("size") @Min(1) @Max(100) int size,
+                                                 @RequestParam(value = "type", required = false) EpisodeTypeDto type) {
+        var pageRequest = PageRequest.of(page, size);
+        var episodeType = animeMapper.toEpisodeType(type);
+        var result = episodeStatusService.findByAnimeAndUser(animeId, user.getEmail(), episodeType, pageRequest);
+
+        return animeMapper.toEpisodeStatusPageDto(result);
     }
 
     @PostMapping("{id}/episodes/{eid}")

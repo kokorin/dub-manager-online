@@ -31,6 +31,9 @@ export const api = createApi({
                 params: { page: queryArg.page, size: queryArg.size },
             }),
         }),
+        findAnimeStatus: build.query<FindAnimeStatusApiResponse, FindAnimeStatusApiArg>({
+            query: (queryArg) => ({ url: `/api/v1/users/current/anime/${queryArg.id}` }),
+        }),
         updateAnimeStatus: build.mutation<UpdateAnimeStatusApiResponse, UpdateAnimeStatusApiArg>({
             query: (queryArg) => ({
                 url: `/api/v1/users/current/anime/${queryArg.id}`,
@@ -89,6 +92,11 @@ export type FindAnimeStatusesApiArg = {
     page: number;
     /** size */
     size: number;
+};
+export type FindAnimeStatusApiResponse = /** status 200 OK */ AnimeStatusDto;
+export type FindAnimeStatusApiArg = {
+    /** id */
+    id: number;
 };
 export type UpdateAnimeStatusApiResponse = /** status 200 OK */ AnimeStatusDto | /** status 201 Created */ undefined;
 export type UpdateAnimeStatusApiArg = {
@@ -216,6 +224,7 @@ export const {
     useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
+    useFindAnimeStatusQuery,
     useUpdateAnimeStatusMutation,
     useDeleteAnimeStatusMutation,
     useFindEpisodeStatusesQuery,

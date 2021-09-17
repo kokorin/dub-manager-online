@@ -1,13 +1,13 @@
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { DataGrid, GridCellParams, GridColDef, GridFilterModel, GridRowIdGetter } from "@mui/x-data-grid";
-import { useFindEpisodeStatusesQuery, useUpdateEpisodeStatusMutation } from "../api";
-import { FormControl, FormGroup, Input, InputLabel, MenuItem, Select } from "@material-ui/core";
-import { AnimeStatus, EpisodeStatus, EpisodeStatusProgress } from "../domain";
-import { resolveAnimeTitle, resolveEpisodeTitle } from "../service";
-import EpisodeStatusProgressControl from "../components/EpisodeStatus/EpisodeStatusProgressControl";
+import { useFindEpisodeStatusesQuery, useUpdateEpisodeStatusMutation } from "../../api";
+import { EpisodeStatus, EpisodeStatusProgress } from "../../domain";
+import { resolveEpisodeTitle } from "../../service";
+import EpisodeStatusProgressControl from "../../components/EpisodeStatus/EpisodeStatusProgressControl";
+import AnimeStatusDetails from "./AnimeStatusDetails";
 
 interface OwnProps {
-    animeStatus: AnimeStatus;
+    animeId: number;
 }
 
 const getRowId: GridRowIdGetter = (data) => (data as EpisodeStatus).episode.id;
@@ -75,15 +75,14 @@ const createColumns: ColumnsProvider = (
 ];
 
 const AnimeStatusView: FC<OwnProps> = (props) => {
-    const { animeStatus } = props;
-    const { anime } = animeStatus;
+    const { animeId } = props;
 
     const [updateEpisodeStatus] = useUpdateEpisodeStatusMutation();
     const onUpdateProgress = useCallback(
         (episodeId: number, progress: EpisodeStatusProgress) => {
-            updateEpisodeStatus({ id: anime.id, eid: episodeId, updateEpisodeStatusDto: { progress } });
+            updateEpisodeStatus({ id: animeId, eid: episodeId, updateEpisodeStatusDto: { progress } });
         },
-        [anime, updateEpisodeStatus],
+        [animeId, updateEpisodeStatus],
     );
     const columns = useMemo(() => createColumns(onUpdateProgress), [onUpdateProgress]);
 
@@ -92,7 +91,7 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
     const [episodeType, setEpisodeType] = useState("REGULAR" as const);
     const onFilterModelChange = (model: GridFilterModel) => setEpisodeType(model.items[0].value);
     const { data, isFetching } = useFindEpisodeStatusesQuery({
-        id: anime.id,
+        id: animeId,
         page,
         size: pageSize,
         type: episodeType,
@@ -100,32 +99,7 @@ const AnimeStatusView: FC<OwnProps> = (props) => {
 
     return (
         <div className="status-view">
-            <FormGroup>
-                <FormControl>
-                    <InputLabel htmlFor="titleInput">Title</InputLabel>
-                    <Input id="titleInput" contentEditable={false} value={resolveAnimeTitle(anime.titles)} />
-                </FormControl>
-                <FormControl>
-                    <InputLabel htmlFor="progressInput">Progress</InputLabel>
-                    <Select id="progressInput" contentEditable={false} value={animeStatus.progress}>
-                        <MenuItem value="NOT_STARTED">NOT_STARTED</MenuItem>
-                        <MenuItem value="IN_PROGRESS">IN_PROGRESS</MenuItem>
-                        <MenuItem value="COMPLETED">COMPLETED</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <InputLabel htmlFor="episodeProgressInput">Episodes</InputLabel>
-                    <Input
-                        id="episodeProgressInput"
-                        contentEditable={false}
-                        value={`${animeStatus.regularEpisodeCompleteCount}/${animeStatus.regularEpisodeTotalCount}`}
-                    />
-                </FormControl>
-                <FormControl>
-                    <InputLabel htmlFor="commentInput">Comment</InputLabel>
-                    <Input id="commentInput" contentEditable={false} value={animeStatus.comment} />
-                </FormControl>
-            </FormGroup>
+            <AnimeStatusDetails animeId={animeId} />
             <DataGrid
                 className="episode-table"
                 columns={columns}
