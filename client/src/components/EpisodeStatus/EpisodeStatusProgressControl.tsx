@@ -1,22 +1,23 @@
 import React, { ChangeEvent, FC, useCallback } from "react";
 import { FormControlLabel, Switch } from "@material-ui/core";
 import { EpisodeStatus, EpisodeStatusProgress } from "../../domain";
+import { UpdateEpisodeStatusDto, useUpdateEpisodeStatusMutation } from "../../api";
 
 interface OwnProps {
     episodeStatus: EpisodeStatus;
-    onUpdateProgress: (episodeId: number, progress: EpisodeStatusProgress) => void;
 }
 
 const EpisodeStatusProgressControl: FC<OwnProps> = (props) => {
+    const [updateEpisodeStatus] = useUpdateEpisodeStatusMutation();
     const onCheckedChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
-            const checked = event.target.checked;
-            props.onUpdateProgress(
-                props.episodeStatus.episode.id,
-                checked ? EpisodeStatusProgress.COMPLETED : EpisodeStatusProgress.NOT_STARTED,
-            );
+            const update: UpdateEpisodeStatusDto = {
+                progress: event.target.checked ? EpisodeStatusProgress.COMPLETED : EpisodeStatusProgress.NOT_STARTED,
+            };
+            const { animeId, id: episodeId } = props.episodeStatus.episode;
+            updateEpisodeStatus({ id: animeId, eid: episodeId, updateEpisodeStatusDto: update });
         },
-        [props],
+        [updateEpisodeStatus, props.episodeStatus],
     );
 
     const switchControl = (

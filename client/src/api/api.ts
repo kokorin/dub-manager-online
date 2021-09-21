@@ -11,31 +11,31 @@ export const api = generatedApi.enhanceEndpoints({
                     type: "AnimeStatus" as const,
                     id: animeStatus.anime.id,
                 })),
-                {
-                    type: "AnimeStatus",
-                    id: "LIST",
-                },
+                { type: "AnimeStatus", id: "LIST" },
             ],
         },
+        findAnimeStatus: {
+            providesTags: (result, error, arg) => [{ type: "AnimeStatus", id: arg.id.toString() }],
+        },
         updateAnimeStatus: {
-            invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+            invalidatesTags: (result, error, arg) => [
+                { type: "AnimeStatus", id: "LIST" },
+                { type: "AnimeStatus", id: arg.id.toString() },
+            ],
         },
         deleteAnimeStatus: {
-            invalidatesTags: (result, error, arg) => [{ type: "AnimeStatus", id: "LIST" }],
+            invalidatesTags: (result, error, arg) => [
+                { type: "AnimeStatus", id: "LIST" },
+                { type: "AnimeStatus", id: arg.id.toString() },
+            ],
         },
         findEpisodeStatuses: {
             providesTags: (result, error, arg) => [{ type: "EpisodeStatus", id: "LIST" }],
         },
         updateEpisodeStatus: {
             invalidatesTags: (result, error, arg) => [
-                {
-                    type: "EpisodeStatus",
-                    id: "LIST",
-                },
-                {
-                    type: "AnimeStatus",
-                    id: result?.episode.animeId,
-                },
+                { type: "EpisodeStatus", id: "LIST" },
+                { type: "AnimeStatus", id: arg.id.toString() },
             ],
         },
     },
@@ -94,6 +94,7 @@ export const {
     useFindEpisodesQuery,
     useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
+    useFindAnimeStatusQuery,
     useFindAnimeStatusesQuery,
     useFindEpisodeStatusesQuery,
     useUpdateAnimeStatusMutation,

@@ -3,18 +3,17 @@ import AnimeStatusTable from "./AnimeStatusTable";
 import { Box, Button, Modal, Paper } from "@material-ui/core";
 import AnimeSelect from "./AnimeSelect";
 import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
-import AnimeStatusView from "./AnimeStatusView";
-import { AnimeStatus } from "../domain";
+import { AnimeStatusView } from "./AnimeStatusView";
 
 const AnimeStatusScreen: FC = () => {
     const [selectedAnimeStatuses, setSelectedAnimeStatuses] = useState([] as number[]);
-    const [animeShown, setAnimeShown] = useState(null as unknown as AnimeStatus);
+    const [showAnimeId, setShowAnimeId] = useState(0);
     const [animeSelectOpen, setAnimeSelectOpen] = useState(false);
 
     const openAnimeSelect = useCallback(() => setAnimeSelectOpen(true), [setAnimeSelectOpen]);
     const closeAnimeSelect = useCallback(() => setAnimeSelectOpen(false), [setAnimeSelectOpen]);
 
-    const closeAnimeStatus = useCallback(() => setAnimeShown(null as unknown as AnimeStatus), [setAnimeShown]);
+    const closeAnimeStatus = useCallback(() => setShowAnimeId(0), [setShowAnimeId]);
 
     const [updateAnimeStatus] = useUpdateAnimeStatusMutation();
     const [deleteAnimeStatus] = useDeleteAnimeStatusMutation();
@@ -41,9 +40,9 @@ const AnimeStatusScreen: FC = () => {
                     <AnimeSelect onAnimeSelected={handleAnimeSelected} onSelectCancelled={closeAnimeSelect} />
                 </Paper>
             </Modal>
-            <Modal className="status-popup" open={!!animeShown} onClose={closeAnimeStatus}>
+            <Modal className="status-popup" open={showAnimeId > 0} onClose={closeAnimeStatus}>
                 <Paper>
-                    <AnimeStatusView animeStatus={animeShown} />
+                    <AnimeStatusView animeId={showAnimeId} />
                 </Paper>
             </Modal>
             <div className="status-screen">
@@ -55,7 +54,7 @@ const AnimeStatusScreen: FC = () => {
                         Delete Anime
                     </Button>
                 </Box>
-                <AnimeStatusTable onAnimeStatusSelected={setSelectedAnimeStatuses} onAnimeStatusEdit={setAnimeShown} />
+                <AnimeStatusTable onAnimeStatusSelected={setSelectedAnimeStatuses} onAnimeStatusEdit={setShowAnimeId} />
             </div>
         </>
     );

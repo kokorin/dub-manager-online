@@ -251,7 +251,7 @@
         "tags": [
           "anime-status-controller"
         ],
-        "summary": "Find all Anime tracked by current user",
+        "summary": "Find all tracked Anime by current user",
         "operationId": "findAnimeStatuses",
         "produces": [
           "*/*"
@@ -294,6 +294,43 @@
       }
     },
     "/api/v1/users/current/anime/{id}": {
+      "get": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Find tracked Anime by current user and ID",
+        "operationId": "findAnimeStatus",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AnimeStatusDto"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
       "post": {
         "tags": [
           "anime-status-controller"

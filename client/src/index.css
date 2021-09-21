@@ -51,6 +51,10 @@ code {
     box-sizing: border-box;
 }
 
+.status-details {
+    margin: 1vh;
+}
+
 .status-table-view {
     height: 100%;
 }

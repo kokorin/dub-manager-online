@@ -9,9 +9,9 @@ import { Edit } from "@material-ui/icons";
 
 const getRowId: GridRowIdGetter = (data) => (data as AnimeStatus).anime.id;
 
-type ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus) => void) => GridColDef[];
+type ColumnsProvider = (onEditAnimeStatus: (animeId: number) => void) => GridColDef[];
 
-const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus) => void) => {
+const createColumns: ColumnsProvider = (onEditAnimeStatus: (animeId: number) => void) => {
     const columns: GridColDef[] = [
         {
             field: "anime.id",
@@ -30,7 +30,7 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
                     startIcon={<Edit />}
                     onClick={(event) => {
                         event.stopPropagation();
-                        onEditAnimeStatus(params.row as AnimeStatus);
+                        onEditAnimeStatus((params.row as AnimeStatus).anime.id);
                     }}
                 >
                     edit
@@ -71,7 +71,7 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
 
 interface OwnProps {
     onAnimeStatusSelected: (animeIds: number[]) => void;
-    onAnimeStatusEdit: (status: AnimeStatus) => void;
+    onAnimeStatusEdit: (animeId: number) => void;
 }
 
 const AnimeStatusTable: FC<OwnProps> = (props) => {
