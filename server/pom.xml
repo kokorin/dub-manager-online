@@ -20,7 +20,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <springfox.version>3.0.0</springfox.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <okhttp4.version>4.9.1</okhttp4.version>
+        <okhttp4.version>4.9.2</okhttp4.version>
     </properties>
 
     <dependencyManagement>
