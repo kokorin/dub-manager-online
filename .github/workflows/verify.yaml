@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Cache Maven Packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: |
             ~/.m2/
@@ -55,7 +55,7 @@ jobs:
         if: matrix.language == 'java'
 
       - name: Cache Node Packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: |
             client/node_modules
@@ -100,7 +100,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Cache Maven Packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: |
             ~/.m2/
@@ -127,7 +127,7 @@ jobs:
           node-version: '16'
 
       - name: Cache Node Packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: |
             client/node_modules
