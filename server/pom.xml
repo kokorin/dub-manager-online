@@ -18,9 +18,8 @@
     <properties>
         <java.version>17</java.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
-        <springfox.version>3.0.0</springfox.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <okhttp4.version>4.9.3</okhttp4.version>
+        <okhttp4.version>4.10.0</okhttp4.version>
     </properties>
 
     <dependencyManagement>
@@ -164,7 +163,6 @@
         <dependency>
             <groupId>org.skyscreamer</groupId>
             <artifactId>jsonassert</artifactId>
-            <version>1.5.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
