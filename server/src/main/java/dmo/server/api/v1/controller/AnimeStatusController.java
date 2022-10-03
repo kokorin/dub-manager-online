@@ -3,12 +3,11 @@ package dmo.server.api.v1.controller;
 import dmo.server.api.v1.dto.*;
 import dmo.server.api.v1.mapper.AnimeMapper;
 import dmo.server.domain.AnimeStatus;
-import dmo.server.domain.Episode;
 import dmo.server.domain.EpisodeStatus;
 import dmo.server.security.JwtUser;
 import dmo.server.service.AnimeStatusService;
 import dmo.server.service.EpisodeStatusService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 @RestController
@@ -36,7 +34,7 @@ public class AnimeStatusController {
     private final AnimeMapper animeMapper;
 
     @GetMapping
-    @ApiOperation(value = "Find all tracked Anime by current user", nickname = "findAnimeStatuses")
+    @Operation(summary = "Find all tracked Anime by current user", operationId = "findAnimeStatuses")
     public PageDto<AnimeStatusDto> findAll(@AuthenticationPrincipal JwtUser user,
                                            @RequestParam("page") @Min(0) int page,
                                            @RequestParam("size") @Min(1) @Max(100) int size) {
@@ -47,7 +45,7 @@ public class AnimeStatusController {
     }
 
     @GetMapping("{id}")
-    @ApiOperation(value = "Find tracked Anime by current user and ID", nickname = "findAnimeStatus")
+    @Operation(summary = "Find tracked Anime by current user and ID", operationId = "findAnimeStatus")
     public AnimeStatusDto findAll(@AuthenticationPrincipal JwtUser user,
                                   @PathVariable("id") Long animeId) {
         var result = animeStatusService.getAnimeStatus(user.getEmail(), animeId);
@@ -56,7 +54,7 @@ public class AnimeStatusController {
     }
 
     @PostMapping("{id}")
-    @ApiOperation(value = "Update status of Anime tracked by current user", nickname = "updateAnimeStatus")
+    @Operation(summary = "Update status of Anime tracked by current user", operationId = "updateAnimeStatus")
     public AnimeStatusDto updateStatus(@AuthenticationPrincipal JwtUser user,
                                        @PathVariable("id") @NotNull Long animeId,
                                        @RequestBody UpdateAnimeStatusDto updateAnimeStatusDto) {
@@ -73,7 +71,7 @@ public class AnimeStatusController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Delete status of Anime tracked by current user", nickname = "deleteAnimeStatus")
+    @Operation(summary = "Delete status of Anime tracked by current user", operationId = "deleteAnimeStatus")
     public void deleteStatus(@AuthenticationPrincipal JwtUser user,
                              @PathVariable("id") @NotNull Long animeId) {
 
@@ -84,7 +82,7 @@ public class AnimeStatusController {
     }
 
     @GetMapping("{id}/episodes")
-    @ApiOperation(value = "Find all Episode of Anime tracked by current user", nickname = "findEpisodeStatuses")
+    @Operation(summary = "Find all Episode of Anime tracked by current user", operationId = "findEpisodeStatuses")
     public PageDto<EpisodeStatusDto> getEpisodes(@AuthenticationPrincipal JwtUser user,
                                                  @PathVariable("id") Long animeId,
                                                  @RequestParam("page") @Min(0) int page,
@@ -98,7 +96,7 @@ public class AnimeStatusController {
     }
 
     @PostMapping("{id}/episodes/{eid}")
-    @ApiOperation(value = "Update status of Anime Episode tracked by current user", nickname = "updateEpisodeStatus")
+    @Operation(summary = "Update status of Anime Episode tracked by current user", operationId = "updateEpisodeStatus")
     public EpisodeStatusDto updateEpisodeStatus(@AuthenticationPrincipal JwtUser user,
                                                 @PathVariable("id") @NotNull Long animeId,
                                                 @PathVariable("eid") @NotNull Long episodeId,

@@ -593,7 +593,7 @@ public class ApiTest {
         var restTemplate = getRestTemplate(false);
         assertNotEquals(0, port);
 
-        var url = "http://localhost:" + port + "/api/openapi?group=v1";
+        var url = "http://localhost:" + port + "/api/openapi/v1";
         var content = restTemplate.getForObject(url, String.class);
 
         final String expected;
