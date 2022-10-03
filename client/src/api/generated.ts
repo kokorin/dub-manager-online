@@ -31,6 +31,9 @@ export const api = createApi({
                 params: { page: queryArg.page, size: queryArg.size },
             }),
         }),
+        findAnimeStatus: build.query<FindAnimeStatusApiResponse, FindAnimeStatusApiArg>({
+            query: (queryArg) => ({ url: `/api/v1/users/current/anime/${queryArg.id}` }),
+        }),
         updateAnimeStatus: build.mutation<UpdateAnimeStatusApiResponse, UpdateAnimeStatusApiArg>({
             query: (queryArg) => ({
                 url: `/api/v1/users/current/anime/${queryArg.id}`,
@@ -44,7 +47,7 @@ export const api = createApi({
         findEpisodeStatuses: build.query<FindEpisodeStatusesApiResponse, FindEpisodeStatusesApiArg>({
             query: (queryArg) => ({
                 url: `/api/v1/users/current/anime/${queryArg.id}/episodes`,
-                params: { page: queryArg.page, size: queryArg.size },
+                params: { page: queryArg.page, size: queryArg.size, type: queryArg["type"] },
             }),
         }),
         updateEpisodeStatus: build.mutation<UpdateEpisodeStatusApiResponse, UpdateEpisodeStatusApiArg>({
@@ -90,6 +93,11 @@ export type FindAnimeStatusesApiArg = {
     /** size */
     size: number;
 };
+export type FindAnimeStatusApiResponse = /** status 200 OK */ AnimeStatusDto;
+export type FindAnimeStatusApiArg = {
+    /** id */
+    id: number;
+};
 export type UpdateAnimeStatusApiResponse = /** status 200 OK */ AnimeStatusDto | /** status 201 Created */ undefined;
 export type UpdateAnimeStatusApiArg = {
     /** id */
@@ -110,6 +118,8 @@ export type FindEpisodeStatusesApiArg = {
     page: number;
     /** size */
     size: number;
+    /** type */
+    type?: "CREDIT" | "OTHER" | "PARODY" | "REGULAR" | "SPECIAL" | "TRAILER";
 };
 export type UpdateEpisodeStatusApiResponse = /** status 200 OK */
     | EpisodeStatusDto
@@ -214,6 +224,7 @@ export const {
     useGetOAuthClientsQuery,
     useGetCurrentUserQuery,
     useFindAnimeStatusesQuery,
+    useFindAnimeStatusQuery,
     useUpdateAnimeStatusMutation,
     useDeleteAnimeStatusMutation,
     useFindEpisodeStatusesQuery,

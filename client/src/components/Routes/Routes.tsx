@@ -4,7 +4,6 @@ import { SecureRoute } from "components/SecureRoute";
 import { NotFound } from "screens/NotFound";
 import { Login } from "../../screens/Login";
 import { AnimeTable } from "../../screens/AnimeTable";
-import AnimeView from "../../screens/AnimeView";
 import AnimeStatusScreen from "../../screens/AnimeStatusScreen";
 
 interface OwnProps {
@@ -21,12 +20,6 @@ const Routes: FC<OwnProps> = ({ isAuthenticated, authenticationPath }) => {
                 exact={true}
                 isAuthenticated={isAuthenticated}
                 authenticationPath={authenticationPath}
-            />
-            <SecureRoute
-                path={"/anime/:animeId"}
-                isAuthenticated={isAuthenticated}
-                authenticationPath={authenticationPath}
-                render={(props) => <AnimeView animeId={parseInt(props.match.params.animeId || "")} />}
             />
             <SecureRoute
                 path={"/search/anime/"}

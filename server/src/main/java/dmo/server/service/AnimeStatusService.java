@@ -49,6 +49,19 @@ public class AnimeStatusService {
 
     @Secured("ROLE_USER")
     @Transactional
+    public AnimeStatus getAnimeStatus(String userEmail, Long animeId) {
+        var user = userRepository.findById(userEmail)
+                .orElseThrow(() -> new UserNotFoundException(userEmail));
+
+        var anime = animeRepository.findById(animeId)
+                .orElseThrow(() -> new AnimeNotFoundException(animeId));
+
+        return animeStatusRepository.findByUserAndAnime(user, anime)
+                .orElseThrow(() -> new AnimeStatusNotFoundException(user, anime));
+    }
+
+    @Secured("ROLE_USER")
+    @Transactional
     public AnimeStatus updateAnimeStatus(String userEmail, Long animeId, Consumer<AnimeStatus> updater) {
         var user = userRepository.findById(userEmail)
                 .orElseThrow(() -> new UserNotFoundException(userEmail));

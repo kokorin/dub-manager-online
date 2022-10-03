@@ -1,15 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { api, authErrorHandler } from "./api";
+import { api, apiStats } from "./api";
 import auth from "./auth";
 
 const rootReducers = combineReducers({
-    auth: auth,
+    auth,
+    apiStats,
     [api.reducerPath]: api.reducer,
 });
 
 const store = configureStore({
     reducer: rootReducers,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware, authErrorHandler),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
     devTools: process.env.NODE_ENV !== "production",
 });
 

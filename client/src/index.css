@@ -1,15 +1,87 @@
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-        "Droid Sans", "Helvetica Neue", sans-serif;
+    "Droid Sans", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-html, body, #root, #root>div {
+html, body, #root, #root > div {
     height: 100%
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.loader-content {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader-content .MuiCircularProgress-root {
+    width: 20vh !important;
+    height: 20vh !important;
+}
+
+.search-popup {
+    margin: 5%;
+}
+
+.search-popup .MuiPaper-root {
+    height: 100%;
+}
+
+.status-popup {
+    margin: 5%;
+}
+
+.status-popup .MuiPaper-root {
+    height: 100%;
+}
+
+.status-view {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1vh;
+    box-sizing: border-box;
+}
+
+.status-details {
+    margin: 1vh;
+}
+
+.status-table-view {
+    height: 100%;
+}
+
+.status-table {
+    height: 100%;
+}
+
+.episode-table {
+    flex-grow: 1;
+}
+
+.anime-selector {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.anime-table {
+    flex-grow: 1;
+}
+
+.anime-selector-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.MuiDataGrid-cell .MuiButton-text {
+    text-transform: none;
 }

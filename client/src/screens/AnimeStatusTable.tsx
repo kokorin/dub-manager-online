@@ -1,17 +1,17 @@
-import React, { CSSProperties, FC, useMemo, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
-import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@material-ui/data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@mui/x-data-grid";
 import { Search } from "../components/Search";
-import { Button, CircularProgress, Modal } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { AnimeStatus } from "../domain";
 import { resolveAnimeTitle } from "../service";
 import { Edit } from "@material-ui/icons";
 
 const getRowId: GridRowIdGetter = (data) => (data as AnimeStatus).anime.id;
 
-type ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus) => void) => GridColDef[];
+type ColumnsProvider = (onEditAnimeStatus: (animeId: number) => void) => GridColDef[];
 
-const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus) => void) => {
+const createColumns: ColumnsProvider = (onEditAnimeStatus: (animeId: number) => void) => {
     const columns: GridColDef[] = [
         {
             field: "anime.id",
@@ -28,10 +28,9 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
             renderCell: (params: GridCellParams) => (
                 <Button
                     startIcon={<Edit />}
-                    style={{ textTransform: "none" }}
                     onClick={(event) => {
                         event.stopPropagation();
-                        onEditAnimeStatus(params.row as AnimeStatus);
+                        onEditAnimeStatus((params.row as AnimeStatus).anime.id);
                     }}
                 >
                     edit
@@ -72,15 +71,14 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (status: AnimeStatus)
 
 interface OwnProps {
     onAnimeStatusSelected: (animeIds: number[]) => void;
-    onAnimeStatusEdit: (status: AnimeStatus) => void;
-    style?: CSSProperties;
+    onAnimeStatusEdit: (animeId: number) => void;
 }
 
 const AnimeStatusTable: FC<OwnProps> = (props) => {
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [filter, setFilter] = useState("");
-    const { data, isLoading } = useFindAnimeStatusesQuery({ page, size: pageSize });
+    const { data } = useFindAnimeStatusesQuery({ page, size: pageSize });
 
     const handleSelectionModelChange = (selectionModel: GridRowId[]) => {
         props.onAnimeStatusSelected(selectionModel as number[]);
@@ -89,10 +87,7 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const columns = useMemo(() => createColumns(props.onAnimeStatusEdit), [props.onAnimeStatusEdit]);
 
     return (
-        <div className="anime_status_table" style={props.style}>
-            <Modal open={isLoading}>
-                <CircularProgress />
-            </Modal>
+        <div className="status-table">
             <Search text={filter} onChangeSearch={setFilter} />
 
             <DataGrid
@@ -102,8 +97,8 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
                 pageSize={pageSize}
                 rows={data?.content || []}
                 rowCount={data?.totalElements || 0}
-                onPageChange={(params) => setPage(params.page)}
-                onPageSizeChange={(params) => setPageSize(params.pageSize)}
+                onPageChange={setPage}
+                onPageSizeChange={setPageSize}
                 paginationMode="server"
                 checkboxSelection={true}
                 onSelectionModelChange={handleSelectionModelChange}

@@ -331,17 +331,68 @@ public class ApiTest {
     }
 
     @Test
-    void episodeStatusRequiresAuthentication() throws InterruptedException {
+    void animeStatusRequiresAuthentication() {
+        var restTemplate = getRestTemplate(false);
+
+        var animeId = 1L;
+
+        var getResponse = restTemplate.getForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(getResponse);
+        assertEquals(HttpStatus.UNAUTHORIZED, getResponse.getStatusCode());
+    }
+
+    @Test
+    void animeStatusIsRetrievedById() {
+        var restTemplate = getRestTemplate(true);
+
+        var animeId = 1L;
+        var request = new UpdateAnimeStatusDto();
+        request.setProgress(AnimeProgressDto.IN_PROGRESS);
+        request.setComment("animeStatusIsRetrievedById!");
+
+        var createResponse = restTemplate.postForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                new HttpEntity<>(request),
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(createResponse);
+        assertEquals(HttpStatus.OK, createResponse.getStatusCode(), createResponse.toString());
+
+        var getResponse = restTemplate.getForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(getResponse);
+        assertEquals(HttpStatus.OK, getResponse.getStatusCode(), getResponse.toString());
+
+        var animeStatus = getResponse.getBody();
+        assertNotNull(animeStatus);
+        assertNotNull(animeStatus.getAnime());
+        assertEquals(animeId, animeStatus.getAnime().getId());
+        assertEquals(AnimeProgressDto.IN_PROGRESS, animeStatus.getProgress());
+    }
+
+    @Test
+    void episodeStatusesRequireAuthentication() throws InterruptedException {
         var restTemplate = getRestTemplate(false);
         var animeId = 1L;
 
         var response = restTemplate.exchange(
-                "http://localhost:{port}/api/v1/users/current/anime/1/episodes?page=0&size=100",
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}/episodes?page=0&size=100",
                 HttpMethod.GET,
                 HttpEntity.EMPTY,
                 new ParameterizedTypeReference<PageDto<AnimeStatusDto>>() {
                 },
-                Map.of("port", port)
+                Map.of("port", port, "animeId", animeId)
         );
 
         assertNotNull(response);
@@ -349,7 +400,7 @@ public class ApiTest {
     }
 
     @Test
-    void episodeStatusNotAvailableIfNoAnimeStatusSet() throws InterruptedException {
+    void episodeStatusesNotAvailableIfNoAnimeStatusSet() throws InterruptedException {
         var restTemplate = getRestTemplate(true);
 
         var response = restTemplate.exchange(
@@ -366,11 +417,10 @@ public class ApiTest {
     }
 
     @Test
-    void episodeStatusIsSetToNotStartedByDefault() throws InterruptedException {
+    void episodeStatusesAreSetToNotStartedByDefault() {
         var restTemplate = getRestTemplate(true);
 
         var animeId = 1L;
-        var episodeId = 1L;
         var request = new UpdateAnimeStatusDto();
         request.setProgress(AnimeProgressDto.IN_PROGRESS);
         request.setComment("Electrophoresis!");
@@ -408,6 +458,44 @@ public class ApiTest {
         assertEquals(17, episodes.size());
         var distinctProgress = episodes.stream().map(EpisodeStatusDto::getProgress).collect(Collectors.toSet());
         assertEquals(Collections.singleton(EpisodeProgressDto.NOT_STARTED), distinctProgress);
+    }
+
+    @Test
+    void episodeStatusesCanBeFilteredByType() throws InterruptedException {
+        var restTemplate = getRestTemplate(true);
+
+        var animeId = 1L;
+        var request = new UpdateAnimeStatusDto();
+        request.setProgress(AnimeProgressDto.IN_PROGRESS);
+        request.setComment("Will test filtering!");
+
+        var animeResponse = restTemplate.postForEntity(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}",
+                new HttpEntity<>(request),
+                AnimeStatusDto.class,
+                Map.of("port", port, "animeId", animeId)
+        );
+
+        assertNotNull(animeResponse);
+        assertEquals(HttpStatus.OK, animeResponse.getStatusCode(), animeResponse.toString());
+
+        var episodesResponse = restTemplate.exchange(
+                "http://localhost:{port}/api/v1/users/current/anime/{animeId}/episodes?page=0&size=100&type={type}",
+                HttpMethod.GET,
+                HttpEntity.EMPTY,
+                new ParameterizedTypeReference<PageDto<EpisodeStatusDto>>() {
+                },
+                Map.of("port", port, "animeId", animeId, "type", EpisodeTypeDto.REGULAR)
+        );
+
+        assertNotNull(episodesResponse);
+        assertEquals(HttpStatus.OK, episodesResponse.getStatusCode());
+
+        var page = episodesResponse.getBody();
+        assertNotNull(page);
+        assertEquals(100, page.getSize());
+        assertEquals(13, page.getTotalElements());
+        assertEquals(13, page.getContent().size());
     }
 
     @Test

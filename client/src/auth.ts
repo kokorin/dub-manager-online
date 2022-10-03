@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import { AppState } from "./store";
+import { queryRejected } from "./api";
 
 export interface Auth {
     isAuthenticated: boolean;
@@ -9,18 +10,14 @@ const initialState: Auth = {
     isAuthenticated: true,
 };
 
-const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {
-        notAuthorized: (state) => {
+const auth = createReducer(initialState, (builder) => {
+    builder.addCase(queryRejected, (state, action) => {
+        if (action.payload?.status === 401) {
             state.isAuthenticated = false;
-        },
-    },
+        }
+    });
 });
 
-export const selectAuth: (state: AppState) => Auth = (state: AppState) => state.auth;
+export const selectAuth: (_: AppState) => Auth = (state: AppState) => state.auth;
 
-export const { notAuthorized } = authSlice.actions;
-
-export default authSlice.reducer;
+export default auth;

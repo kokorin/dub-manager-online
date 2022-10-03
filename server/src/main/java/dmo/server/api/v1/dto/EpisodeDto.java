@@ -20,9 +20,8 @@ public class EpisodeDto {
     @ApiModelProperty(required = true, readOnly = true)
     private List<EpisodeTitleDto> titles;
 
-    @ApiModelProperty(required = true, readOnly = true,
-            allowableValues = "REGULAR, SPECIAL, CREDIT, TRAILER, PARODY, OTHER")
-    private String type;
+    @ApiModelProperty(required = true, readOnly = true)
+    private EpisodeTypeDto type;
 
     @ApiModelProperty(required = true, readOnly = true)
     private Long length;
