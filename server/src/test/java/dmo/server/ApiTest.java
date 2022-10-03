@@ -1,5 +1,6 @@
 package dmo.server;
 
+import com.nimbusds.jose.JOSEObjectType;
 import com.p6spy.engine.spy.P6SpyDriver;
 import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
@@ -622,6 +623,7 @@ public class ApiTest {
             mockOAuth2Server.enqueueCallback(new DefaultOAuth2TokenCallback(
                     ISSUER,
                     username,
+                    JOSEObjectType.JWT.getType(),
                     List.of("audience"),
                     Map.of("email", email),
                     3600
