@@ -106,8 +106,9 @@ jobs:
       - name: Build & Test
         run: |
           cd server;
+          ./mvnw --version
           docker pull testcontainersofficial/ryuk:0.3.0;
-          bash mvnw clean verify;
+          ./mvnw clean verify;
 
 
   client-test:
