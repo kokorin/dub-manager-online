@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk17:alpine AS build
+FROM adoptopenjdk/eclipse-temurin:17-alpine AS build
 
 WORKDIR server
 # Caching layers
