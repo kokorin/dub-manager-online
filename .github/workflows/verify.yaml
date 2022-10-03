@@ -95,6 +95,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 17
+
       - name: Cache Maven Packages
         uses: actions/cache@v2
         with:
