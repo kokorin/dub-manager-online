@@ -2,7 +2,7 @@
                xsi:schemaLocation="https://github.com/qoomon/maven-git-versioning-extension https://qoomon.github.io/maven-git-versioning-extension/configuration-6.4.0.xsd">
 <updatePom>false</updatePom>
     <branch>
-        <pattern>master</pattern>
+        <pattern>main</pattern>
         <versionFormat>${commit.timestamp.year}.${commit.timestamp.month}.${commit.timestamp.day}</versionFormat>
     </branch>
     <branch>
