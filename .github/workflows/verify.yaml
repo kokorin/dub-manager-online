@@ -3,16 +3,14 @@ name: "Verify"
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
   pull_request:
     types:
       - opened
       - reopened
       - synchronize
     branches:
-      - master
-      - develop
+      - main
 
 env:
   MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3

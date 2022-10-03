@@ -3,11 +3,12 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: false
 
     steps:
       - uses: actions/checkout@v2
