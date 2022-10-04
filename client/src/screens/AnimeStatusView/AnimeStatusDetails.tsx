@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { FormControl, FormGroup, Input, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { FormControl, FormGroup, Input, InputLabel, MenuItem, Select } from "@mui/material";
 import { resolveAnimeTitle } from "../../service";
 import { useFindAnimeStatusQuery } from "../../api";
 

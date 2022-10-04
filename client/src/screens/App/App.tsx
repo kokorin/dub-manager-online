@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { Routes } from "components/Routes";
 import { selectAuth } from "../../auth";
-import { Modal } from "@material-ui/core";
+import { Modal } from "@mui/material";
 import { selectIsFetching } from "../../api";
 import Loader from "../../components/Loader";
 

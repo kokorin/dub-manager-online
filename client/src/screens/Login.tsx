@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { useGetOAuthClientsQuery } from "../api";
-import { Modal } from "@material-ui/core";
+import { Modal } from "@mui/material";
 import Loader from "../components/Loader";
 
 export const Login: FC = () => {
