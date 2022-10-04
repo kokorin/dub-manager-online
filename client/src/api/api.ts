@@ -1,6 +1,6 @@
-import {generatedApi} from "./generated";
-import {createAction, createReducer} from "@reduxjs/toolkit";
-import {AppState} from "../store";
+import { generatedApi } from "./generated";
+import { createAction, createReducer } from "@reduxjs/toolkit";
+import { AppState } from "../store";
 
 export const api = generatedApi.enhanceEndpoints({
     addTagTypes: ["AnimeStatus", "EpisodeStatus"],

@@ -5,9 +5,8 @@ import lombok.Data;
 
 @Data
 public class AnimeTitleDto {
-    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY,
-            allowableValues = "SHORT, OFFICIAL, SYNONYM, MAIN, CARD, KANA")
-    private String type;
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
+    private AnimeTitleTypeDto type;
 
     @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String lang;

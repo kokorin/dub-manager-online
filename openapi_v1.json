@@ -20,14 +20,6 @@
         "operationId": "findAnimeStatus",
         "parameters": [
           {
-            "name": "user",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/OidcUser"
-            }
-          },
-          {
             "name": "id",
             "in": "path",
             "required": true,
@@ -81,15 +73,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "user": {
-                    "$ref": "#/components/schemas/OidcUser"
-                  },
-                  "updateAnimeStatusDto": {
-                    "$ref": "#/components/schemas/UpdateAnimeStatusDto"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdateAnimeStatusDto"
               }
             }
           },
@@ -135,15 +119,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OidcUser"
-              }
-            }
-          }
-        },
         "responses": {
           "404": {
             "description": "Not Found",
@@ -192,15 +167,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "user": {
-                    "$ref": "#/components/schemas/OidcUser"
-                  },
-                  "updateEpisodeStatusDto": {
-                    "$ref": "#/components/schemas/UpdateEpisodeStatusDto"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdateEpisodeStatusDto"
               }
             }
           },
@@ -237,16 +204,6 @@
         ],
         "summary": "Get current user information",
         "operationId": "getCurrentUser",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/OidcUser"
-            }
-          }
-        ],
         "responses": {
           "404": {
             "description": "Not Found",
@@ -279,14 +236,6 @@
         "summary": "Find all tracked Anime by current user",
         "operationId": "findAnimeStatuses",
         "parameters": [
-          {
-            "name": "user",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/OidcUser"
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -341,14 +290,6 @@
         "summary": "Find all Episode of Anime tracked by current user",
         "operationId": "findEpisodeStatuses",
         "parameters": [
-          {
-            "name": "user",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/OidcUser"
-            }
-          },
           {
             "name": "id",
             "in": "path",
@@ -638,363 +579,6 @@
           }
         }
       },
-      "AddressStandardClaim": {
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "region": {
-            "type": "string"
-          },
-          "formatted": {
-            "type": "string"
-          },
-          "postalCode": {
-            "type": "string"
-          },
-          "streetAddress": {
-            "type": "string"
-          },
-          "locality": {
-            "type": "string"
-          }
-        }
-      },
-      "GrantedAuthority": {
-        "type": "object",
-        "properties": {
-          "authority": {
-            "type": "string"
-          }
-        }
-      },
-      "OidcIdToken": {
-        "type": "object",
-        "properties": {
-          "tokenValue": {
-            "type": "string"
-          },
-          "issuedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "claims": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "authorizationCodeHash": {
-            "type": "string"
-          },
-          "authenticationContextClass": {
-            "type": "string"
-          },
-          "authenticationMethods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "subject": {
-            "type": "string"
-          },
-          "audience": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "nonce": {
-            "type": "string"
-          },
-          "authenticatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "accessTokenHash": {
-            "type": "string"
-          },
-          "authorizedParty": {
-            "type": "string"
-          },
-          "issuer": {
-            "type": "string",
-            "format": "url"
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressStandardClaim"
-          },
-          "fullName": {
-            "type": "string"
-          },
-          "locale": {
-            "type": "string"
-          },
-          "zoneInfo": {
-            "type": "string"
-          },
-          "givenName": {
-            "type": "string"
-          },
-          "familyName": {
-            "type": "string"
-          },
-          "middleName": {
-            "type": "string"
-          },
-          "picture": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phoneNumberVerified": {
-            "type": "boolean"
-          },
-          "preferredUsername": {
-            "type": "string"
-          },
-          "emailVerified": {
-            "type": "boolean"
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "birthdate": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "profile": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string"
-          }
-        }
-      },
-      "OidcUser": {
-        "type": "object",
-        "properties": {
-          "userInfo": {
-            "$ref": "#/components/schemas/OidcUserInfo"
-          },
-          "claims": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "idToken": {
-            "$ref": "#/components/schemas/OidcIdToken"
-          },
-          "attributes": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "authorities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GrantedAuthority"
-            }
-          },
-          "name": {
-            "type": "string"
-          },
-          "authorizationCodeHash": {
-            "type": "string"
-          },
-          "authenticationContextClass": {
-            "type": "string"
-          },
-          "authenticationMethods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "subject": {
-            "type": "string"
-          },
-          "audience": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "nonce": {
-            "type": "string"
-          },
-          "issuedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "authenticatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "accessTokenHash": {
-            "type": "string"
-          },
-          "authorizedParty": {
-            "type": "string"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "issuer": {
-            "type": "string",
-            "format": "url"
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressStandardClaim"
-          },
-          "fullName": {
-            "type": "string"
-          },
-          "locale": {
-            "type": "string"
-          },
-          "zoneInfo": {
-            "type": "string"
-          },
-          "givenName": {
-            "type": "string"
-          },
-          "familyName": {
-            "type": "string"
-          },
-          "middleName": {
-            "type": "string"
-          },
-          "picture": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phoneNumberVerified": {
-            "type": "boolean"
-          },
-          "preferredUsername": {
-            "type": "string"
-          },
-          "emailVerified": {
-            "type": "boolean"
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "birthdate": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "profile": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string"
-          }
-        }
-      },
-      "OidcUserInfo": {
-        "type": "object",
-        "properties": {
-          "claims": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "address": {
-            "$ref": "#/components/schemas/AddressStandardClaim"
-          },
-          "fullName": {
-            "type": "string"
-          },
-          "locale": {
-            "type": "string"
-          },
-          "zoneInfo": {
-            "type": "string"
-          },
-          "givenName": {
-            "type": "string"
-          },
-          "familyName": {
-            "type": "string"
-          },
-          "middleName": {
-            "type": "string"
-          },
-          "picture": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phoneNumberVerified": {
-            "type": "boolean"
-          },
-          "subject": {
-            "type": "string"
-          },
-          "preferredUsername": {
-            "type": "string"
-          },
-          "emailVerified": {
-            "type": "boolean"
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "birthdate": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "profile": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string"
-          }
-        }
-      },
       "UpdateAnimeStatusDto": {
         "required": [
           "comment",
@@ -1108,7 +692,12 @@
             "type": "string",
             "readOnly": true,
             "enum": [
-              "SHORT, OFFICIAL, SYNONYM, MAIN, CARD, KANA"
+              "SHORT",
+              "OFFICIAL",
+              "SYNONYM",
+              "MAIN",
+              "CARD",
+              "KANA"
             ]
           },
           "lang": {
