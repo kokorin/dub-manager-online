@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useCallback } from "react";
-import { FormControlLabel, Switch } from "@material-ui/core";
 import { EpisodeStatus, EpisodeStatusProgress } from "../../domain";
 import { UpdateEpisodeStatusDto, useUpdateEpisodeStatusMutation } from "../../api";
+import { FormControlLabel, Switch } from "@mui/material";
 
 interface OwnProps {
     episodeStatus: EpisodeStatus;

@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import AnimeStatusTable from "./AnimeStatusTable";
-import { Box, Button, Modal, Paper } from "@material-ui/core";
+import { Box, Button, Modal, Paper } from "@mui/material";
 import AnimeSelect from "./AnimeSelect";
 import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
 import { AnimeStatusView } from "./AnimeStatusView";

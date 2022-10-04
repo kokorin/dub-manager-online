@@ -2,10 +2,10 @@ import React, { FC, useMemo, useState } from "react";
 import { useFindAnimeStatusesQuery } from "../api";
 import { DataGrid, GridCellParams, GridColDef, GridRowId, GridRowIdGetter } from "@mui/x-data-grid";
 import { Search } from "../components/Search";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { AnimeStatus } from "../domain";
 import { resolveAnimeTitle } from "../service";
-import { Edit } from "@material-ui/icons";
+import EditIcon from "@mui/icons-material/Edit";
 
 const getRowId: GridRowIdGetter = (data) => (data as AnimeStatus).anime.id;
 
@@ -27,7 +27,7 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (animeId: number) => 
             // eslint-disable-next-line react/display-name
             renderCell: (params: GridCellParams) => (
                 <Button
-                    startIcon={<Edit />}
+                    startIcon={<EditIcon />}
                     onClick={(event) => {
                         event.stopPropagation();
                         onEditAnimeStatus((params.row as AnimeStatus).anime.id);
