@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Shell & PowerShell
 
 ```
-npx @rtk-incubator/rtk-query-codegen-openapi -h ../server/src/test/resources/dmo/server/openapi_v1.json --baseUrl "/" -f ./src/api/generated.ts
+npx @rtk-query/codegen-openapi .\openapi-config.js
 ```
 
 # Available Scripts

@@ -1,6 +1,6 @@
-import { api as generatedApi } from "./generated";
-import { createAction, createReducer } from "@reduxjs/toolkit";
-import { AppState } from "../store";
+import {generatedApi} from "./generated";
+import {createAction, createReducer} from "@reduxjs/toolkit";
+import {AppState} from "../store";
 
 export const api = generatedApi.enhanceEndpoints({
     addTagTypes: ["AnimeStatus", "EpisodeStatus"],
@@ -87,17 +87,3 @@ export const apiStats = createReducer(initialApiStatus, (builder) => {
 
 export const selectIsFetching: (_: AppState) => boolean = (state: AppState) =>
     state.apiStats.fetched > state.apiStats.completed;
-
-export const {
-    useFindAnimeQuery,
-    useGetAnimeQuery,
-    useFindEpisodesQuery,
-    useGetOAuthClientsQuery,
-    useGetCurrentUserQuery,
-    useFindAnimeStatusQuery,
-    useFindAnimeStatusesQuery,
-    useFindEpisodeStatusesQuery,
-    useUpdateAnimeStatusMutation,
-    useDeleteAnimeStatusMutation,
-    useUpdateEpisodeStatusMutation,
-} = api;
