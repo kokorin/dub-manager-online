@@ -1,18 +1,18 @@
 package dmo.server.api.v1.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class AnimeDto {
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private List<AnimeTitleDto> titles;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private AnimeTypeDto type;
 }

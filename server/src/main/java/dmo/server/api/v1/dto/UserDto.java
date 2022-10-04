@@ -1,28 +1,28 @@
 package dmo.server.api.v1.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 public class UserDto {
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String email;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String fullName;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String givenName;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String familyName;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String middleName;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String nickName;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String preferredUsername;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String picture;
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String locale;
 }

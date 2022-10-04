@@ -1,6 +1,6 @@
 package dmo.server.api.v1.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -8,24 +8,24 @@ import java.util.List;
 
 @Data
 public class EpisodeDto {
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private Long animeId;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private Long number;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private List<EpisodeTitleDto> titles;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private EpisodeTypeDto type;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private Long length;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDate airDate;
 }

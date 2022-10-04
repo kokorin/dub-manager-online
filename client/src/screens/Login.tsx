@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 export const Login: FC = () => {
     //const history = useHistory();
     //const { from } = (history.location.state as { from: Location }) ?? { from: { pathname: "/" } };
-    const { data: clients, isLoading } = useGetOAuthClientsQuery({});
+    const { data: clients, isLoading } = useGetOAuthClientsQuery();
 
     // force redirect to bypass React Router
     const loginWith = (oAuthProvider: string) => {

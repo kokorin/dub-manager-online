@@ -1,0 +1,1060 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/users/current/anime/{id}": {
+      "get": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Find tracked Anime by current user and ID",
+        "operationId": "findAnimeStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnimeStatusDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Update status of Anime tracked by current user",
+        "operationId": "updateAnimeStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAnimeStatusDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnimeStatusDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Delete status of Anime tracked by current user",
+        "operationId": "deleteAnimeStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/anime/{id}/episodes/{eid}": {
+      "post": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Update status of Anime Episode tracked by current user",
+        "operationId": "updateEpisodeStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "eid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEpisodeStatusDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EpisodeStatusDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/current": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get current user information",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/anime": {
+      "get": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Find all tracked Anime by current user",
+        "operationId": "findAnimeStatuses",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageDtoAnimeStatusDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/anime/{id}/episodes": {
+      "get": {
+        "tags": [
+          "anime-status-controller"
+        ],
+        "summary": "Find all Episode of Anime tracked by current user",
+        "operationId": "findEpisodeStatuses",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "REGULAR",
+                "SPECIAL",
+                "CREDIT",
+                "TRAILER",
+                "PARODY",
+                "OTHER"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageDtoEpisodeStatusDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/conf/oauth/clients": {
+      "get": {
+        "tags": [
+          "settings-controller"
+        ],
+        "summary": "Get list of registered OAuth2 clients",
+        "operationId": "getOAuthClients",
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/anime": {
+      "get": {
+        "tags": [
+          "anime-controller"
+        ],
+        "summary": "Search Anime by title",
+        "operationId": "findAnime",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageDtoAnimeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/anime/{id}": {
+      "get": {
+        "tags": [
+          "anime-controller"
+        ],
+        "summary": "Get Anime description",
+        "operationId": "getAnime",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnimeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/anime/{id}/episodes": {
+      "get": {
+        "tags": [
+          "anime-controller"
+        ],
+        "summary": "Search Anime episodes",
+        "operationId": "findEpisodes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageDtoEpisodeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorDto": {
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "UpdateAnimeStatusDto": {
+        "required": [
+          "comment",
+          "progress"
+        ],
+        "type": "object",
+        "properties": {
+          "progress": {
+            "type": "string",
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "COMPLETED"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "AnimeDto": {
+        "required": [
+          "id",
+          "titles",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "titles": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/AnimeTitleDto"
+            }
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "MOVIE",
+              "OVA",
+              "TV_SERIES",
+              "TV_SPECIAL",
+              "WEB",
+              "MUSIC_VIDEO",
+              "OTHER",
+              "UNKNOWN",
+              "DELETED"
+            ]
+          }
+        },
+        "readOnly": true
+      },
+      "AnimeStatusDto": {
+        "required": [
+          "anime",
+          "comment",
+          "progress",
+          "regularEpisodeCompleteCount",
+          "regularEpisodeTotalCount"
+        ],
+        "type": "object",
+        "properties": {
+          "anime": {
+            "$ref": "#/components/schemas/AnimeDto"
+          },
+          "progress": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "NOT_STARTED",
+              "IN_PROGRESS",
+              "COMPLETED"
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "readOnly": true
+          },
+          "regularEpisodeCompleteCount": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "regularEpisodeTotalCount": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "regularEpisodeNextAirDate": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          }
+        }
+      },
+      "AnimeTitleDto": {
+        "required": [
+          "lang",
+          "text",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "SHORT",
+              "OFFICIAL",
+              "SYNONYM",
+              "MAIN",
+              "CARD",
+              "KANA"
+            ]
+          },
+          "lang": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "readOnly": true
+      },
+      "UpdateEpisodeStatusDto": {
+        "required": [
+          "progress"
+        ],
+        "type": "object",
+        "properties": {
+          "progress": {
+            "type": "string",
+            "enum": [
+              "NOT_STARTED",
+              "COMPLETED"
+            ]
+          }
+        }
+      },
+      "EpisodeDto": {
+        "required": [
+          "airDate",
+          "animeId",
+          "id",
+          "length",
+          "number",
+          "titles",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "animeId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "titles": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/EpisodeTitleDto"
+            }
+          },
+          "type": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "REGULAR",
+              "SPECIAL",
+              "CREDIT",
+              "TRAILER",
+              "PARODY",
+              "OTHER"
+            ]
+          },
+          "length": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "airDate": {
+            "type": "string",
+            "format": "date",
+            "readOnly": true
+          }
+        },
+        "readOnly": true
+      },
+      "EpisodeStatusDto": {
+        "required": [
+          "episode",
+          "progress"
+        ],
+        "type": "object",
+        "properties": {
+          "episode": {
+            "$ref": "#/components/schemas/EpisodeDto"
+          },
+          "progress": {
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "NOT_STARTED",
+              "COMPLETED"
+            ]
+          }
+        }
+      },
+      "EpisodeTitleDto": {
+        "required": [
+          "lang",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "lang": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "readOnly": true
+      },
+      "UserDto": {
+        "required": [
+          "email",
+          "familyName",
+          "fullName",
+          "givenName",
+          "locale",
+          "middleName",
+          "nickName",
+          "picture",
+          "preferredUsername"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "readOnly": true
+          },
+          "fullName": {
+            "type": "string",
+            "readOnly": true
+          },
+          "givenName": {
+            "type": "string",
+            "readOnly": true
+          },
+          "familyName": {
+            "type": "string",
+            "readOnly": true
+          },
+          "middleName": {
+            "type": "string",
+            "readOnly": true
+          },
+          "nickName": {
+            "type": "string",
+            "readOnly": true
+          },
+          "preferredUsername": {
+            "type": "string",
+            "readOnly": true
+          },
+          "picture": {
+            "type": "string",
+            "readOnly": true
+          },
+          "locale": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "PageDtoAnimeStatusDto": {
+        "required": [
+          "content",
+          "number",
+          "numberOfElements",
+          "size",
+          "totalElements",
+          "totalPages"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "content": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/AnimeStatusDto"
+            }
+          }
+        }
+      },
+      "PageDtoEpisodeStatusDto": {
+        "required": [
+          "content",
+          "number",
+          "numberOfElements",
+          "size",
+          "totalElements",
+          "totalPages"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "content": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/EpisodeStatusDto"
+            }
+          }
+        }
+      },
+      "PageDtoAnimeDto": {
+        "required": [
+          "content",
+          "number",
+          "numberOfElements",
+          "size",
+          "totalElements",
+          "totalPages"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "content": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/AnimeDto"
+            }
+          }
+        }
+      },
+      "PageDtoEpisodeDto": {
+        "required": [
+          "content",
+          "number",
+          "numberOfElements",
+          "size",
+          "totalElements",
+          "totalPages"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "content": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/EpisodeDto"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,17 +1,16 @@
 package dmo.server.api.v1.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class AnimeTitleDto {
-    @ApiModelProperty(required = true, readOnly = true,
-            allowableValues = "SHORT, OFFICIAL, SYNONYM, MAIN, CARD, KANA")
-    private String type;
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
+    private AnimeTitleTypeDto type;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String lang;
 
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private String text;
 }

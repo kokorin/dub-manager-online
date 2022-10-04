@@ -1,12 +1,12 @@
 package dmo.server.api.v1.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
 public class ErrorDto {
-    @ApiModelProperty(required = true, readOnly = true)
+    @Schema(required = true, accessMode = Schema.AccessMode.READ_ONLY)
     private final String message;
 }

@@ -1,9 +1,9 @@
 package dmo.server;
 
+import com.nimbusds.jose.JOSEObjectType;
 import com.p6spy.engine.spy.P6SpyDriver;
 import dmo.server.api.v1.dto.*;
 import dmo.server.domain.Anime;
-import dmo.server.event.AnimeListUpdateScheduled;
 import dmo.server.event.AnimeUpdateScheduled;
 import dmo.server.integration.anidb.MockAnidbConf;
 import dmo.server.okhttp.InMemoryCookieJar;
@@ -15,7 +15,6 @@ import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mariadb.jdbc.Driver;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +42,10 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -593,11 +596,18 @@ public class ApiTest {
         var restTemplate = getRestTemplate(false);
         assertNotEquals(0, port);
 
-        var url = "http://localhost:" + port + "/api/openapi?group=v1";
+        var url = "http://localhost:" + port + "/api/openapi/v1";
         var content = restTemplate.getForObject(url, String.class);
 
+        Path current  = Paths.get(".").toAbsolutePath();
+        Path openapiFile = null;
+        do {
+            openapiFile = current.resolve("openapi_v1.json").toAbsolutePath();
+            current = current.getParent();
+        } while (current != null && !Files.exists(openapiFile));
+
         final String expected;
-        try (InputStream input = this.getClass().getResourceAsStream("openapi_v1.json")) {
+        try (InputStream input = Files.newInputStream(openapiFile, StandardOpenOption.READ)) {
             expected = StreamUtils.copyToString(input, Charset.defaultCharset())
                     .replaceAll("localhost:8080", "localhost:" + port);
         }
@@ -622,6 +632,7 @@ public class ApiTest {
             mockOAuth2Server.enqueueCallback(new DefaultOAuth2TokenCallback(
                     ISSUER,
                     username,
+                    JOSEObjectType.JWT.getType(),
                     List.of("audience"),
                     Map.of("email", email),
                     3600
