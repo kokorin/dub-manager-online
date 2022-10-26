@@ -87,7 +87,7 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const columns = useMemo(() => createColumns(props.onAnimeStatusEdit), [props.onAnimeStatusEdit]);
 
     return (
-        <div className="status-table">
+        <>
             <Search text={filter} onChangeSearch={setFilter} />
 
             <DataGrid
@@ -103,7 +103,7 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
                 checkboxSelection={true}
                 onSelectionModelChange={handleSelectionModelChange}
             />
-        </div>
+        </>
     );
 };
 

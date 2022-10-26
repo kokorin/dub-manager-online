@@ -57,7 +57,7 @@ Check its [intellij-setup](https://github.com/qoomon/maven-git-versioning-extens
 Add following ENV variables server configuration (or property file):
 ```properties
 # anidb.net integration configuration
-dmo.anidb.client=${ANIDB_CLIENT_ID}
+dmo.anidb.client.name=${ANIDB_CLIENT_ID}
 dmo.anidb.client-version=${ANIDB_CLIENT_VERSION}
 ```
 

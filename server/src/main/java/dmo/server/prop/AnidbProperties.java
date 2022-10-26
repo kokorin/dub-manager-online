@@ -8,7 +8,7 @@ public class AnidbProperties {
     public final String client;
     public final String clientVersion;
 
-    public AnidbProperties(@Value("${dmo.anidb.client}") String client,
+    public AnidbProperties(@Value("${dmo.anidb.client.name}") String client,
                            @Value("${dmo.anidb.client.version}") String clientVersion) {
         this.client = client;
         this.clientVersion = clientVersion;

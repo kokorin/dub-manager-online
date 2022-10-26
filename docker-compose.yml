@@ -8,7 +8,7 @@ services:
     depends_on:
       - mariadb
     environment:
-      dmo_anidb_client: ${ANIDB_CLIENT_ID}
+      dmo_anidb_client_name: ${ANIDB_CLIENT_ID}
       dmo_anidb_client_version: ${ANIDB_CLIENT_VERSION}
 
       spring_datasource_url: jdbc:mariadb://mariadb:3306/dmo
