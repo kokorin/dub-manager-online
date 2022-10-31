@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import { AnimeStatus } from "../domain";
 import { resolveAnimeTitle } from "../service";
 import EditIcon from "@mui/icons-material/Edit";
+import { CommonProps } from "@mui/material/OverridableComponent";
 
 const getRowId: GridRowIdGetter = (data) => (data as AnimeStatus).anime.id;
 
@@ -69,7 +70,7 @@ const createColumns: ColumnsProvider = (onEditAnimeStatus: (animeId: number) => 
     return columns;
 };
 
-interface OwnProps {
+interface OwnProps extends CommonProps {
     onAnimeStatusSelected: (animeIds: number[]) => void;
     onAnimeStatusEdit: (animeId: number) => void;
 }
@@ -87,10 +88,11 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
     const columns = useMemo(() => createColumns(props.onAnimeStatusEdit), [props.onAnimeStatusEdit]);
 
     return (
-        <>
+        <div className={`flex-column ${props.className}`} style={props.style}>
             <Search text={filter} onChangeSearch={setFilter} />
 
             <DataGrid
+                className="flex-grow"
                 columns={columns}
                 getRowId={getRowId}
                 page={page}
@@ -103,7 +105,7 @@ const AnimeStatusTable: FC<OwnProps> = (props) => {
                 checkboxSelection={true}
                 onSelectionModelChange={handleSelectionModelChange}
             />
-        </>
+        </div>
     );
 };
 

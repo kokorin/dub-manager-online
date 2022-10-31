@@ -39,7 +39,7 @@ const AnimeStatusDetails: FC<OwnProps> = (props) => {
             </FormControl>
             <FormControl>
                 <InputLabel htmlFor="commentInput">Comment</InputLabel>
-                <Input id="commentInput" contentEditable={false} value={animeStatus.comment} />
+                <Input id="commentInput" contentEditable={true} value={animeStatus.comment} />
             </FormControl>
         </FormGroup>
     );

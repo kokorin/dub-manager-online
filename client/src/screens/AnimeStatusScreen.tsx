@@ -36,13 +36,17 @@ const AnimeStatusScreen: FC = () => {
     return (
         <>
             <Modal open={animeSelectOpen} onClose={closeAnimeSelect}>
-                <Paper>
-                    <AnimeSelect onAnimeSelected={handleAnimeSelected} onSelectCancelled={closeAnimeSelect} />
+                <Paper className="padding-4em">
+                    <AnimeSelect
+                        className="height-100"
+                        onAnimeSelected={handleAnimeSelected}
+                        onSelectCancelled={closeAnimeSelect}
+                    />
                 </Paper>
             </Modal>
             <Modal open={showAnimeId > 0} onClose={closeAnimeStatus}>
-                <Paper>
-                    <AnimeStatusView animeId={showAnimeId} />
+                <Paper className="padding-4em">
+                    <AnimeStatusView className="height-100" animeId={showAnimeId} />
                 </Paper>
             </Modal>
             <div className="flex-column height-100">
@@ -54,13 +58,11 @@ const AnimeStatusScreen: FC = () => {
                         Delete Anime
                     </Button>
                 </div>
-                {/* TODO Have to wrap in a div, because of AnimeStatusTable is based on empty element - <> */}
-                <div className="flex-column flex-grow">
-                    <AnimeStatusTable
-                        onAnimeStatusSelected={setSelectedAnimeStatuses}
-                        onAnimeStatusEdit={setShowAnimeId}
-                    />
-                </div>
+                <AnimeStatusTable
+                    className="flex-grow"
+                    onAnimeStatusSelected={setSelectedAnimeStatuses}
+                    onAnimeStatusEdit={setShowAnimeId}
+                />
             </div>
         </>
     );
