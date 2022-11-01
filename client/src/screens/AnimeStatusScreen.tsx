@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from "react";
 import AnimeStatusTable from "./AnimeStatusTable";
-import { Box, Button, Modal, Paper } from "@mui/material";
+import { Button, Modal, Paper } from "@mui/material";
 import AnimeSelect from "./AnimeSelect";
 import { useDeleteAnimeStatusMutation, useUpdateAnimeStatusMutation } from "../api";
 import { AnimeStatusView } from "./AnimeStatusView";
@@ -35,26 +35,34 @@ const AnimeStatusScreen: FC = () => {
 
     return (
         <>
-            <Modal className="search-popup" open={animeSelectOpen} onClose={closeAnimeSelect}>
-                <Paper>
-                    <AnimeSelect onAnimeSelected={handleAnimeSelected} onSelectCancelled={closeAnimeSelect} />
+            <Modal open={animeSelectOpen} onClose={closeAnimeSelect}>
+                <Paper className="padding-4em">
+                    <AnimeSelect
+                        className="height-100"
+                        onAnimeSelected={handleAnimeSelected}
+                        onSelectCancelled={closeAnimeSelect}
+                    />
                 </Paper>
             </Modal>
-            <Modal className="status-popup" open={showAnimeId > 0} onClose={closeAnimeStatus}>
-                <Paper>
-                    <AnimeStatusView animeId={showAnimeId} />
+            <Modal open={showAnimeId > 0} onClose={closeAnimeStatus}>
+                <Paper className="padding-4em">
+                    <AnimeStatusView className="height-100" animeId={showAnimeId} />
                 </Paper>
             </Modal>
-            <div className="status-screen">
-                <Box className="status-table-control">
+            <div className="flex-column height-100">
+                <div className="flex">
                     <Button color="primary" onClick={openAnimeSelect}>
                         Add Anime
                     </Button>
                     <Button color="secondary" disabled={!selectedAnimeStatuses.length} onClick={handleDeleteClick}>
                         Delete Anime
                     </Button>
-                </Box>
-                <AnimeStatusTable onAnimeStatusSelected={setSelectedAnimeStatuses} onAnimeStatusEdit={setShowAnimeId} />
+                </div>
+                <AnimeStatusTable
+                    className="flex-grow"
+                    onAnimeStatusSelected={setSelectedAnimeStatuses}
+                    onAnimeStatusEdit={setShowAnimeId}
+                />
             </div>
         </>
     );

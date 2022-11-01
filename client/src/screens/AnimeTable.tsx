@@ -4,6 +4,7 @@ import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
 import { resolveAnimeTitle } from "../service";
 import { Anime } from "../domain";
 import { Search } from "../components/Search";
+import { CommonProps } from "@mui/material/OverridableComponent";
 
 const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 1 },
@@ -17,7 +18,7 @@ const columns: GridColDef[] = [
     },
 ];
 
-interface OwnProps {
+interface OwnProps extends CommonProps {
     onAnimeSelected: (animeIds: number[]) => void;
 }
 
@@ -38,9 +39,10 @@ export const AnimeTable: FC<OwnProps> = (props) => {
     };
 
     return (
-        <div className="anime-table">
+        <div className={`flex-column ${props.className}`} style={props.style}>
             <Search label="Anime Title" text={filter} onChangeSearch={handleSearchChange} />
             <DataGrid
+                className="flex-grow"
                 rowsPerPageOptions={[5, 10, 25]}
                 columns={columns}
                 page={page}

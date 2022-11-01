@@ -2,11 +2,11 @@ import { generatedApi } from "./generated";
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { AppState } from "../store";
 
-export const api = generatedApi.enhanceEndpoints({
+export const api = generatedApi.enhanceEndpoints<string>({
     addTagTypes: ["AnimeStatus", "EpisodeStatus"],
     endpoints: {
         findAnimeStatuses: {
-            providesTags: (result, error, arg) => [
+            providesTags: (result) => [
                 ...(result?.content || []).map((animeStatus) => ({
                     type: "AnimeStatus" as const,
                     id: animeStatus.anime.id,

@@ -4,6 +4,7 @@ import { useFindEpisodeStatusesQuery } from "../../api";
 import { EpisodeStatus } from "../../domain";
 import EpisodeStatusProgressControl from "./EpisodeStatusProgressControl";
 import { resolveEpisodeTitle } from "../../service";
+import { CommonProps } from "@mui/material/OverridableComponent";
 
 const getRowId: GridRowIdGetter = (data) => (data as EpisodeStatus).episode.id;
 
@@ -60,7 +61,7 @@ const createColumns: () => GridColDef[] = () => [
     },
 ];
 
-interface OwnProps {
+interface OwnProps extends CommonProps {
     animeId: number;
 }
 
@@ -84,24 +85,27 @@ const EpisodeStatusGrid: FC<OwnProps> = (props) => {
     });
 
     return (
-        <DataGrid
-            className="episode-table"
-            columns={columns}
-            getRowId={getRowId}
-            page={page}
-            pageSize={pageSize}
-            rows={data?.content || []}
-            rowCount={data?.totalElements || 0}
-            onPageChange={setPage}
-            onPageSizeChange={setPageSize}
-            paginationMode="server"
-            checkboxSelection={false}
-            disableSelectionOnClick={true}
-            filterMode="server"
-            filterModel={{ items: [{ columnField: "episode.type", operatorValue: "equals", value: "REGULAR" }] }}
-            onFilterModelChange={onFilterModelChange}
-            loading={isFetching}
-        />
+        <>
+            <DataGrid
+                className={props.className}
+                style={props.style}
+                columns={columns}
+                getRowId={getRowId}
+                page={page}
+                pageSize={pageSize}
+                rows={data?.content || []}
+                rowCount={data?.totalElements || 0}
+                onPageChange={setPage}
+                onPageSizeChange={setPageSize}
+                paginationMode="server"
+                checkboxSelection={false}
+                disableSelectionOnClick={true}
+                filterMode="server"
+                filterModel={{ items: [{ columnField: "episode.type", operatorValue: "equals", value: "REGULAR" }] }}
+                onFilterModelChange={onFilterModelChange}
+                loading={isFetching}
+            />
+        </>
     );
 };
 
