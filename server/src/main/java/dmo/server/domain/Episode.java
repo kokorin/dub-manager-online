@@ -1,61 +1,36 @@
 package dmo.server.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
 
-@Entity
-@Getter
+@Data
+@ToString(onlyExplicitlyIncluded = true)
 public class Episode {
     @Id
-    @Setter
+    @ToString.Include
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    @Setter
-    private Type type;
+    @NonNull
+    @ToString.Include
+    private final Long animeId;
 
-    @Column(nullable = false)
-    @Setter
-    private Long number;
+    @NonNull
+    @ToString.Include
+    private final Long externalId;
 
-    @ElementCollection
-    @CollectionTable(name = "episode_title")
-    @Setter
-    private List<EpisodeTitle> titles;
+    @ToString.Include
+    private final Long number;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @Setter
-    private Anime anime;
+    @NonNull
+    private Set<EpisodeTitle> titles = Collections.emptySet();
 
-    @Column(name = "anime_id", insertable = false, updatable = false)
-    private Long animeId;
-
-    @Setter
     private Long length;
 
-    @Setter
     private LocalDate airDate;
-
-    public enum Type {
-        /**
-         * Normal or Regular.
-         */
-        REGULAR,
-        SPECIAL,
-        /**
-         * Opening/Ending.
-         */
-        CREDIT,
-        /**
-         * Trailer/Promo/Commercial.
-         */
-        TRAILER,
-        PARODY,
-        OTHER
-    }
 }

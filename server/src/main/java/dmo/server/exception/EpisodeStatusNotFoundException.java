@@ -1,9 +1,9 @@
 package dmo.server.exception;
 
-import dmo.server.domain.EpisodeStatus;
+import dmo.server.domain.TrackedEpisode;
 
-public class EpisodeStatusNotFoundException extends NotFoundException{
-    public EpisodeStatusNotFoundException(EpisodeStatus.EpisodeStatusId id) {
+public class EpisodeStatusNotFoundException extends NotFoundException {
+    public EpisodeStatusNotFoundException(TrackedEpisode.ID id) {
         super("EpisodeStatus not found: " + id);
     }
 }

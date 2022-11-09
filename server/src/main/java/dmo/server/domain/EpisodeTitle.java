@@ -1,17 +1,9 @@
 package dmo.server.domain;
 
-import lombok.Data;
+import lombok.NonNull;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
-@Embeddable
-@Data
-public class EpisodeTitle {
-
-    @Column(nullable = false)
-    private String lang;
-
-    @Column(nullable = false)
-    private String text;
+public record EpisodeTitle(
+        @NonNull String lang,
+        @NonNull String text
+) {
 }

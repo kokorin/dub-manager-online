@@ -1,24 +1,36 @@
 package dmo.server.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NonNull;
 import lombok.ToString;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Entity
-@Getter
-@Setter
-@ToString(of = {"id", "type"})
+@Data
+@Builder
+@Accessors(fluent = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class Anime {
     @Id
+    @ToString.Include
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Type type;
+    @NonNull
+    @ToString.Include
+    private final Long externalId;
+
+    @NonNull
+    @ToString.Include
+    private final ExternalSystem externalSystem;
+
+    @NonNull
+    @ToString.Include
+    private final Type type;
 
     private Long episodeCount;
 
@@ -26,18 +38,16 @@ public class Anime {
 
     private LocalDate endDate;
 
-    @ElementCollection
-    @CollectionTable(name = "anime_title")
+    // TODO add @NotEmpty
+    @NonNull
     private Set<AnimeTitle> titles;
+
+    private Instant last_update;
 
     public enum Type {
         MOVIE,
-        OVA,
-        TV_SERIES,
-        TV_SPECIAL,
-        WEB,
-        MUSIC_VIDEO,
-        OTHER,
+        SERIES,
+        MUSIC,
         UNKNOWN,
         DELETED;
     }

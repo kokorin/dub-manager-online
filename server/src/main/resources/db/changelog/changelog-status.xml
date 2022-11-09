@@ -3,78 +3,28 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd"
                    logicalFilePath="changelog-base.xml">
 
-    <changeSet id="1600322425891" author="kokorin">
-        <createTable tableName="anime_progress_enum">
-            <column name="progress" type="VARCHAR(32)">
+    <changeSet id="create-tracked-anime-status-enum" author="kokorin">
+        <createTable tableName="tracked_anime_status_enum">
+            <column name="status" type="VARCHAR(32)">
                 <constraints primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
 
-    <changeSet id="1600322529438" author="kokorin">
-        <insert tableName="anime_progress_enum">
-            <column name="progress" value="NOT_STARTED"/>
+    <changeSet id="fill-tracked-anime-status-enum" author="kokorin">
+        <insert tableName="tracked_anime_status_enum">
+            <column name="status" value="NOT_STARTED"/>
         </insert>
-        <insert tableName="anime_progress_enum">
-            <column name="progress" value="IN_PROGRESS"/>
+        <insert tableName="tracked_anime_status_enum">
+            <column name="status" value="IN_PROGRESS"/>
         </insert>
-        <insert tableName="anime_progress_enum">
-            <column name="progress" value="COMPLETED"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="1624454731891" author="kokorin">
-        <createTable tableName="episode_progress_enum">
-            <column name="progress" type="VARCHAR(32)">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1624454746438" author="kokorin">
-        <insert tableName="episode_progress_enum">
-            <column name="progress" value="NOT_STARTED"/>
-        </insert>
-        <insert tableName="episode_progress_enum">
-            <column name="progress" value="COMPLETED"/>
+        <insert tableName="tracked_anime_status_enum">
+            <column name="status" value="COMPLETED"/>
         </insert>
     </changeSet>
 
-    <!-- DROP PREVIOUS VERSIONS OF TABLES IF THEY EXIST -->
-
-    <changeSet id="1629268939212-drop" author="kokorin">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="anime_status"/>
-        </preConditions>
-        <dropTable tableName="anime_status"/>
-    </changeSet>
-
-    <changeSet id="1624454932713-drop" author="kokorin">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="episode_status"/>
-        </preConditions>
-        <dropTable tableName="episode_status"/>
-    </changeSet>
-
-    <changeSet id="1600322706643-drop" author="kokorin">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="dub_user"/>
-        </preConditions>
-        <dropTable tableName="dub_user"/>
-    </changeSet>
-
-    <!-- CREATE NEW VERSIONS OF TABLES -->
-
-    <changeSet id="create_user" author="kokorin">
-        <createTable tableName="dub_user">
-            <column name="email" type="VARCHAR(64)">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="create_anime_status-1629268939212" author="kokorin">
-        <createTable tableName="anime_status">
+    <changeSet id="create-tracked-anime" author="kokorin">
+        <createTable tableName="tracked_anime">
             <column name="anime_id" type="BIGINT">
                 <constraints primaryKey="true"
                              foreignKeyName="fk_anime_status_to_anime"
@@ -83,25 +33,32 @@
             <column name="user_email" type="VARCHAR(64)">
                 <constraints primaryKey="true"
                              foreignKeyName="fk_anime_status_to_user"
-                             referencedTableName="dub_user" referencedColumnNames="email"/>
+                             referencedTableName="dmo_user" referencedColumnNames="email"/>
             </column>
-            <column name="progress" type="VARCHAR(32)" defaultValue="NOT_STARTED">
+            <column name="status" type="VARCHAR(32)" defaultValue="NOT_STARTED">
                 <constraints nullable="false"
-                             foreignKeyName="fk_anime_status_to_anime_progress_enum"
-                             referencedTableName="anime_progress_enum" referencedColumnNames="progress"/>
+                             foreignKeyName="fk_anime_status_to_tracked_anime_status_enum"
+                             referencedTableName="tracked_anime_status_enum" referencedColumnNames="status"/>
             </column>
-            <column name="regular_episode_complete_count" type="BIGINT" defaultValue="0">
+            <column name="completed_episode_count" type="BIGINT" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
-            <column name="regular_episode_total_count" type="BIGINT" defaultValue="0">
+            <column name="total_episodes" type="BIGINT" defaultValue="0">
                 <constraints nullable="false"/>
             </column>
-            <column name="regular_episode_next_air_date" type="DATE"/>
+            <column name="next_not_started_episode_air_date" type="DATE"/>
             <column name="comment" type="VARCHAR(4096)"/>
         </createTable>
     </changeSet>
 
-    <changeSet id="create_episode_status" author="kokorin">
+    <changeSet author="kokorin" id="create-tracked-anime-constraint">
+        <addUniqueConstraint
+                columnNames="anime_id, user_email"
+                constraintName="unique_anime_and_user"
+                tableName="tracked_anime"/>
+    </changeSet>
+
+    <changeSet id="create-episode-status" author="kokorin">
         <createTable tableName="episode_status">
             <column name="episode_id" type="BIGINT">
                 <constraints primaryKey="true"
@@ -111,12 +68,10 @@
             <column name="user_email" type="VARCHAR(64)">
                 <constraints primaryKey="true"
                              foreignKeyName="fk_episode_status_to_user"
-                             referencedTableName="dub_user" referencedColumnNames="email"/>
+                             referencedTableName="dmo_user" referencedColumnNames="email"/>
             </column>
-            <column name="progress" type="VARCHAR(32)" defaultValue="NOT_STARTED">
-                <constraints nullable="false"
-                             foreignKeyName="fk_episode_status_to_episode_progress_enum"
-                             referencedTableName="episode_progress_enum" referencedColumnNames="progress"/>
+            <column name="completed" type="BIT" defaultValue="0">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>

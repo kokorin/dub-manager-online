@@ -23,7 +23,15 @@
         </preConditions>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598541702654">
+    <changeSet id="create-user" author="kokorin">
+        <createTable tableName="dmo_user">
+            <column name="email" type="VARCHAR(64)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kokorin" id="create-anime-type-enum">
         <createTable tableName="anime_type_enum">
             <column name="type" type="VARCHAR(32)">
                 <constraints primaryKey="true"/>
@@ -31,56 +39,74 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598541720708">
+    <changeSet author="kokorin" id="fill-anime-type-enum">
         <insert tableName="anime_type_enum">
             <column name="type" value="MOVIE"/>
         </insert>
         <insert tableName="anime_type_enum">
-            <column name="type" value="OVA"/>
+            <column name="type" value="SERIES"/>
         </insert>
         <insert tableName="anime_type_enum">
-            <column name="type" value="TV_SERIES"/>
-        </insert>
-        <insert tableName="anime_type_enum">
-            <column name="type" value="TV_SPECIAL"/>
-        </insert>
-        <insert tableName="anime_type_enum">
-            <column name="type" value="WEB"/>
-        </insert>
-        <insert tableName="anime_type_enum">
-            <column name="type" value="MUSIC_VIDEO"/>
-        </insert>
-        <insert tableName="anime_type_enum">
-            <column name="type" value="OTHER"/>
+            <column name="type" value="MUSIC"/>
         </insert>
         <insert tableName="anime_type_enum">
             <column name="type" value="UNKNOWN"/>
         </insert>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1624247028123">
         <insert tableName="anime_type_enum">
             <column name="type" value="DELETED"/>
         </insert>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598541710924">
-        <createTable tableName="anime">
-            <column name="id" type="BIGINT">
+
+    <changeSet author="kokorin" id="create-external-system-enum">
+        <createTable tableName="external_system_enum">
+            <column name="external_system" type="VARCHAR(32)">
                 <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="kokorin" id="fill-external-system">
+        <insert tableName="external_system_enum">
+            <column name="external_system" value="ANIDB"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="kokorin" id="create-anime">
+        <createTable tableName="anime">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="external_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="external_system" type="VARCHAR(32)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_anime_to_external_system_enum"
+                             referencedTableName="external_system_enum"
+                             referencedColumnNames="external_system"/>
             </column>
             <column name="type" type="VARCHAR(32)">
                 <constraints nullable="false"
                              foreignKeyName="fk_anime_to_anime_type_enum"
-                             referencedTableName="anime_type_enum" referencedColumnNames="type"/>
+                             referencedTableName="anime_type_enum"
+                             referencedColumnNames="type"/>
             </column>
             <column name="episode_count" type="BIGINT"/>
             <column name="start_date" type="DATE"/>
             <column name="end_date" type="DATE"/>
+            <column name="last_update" type="DATETIME"/>
         </createTable>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598587905522">
+    <changeSet author="kokorin" id="create-unique-external-constraint">
+        <addUniqueConstraint
+                columnNames="external_id, external_system"
+                constraintName="unique_external_constraint"
+                tableName="anime"/>
+    </changeSet>
+
+    <changeSet author="kokorin" id="create-anime-title-type-enum">
         <createTable tableName="anime_title_type_enum">
             <column name="type" type="VARCHAR(32)">
                 <constraints primaryKey="true"/>
@@ -88,33 +114,28 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598587956215">
+    <changeSet author="kokorin" id="fill-anime-title-type-enum">
         <insert tableName="anime_title_type_enum">
             <column name="type" value="SHORT"/>
         </insert>
         <insert tableName="anime_title_type_enum">
             <column name="type" value="OFFICIAL"/>
         </insert>
-        <insert tableName="anime_title_type_enum">
-            <column name="type" value="SYNONYM"/>
-        </insert>
-        <insert tableName="anime_title_type_enum">
-            <column name="type" value="MAIN"/>
-        </insert>
-        <insert tableName="anime_title_type_enum">
-            <column name="type" value="CARD"/>
-        </insert>
-        <insert tableName="anime_title_type_enum">
-            <column name="type" value="KANA"/>
-        </insert>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598587028399">
+    <changeSet author="kokorin" id="create-anime-title">
         <createTable tableName="anime_title">
+            <column name="anime_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_anime_title_to_anime"
+                             referencedTableName="anime"
+                             referencedColumnNames="id"/>
+            </column>
             <column name="type" type="VARCHAR(32)">
                 <constraints nullable="false"
                              foreignKeyName="fk_anime_title_to_anime_title_type_enum"
-                             referencedTableName="anime_title_type_enum" referencedColumnNames="type"/>
+                             referencedTableName="anime_title_type_enum"
+                             referencedColumnNames="type"/>
             </column>
             <column name="lang" type="VARCHAR(32)">
                 <constraints nullable="false"/>
@@ -122,96 +143,48 @@
             <column name="text" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="anime_id" type="BIGINT">
-                <constraints nullable="false"
-                             foreignKeyName="fk_anime_title_to_anime"
-                             referencedTableName="anime" referencedColumnNames="id"/>
-            </column>
         </createTable>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598587211267" dbms="mariadb,mysql">
-        <sql>CREATE FULLTEXT INDEX idx_anime_title ON anime_title(text)</sql>
+    <changeSet author="kokorin" id="create-anime-title-index" dbms="mariadb,mysql">
+        <sql>CREATE
+        FULLTEXT INDEX idx_anime_title ON anime_title(text)</sql>
     </changeSet>
 
-    <changeSet author="kokorin" id="1598542296521">
-        <createTable tableName="episode_type_enum">
-            <column name="type" type="VARCHAR(32)">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598542327844">
-        <insert tableName="episode_type_enum">
-            <column name="type" value="REGULAR"/>
-        </insert>
-        <insert tableName="episode_type_enum">
-            <column name="type" value="SPECIAL"/>
-        </insert>
-        <insert tableName="episode_type_enum">
-            <column name="type" value="CREDIT"/>
-        </insert>
-        <insert tableName="episode_type_enum">
-            <column name="type" value="TRAILER"/>
-        </insert>
-        <insert tableName="episode_type_enum">
-            <column name="type" value="PARODY"/>
-        </insert>
-        <insert tableName="episode_type_enum">
-            <column name="type" value="OTHER"/>
-        </insert>
-    </changeSet>
-
-
-    <changeSet author="kokorin" id="1598542447133">
+    <changeSet author="kokorin" id="create-episode">
         <createTable tableName="episode">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
-            </column>
-            <column name="number" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="type" type="VARCHAR(32)">
-                <constraints nullable="false"
-                             foreignKeyName="fk_episode_to_episode_type_enum"
-                             referencedTableName="episode_type_enum" referencedColumnNames="type"/>
             </column>
             <column name="anime_id" type="BIGINT">
                 <constraints nullable="false"
                              foreignKeyName="fk_episode_to_anime"
-                             referencedTableName="anime" referencedColumnNames="id"/>
+                             referencedTableName="anime"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="external_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="length" type="BIGINT"/>
             <column name="air_date" type="DATE"/>
         </createTable>
     </changeSet>
 
-
-    <changeSet author="kokorin" id="1598643661106">
+    <changeSet author="kokorin" id="create-episode-title">
         <createTable tableName="episode_title">
+            <column name="episode_id" type="BIGINT">
+                <constraints nullable="false"
+                             foreignKeyName="fk_episode_title_to_episode"
+                             referencedTableName="episode"
+                             referencedColumnNames="id"/>
+            </column>
             <column name="lang" type="VARCHAR(32)">
                 <constraints nullable="false"/>
             </column>
             <column name="text" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="episode_id" type="BIGINT">
-                <constraints nullable="false"
-                             foreignKeyName="fk_episode_title_to_episode"
-                             referencedTableName="episode" referencedColumnNames="id"/>
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="kokorin" id="1598760081735">
-        <createTable tableName="anime_update">
-            <column name="anime_id" type="BIGINT">
-                <constraints nullable="false"
-                             foreignKeyName="fk_anime_update_to_anime"
-                             referencedTableName="anime" referencedColumnNames="id"/>
-            </column>
-            <column name="last_updated" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
