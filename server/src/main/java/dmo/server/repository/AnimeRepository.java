@@ -16,6 +16,4 @@ import java.util.Optional;
 @Repository
 public interface AnimeRepository extends CrudRepository<Anime, Long> {
     List<Anime> findAllByExternalSystem(ExternalSystem externalSystem);
-
-
 }

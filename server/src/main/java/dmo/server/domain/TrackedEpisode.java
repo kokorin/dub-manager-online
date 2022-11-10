@@ -1,34 +1,43 @@
 package dmo.server.domain;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.Value;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.Set;
 
 @Data
+@Builder
+@Accessors(fluent = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class TrackedEpisode {
 
-    @Id
     @NonNull
-    private final ID id;
+    @ToString.Include
+    private final Long episodeId;
 
     @NonNull
-    private Boolean completed;
+    private final String userEmail;
 
-    public AggregateReference<Episode, Long> getEpisode() {
-        return AggregateReference.to(id.episodeId);
-    }
+    @NonNull
+    @ToString.Include
+    private final Long animeId;
 
-    public AggregateReference<User, String> getUser() {
-        return AggregateReference.to(id.userEmail);
-    }
+    @NonNull
+    @ToString.Include
+    private final Long number;
 
-    @Value
-    public static class ID {
-        @NotNull Long episodeId;
-        @NotNull String userEmail;
-    }
+    @NonNull
+    @ToString.Include
+    private final Boolean completed;
+
+    @NonNull
+    private Set<EpisodeTitle> titles;
+
+    private Long length;
+
+    private LocalDate airDate;
 }

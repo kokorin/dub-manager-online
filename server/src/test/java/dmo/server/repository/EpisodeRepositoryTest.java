@@ -1,7 +1,6 @@
 package dmo.server.repository;
 
 import dmo.server.domain.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ class EpisodeRepositoryTest extends AbstractRepositoryTest {
     @BeforeEach
     public void createAnime() {
         // Executed inside transaction, no need to delete anime after
-        var anime= Anime.builder()
+        var anime = Anime.builder()
                 .externalId(42L)
                 .externalSystem(ExternalSystem.ANIDB)
                 .titles(Set.of(
@@ -57,13 +56,12 @@ class EpisodeRepositoryTest extends AbstractRepositoryTest {
         assertThat(expected, containsInAnyOrder(actual.toArray()));
     }
 
-    protected static Episode episode(Long animeId, Long externalId, Long number) {
-        return new Episode(animeId, externalId, number);
-    }
-
     protected static Episode episode(Long animeId, Long externalId, Long number, EpisodeTitle... titles) {
-        var episode = episode(animeId, externalId, number);
-        episode.setTitles(Set.of(titles));
-        return episode;
+        return Episode.builder()
+                .animeId(animeId)
+                .externalId(externalId)
+                .number(number)
+                .titles(Set.of(titles))
+                .build();
     }
 }

@@ -51,15 +51,8 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="kokorin" id="create-tracked-anime-constraint">
-        <addUniqueConstraint
-                columnNames="anime_id, user_email"
-                constraintName="unique_anime_and_user"
-                tableName="tracked_anime"/>
-    </changeSet>
-
     <changeSet id="create-episode-status" author="kokorin">
-        <createTable tableName="episode_status">
+        <createTable tableName="tracked_episode">
             <column name="episode_id" type="BIGINT">
                 <constraints primaryKey="true"
                              foreignKeyName="fk_episode_status_to_episode"

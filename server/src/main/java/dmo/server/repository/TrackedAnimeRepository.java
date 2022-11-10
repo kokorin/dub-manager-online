@@ -4,6 +4,7 @@ import dmo.server.domain.Anime;
 import dmo.server.domain.AnimeTitle;
 import dmo.server.domain.TrackedAnime;
 import dmo.server.exception.AnimeNotFoundException;
+import dmo.server.exception.TrackedAnimeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.DataAccessException;
@@ -70,7 +71,7 @@ public class TrackedAnimeRepository {
                 .addValue("userEmail", userEmail)
                 .addValue("status", status.name());
         jdbcTemplate.update(sql, src);
-        return findById(animeId, userEmail).orElseThrow(() -> new AnimeNotFoundException(animeId));
+        return findById(animeId, userEmail).orElseThrow(() -> new TrackedAnimeNotFoundException(userEmail, animeId));
     }
 
     static record TrackedAnimeResultSetRow(
@@ -101,6 +102,9 @@ public class TrackedAnimeRepository {
             TrackedAnimeResultSetRow prevRow = null;
             while (rs.next()) {
                 var row = mapper.mapRow(rs, 0);
+                if (row == null) {
+                    continue;
+                }
 
                 if (prevRow != null && !prevRow.animeId().equals(row.animeId())) {
                     var trackedAnime = toTrackedAnime(row, titles);
