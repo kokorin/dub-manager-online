@@ -1,5 +1,7 @@
-package dmo.server.integration.anidb;
+package dmo.server.integration.anidb.client;
 
+import dmo.server.integration.anidb.dto.AnidbAnimeTitlesList;
+import dmo.server.integration.anidb.dto.AnidbApiResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -10,10 +12,10 @@ public interface AnidbClient {
     @GET("https://anidb.net/api/anime-titles.xml.gz")
     // To trick anidb
     @Headers("User-Agent: Mozilla")
-    Call<AnidbAnimeLightList> getAnimeList();
+    Call<AnidbAnimeTitlesList> getAnimeList();
 
     @GET("http://api.anidb.net:9001/httpapi?request=anime&protover=1")
     Call<AnidbApiResponse> getAnime(@Query("aid") Long id,
-                              @Query("client") String client,
-                              @Query("clientver") String clientver);
+                                    @Query("client") String client,
+                                    @Query("clientver") String clientver);
 }

@@ -1,5 +1,10 @@
 package dmo.server.integration.anidb;
 
+import dmo.server.integration.anidb.client.AnidbClient;
+import dmo.server.integration.anidb.client.AnidbClientConfiguration;
+import dmo.server.integration.anidb.dto.*;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -7,13 +12,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @SpringBootTest(
-        classes = {AnidbConfig.class, MockAnidbConf.class},
+        classes = {AnidbClientConfiguration.class, MockAnidbConf.class},
         properties = "spring.main.allow-bean-definition-overriding=true")
 class AnidbClientTest {
 
@@ -26,25 +33,26 @@ class AnidbClientTest {
     @Test
     void getAnimeList() throws Exception {
         mockResponseInterceptor.useResponseFileOnce("anime-titles.xml.gz");
-        List<AnidbAnimeLight> animeList = anidbClient.getAnimeList().execute().body().animeList;
+        List<AnidbAnimeTitles> animeList = anidbClient.getAnimeList().execute().body().animeList;
 
-        AnidbAnimeLight anime = animeList.get(0);
+        AnidbAnimeTitles anime = animeList.get(0);
         assertEquals(Long.valueOf(1L), anime.id);
         assertEquals(10, anime.titles.size());
 
-        AnidbAnimeTitle title = anime.titles.get(0);
-        assertEquals(AnidbAnimeTitle.Type.SHORT, title.type);
-        assertEquals("en", title.lang);
-        assertEquals("CotS", title.text);
+        var title = new AnidbAnimeTitle();
+        title.type = AnidbAnimeTitle.Type.SHORT;
+        title.lang = "en";
+        title.text = "CotS";
+        assertThat(anime.titles, Matchers.hasItem(title));
 
-        List<AnidbAnimeLight> nonParsedAnimeList = animeList.stream()
+        List<AnidbAnimeTitles> nonParsedAnimeList = animeList.stream()
                 .filter(a -> isEmpty(a.id) || isEmpty(a.titles))
                 .collect(Collectors.toList());
         assertEquals(Collections.emptyList(), nonParsedAnimeList, "Anime should be parsed");
 
         List<AnidbAnimeTitle> nonParsedAnimeTitleList = animeList.stream()
                 .map(a -> a.titles)
-                .flatMap(List::stream)
+                .flatMap(Set::stream)
                 .filter(t -> isEmpty(t.type) || isEmpty(t.lang) || isEmpty(t.text))
                 .collect(Collectors.toList());
         assertEquals(Collections.emptyList(), nonParsedAnimeTitleList, "Anime titles should be parsed");

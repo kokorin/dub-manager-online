@@ -1,16 +1,16 @@
-package dmo.server.integration.anidb;
+package dmo.server.integration.anidb.dto;
 
 import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.List;
+import java.util.Set;
 
 @ToString(exclude = "titles")
-public class AnidbAnimeLight {
+public class AnidbAnimeTitles {
     @XmlAttribute(name = "aid")
     public Long id;
 
     @XmlElement(name = "title")
-    public List<AnidbAnimeTitle> titles;
+    public Set<AnidbAnimeTitle> titles;
 }

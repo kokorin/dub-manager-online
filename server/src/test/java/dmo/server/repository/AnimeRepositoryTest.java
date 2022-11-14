@@ -87,6 +87,7 @@ class AnimeRepositoryTest extends AbstractRepositoryTest {
                 .externalSystem(ExternalSystem.ANIDB)
                 .type(Anime.Type.SERIES)
                 .titles(Set.of(titles))
+                .deleted(false)
                 .build();
     }
 

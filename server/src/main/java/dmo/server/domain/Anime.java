@@ -1,9 +1,6 @@
 package dmo.server.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 
@@ -32,6 +29,10 @@ public class Anime {
     @ToString.Include
     private final Type type;
 
+    @NonNull
+    @ToString.Include
+    private Boolean deleted;
+
     private Long episodeCount;
 
     private LocalDate startDate;
@@ -42,14 +43,13 @@ public class Anime {
     @NonNull
     private Set<AnimeTitle> titles;
 
-    private Instant last_update;
+    private Instant lastUpdate;
 
     public enum Type {
         MOVIE,
         SERIES,
         MUSIC,
-        UNKNOWN,
-        DELETED;
+        UNKNOWN
     }
 
 }

@@ -1,5 +1,5 @@
 @XmlJavaTypeAdapter(XmlLocalDateAdapter.class)
-package dmo.server.integration.anidb;
+package dmo.server.integration.anidb.dto;
 
 import dmo.server.util.jaxb.XmlLocalDateAdapter;
 

@@ -1,5 +1,8 @@
-package dmo.server.integration.anidb;
+package dmo.server.integration.anidb.client;
 
+import dmo.server.integration.anidb.dto.AnidbAnime;
+import dmo.server.integration.anidb.dto.AnidbAnimeTitlesList;
+import dmo.server.integration.anidb.dto.AnidbError;
 import dmo.server.util.okhttp.XmlUngzipInterceptor;
 import dmo.server.util.retrofit.JaxbConverterFactory;
 import okhttp3.OkHttpClient;
@@ -9,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
 
 @Configuration
-public class AnidbConfig {
+public class AnidbClientConfiguration {
     @Bean
     @Qualifier("anidb")
     public OkHttpClient okHttpClient() {
@@ -27,7 +30,7 @@ public class AnidbConfig {
                 .client(okHttpClient)
                 .addConverterFactory(JaxbConverterFactory.create(
                         AnidbAnime.class,
-                        AnidbAnimeLightList.class,
+                        AnidbAnimeTitlesList.class,
                         AnidbError.class
                 ))
                 .build();

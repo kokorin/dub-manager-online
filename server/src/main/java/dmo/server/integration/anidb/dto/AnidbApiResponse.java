@@ -1,4 +1,4 @@
-package dmo.server.integration.anidb;
+package dmo.server.integration.anidb.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

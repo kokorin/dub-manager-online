@@ -26,7 +26,7 @@ public class JaxbConverterFactory extends Converter.Factory {
         try {
             jaxbContext = JAXBContext.newInstance(types);
         } catch (JAXBException e) {
-            throw new RuntimeException("Failed to create JAXB context");
+            throw new RuntimeException("Failed to create JAXB context", e);
         }
 
         return new JaxbConverterFactory(jaxbContext);

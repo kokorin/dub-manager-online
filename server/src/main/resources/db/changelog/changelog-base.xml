@@ -52,9 +52,6 @@
         <insert tableName="anime_type_enum">
             <column name="type" value="UNKNOWN"/>
         </insert>
-        <insert tableName="anime_type_enum">
-            <column name="type" value="DELETED"/>
-        </insert>
     </changeSet>
 
 
@@ -91,6 +88,9 @@
                              foreignKeyName="fk_anime_to_anime_type_enum"
                              referencedTableName="anime_type_enum"
                              referencedColumnNames="type"/>
+            </column>
+            <column name="deleted" type="BIT">
+                <constraints nullable="false"/>
             </column>
             <column name="episode_count" type="BIGINT"/>
             <column name="start_date" type="DATE"/>

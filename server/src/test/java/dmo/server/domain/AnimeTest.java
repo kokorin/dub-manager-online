@@ -14,29 +14,41 @@ class AnimeTest {
                 .externalSystem(ExternalSystem.ANIDB)
                 .type(Anime.Type.MOVIE)
                 .titles(Collections.emptySet())
+                .deleted(false)
                 .build();
         assertThrows(NullPointerException.class, () -> Anime.builder()
                 .externalSystem(ExternalSystem.ANIDB)
                 .type(Anime.Type.MOVIE)
                 .titles(Collections.emptySet())
+                .deleted(false)
                 .build()
         );
         assertThrows(NullPointerException.class, () -> Anime.builder()
                 .externalId(42L)
                 .type(Anime.Type.MOVIE)
                 .titles(Collections.emptySet())
+                .deleted(false)
                 .build()
         );
         assertThrows(NullPointerException.class, () -> Anime.builder()
                 .externalId(42L)
                 .externalSystem(ExternalSystem.ANIDB)
                 .titles(Collections.emptySet())
+                .deleted(false)
                 .build()
         );
         assertThrows(NullPointerException.class, () -> Anime.builder()
                 .externalId(42L)
                 .externalSystem(ExternalSystem.ANIDB)
                 .type(Anime.Type.MOVIE)
+                .deleted(false)
+                .build()
+        );
+        assertThrows(NullPointerException.class, () -> Anime.builder()
+                .externalId(42L)
+                .externalSystem(ExternalSystem.ANIDB)
+                .type(Anime.Type.MOVIE)
+                .titles(Collections.emptySet())
                 .build()
         );
     }
