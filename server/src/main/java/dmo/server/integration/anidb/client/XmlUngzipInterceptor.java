@@ -1,4 +1,4 @@
-package dmo.server.util.okhttp;
+package dmo.server.integration.anidb.client;
 
 import okhttp3.*;
 import okio.GzipSource;
@@ -8,7 +8,7 @@ import okio.Source;
 import java.io.IOException;
 
 /**
- * OkHttp3 Interceptor which simply decompresses received XML files.
+ * OkHttp3 Interceptor to ungzip xml.gz file return by server on the fly.
  */
 public class XmlUngzipInterceptor implements Interceptor {
     @Override
@@ -24,19 +24,9 @@ public class XmlUngzipInterceptor implements Interceptor {
             return response;
         }
 
-        if (response.body() == null) {
-            return response;
-        }
-
-        Source source = new GzipSource(response.body().source());
-        ResponseBody responseBody = ResponseBody.create(
-                MediaType.get("application/xml"),
-                -1L,
-                Okio.buffer(source)
-        );
-
         return response.newBuilder()
-                .body(responseBody)
+                .header("content-type", "application/xml")
+                .header("content-encoding", "gzip")
                 .build();
     }
 }

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement(name = "error")
 @ToString
-public class AnidbError implements AnidbApiResponse {
+public class AnidbError {
 
     @XmlAttribute(name = "code")
     public Integer code;

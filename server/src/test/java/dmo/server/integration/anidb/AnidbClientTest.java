@@ -3,7 +3,6 @@ package dmo.server.integration.anidb;
 import dmo.server.integration.anidb.client.AnidbClient;
 import dmo.server.integration.anidb.client.AnidbClientConfiguration;
 import dmo.server.integration.anidb.dto.*;
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +15,24 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @SpringBootTest(
-        classes = {AnidbClientConfiguration.class, MockAnidbConf.class},
+        classes = {AnidbClientConfiguration.class},
         properties = "spring.main.allow-bean-definition-overriding=true")
 class AnidbClientTest {
 
     @Autowired
     private AnidbClient anidbClient;
 
-    @Autowired
-    private MockResponseInterceptor mockResponseInterceptor;
+    // @Autowired
+    // private MockResponseInterceptor mockResponseInterceptor;
 
     @Test
     void getAnimeList() throws Exception {
-        mockResponseInterceptor.useResponseFileOnce("anime-titles.xml.gz");
+        // mockResponseInterceptor.useResponseFileOnce("anime-titles.xml.gz");
         List<AnidbAnimeTitles> animeList = anidbClient.getAnimeList().execute().body().animeList;
 
         AnidbAnimeTitles anime = animeList.get(0);
@@ -61,11 +61,9 @@ class AnidbClientTest {
 
     @Test
     void getAnime() throws Exception {
-        mockResponseInterceptor.useResponseFileOnce("anime-979.xml");
-        var apiResponse = anidbClient.getAnime(979L, "mock", "mock").execute().body();
-        assertTrue(apiResponse instanceof AnidbAnime);
+        // mockResponseInterceptor.useResponseFileOnce("anime-979.xml");
+        var anime = anidbClient.getAnime(979L, "mock", "mock").execute().body();
 
-        var anime = (AnidbAnime) apiResponse;
         assertNotNull(anime);
         assertEquals((Long) 979L, anime.id);
         assertEquals(LocalDate.of(2003, 10, 4), anime.startDate);
@@ -78,11 +76,8 @@ class AnidbClientTest {
 
     @Test
     void getAnimeStrangeEpisodeNumbers() throws Exception {
-        mockResponseInterceptor.useResponseFileOnce("anime-11681.xml");
-        var apiResponse = anidbClient.getAnime(11681L, "mock", "mock").execute().body();
-        assertTrue(apiResponse instanceof AnidbAnime);
-
-        var anime = (AnidbAnime) apiResponse;
+        //mockResponseInterceptor.useResponseFileOnce("anime-11681.xml");
+        var anime = anidbClient.getAnime(11681L, "mock", "mock").execute().body();
 
         assertNotNull(anime);
         assertEquals((Long) 11681L, anime.id);
@@ -92,18 +87,6 @@ class AnidbClientTest {
         assertEquals(10, anime.titles.size());
 
         validateTitlesAndEpisodes(anime);
-    }
-
-    @Test
-    void getErrorCodeAndMessage() throws Exception {
-        mockResponseInterceptor.useResponseFileOnce("api-error.xml");
-        var apiResponse = anidbClient.getAnime(42L, "mock", "mock").execute().body();
-
-        assertTrue(apiResponse instanceof AnidbError);
-        var error = (AnidbError) apiResponse;
-
-        assertEquals((Integer) 302, error.code);
-        assertEquals("client version missing or invalid", error.message);
     }
 
     private static void validateTitlesAndEpisodes(AnidbAnime anime) {

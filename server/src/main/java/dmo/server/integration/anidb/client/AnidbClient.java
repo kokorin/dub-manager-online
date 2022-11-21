@@ -1,7 +1,7 @@
 package dmo.server.integration.anidb.client;
 
+import dmo.server.integration.anidb.dto.AnidbAnime;
 import dmo.server.integration.anidb.dto.AnidbAnimeTitlesList;
-import dmo.server.integration.anidb.dto.AnidbApiResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -15,7 +15,7 @@ public interface AnidbClient {
     Call<AnidbAnimeTitlesList> getAnimeList();
 
     @GET("http://api.anidb.net:9001/httpapi?request=anime&protover=1")
-    Call<AnidbApiResponse> getAnime(@Query("aid") Long id,
-                                    @Query("client") String client,
-                                    @Query("clientver") String clientver);
+    Call<AnidbAnime> getAnime(@Query("aid") Long id,
+                              @Query("client") String client,
+                              @Query("clientver") String clientver);
 }

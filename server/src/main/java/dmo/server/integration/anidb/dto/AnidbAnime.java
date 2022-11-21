@@ -8,7 +8,7 @@ import java.util.List;
 
 @XmlRootElement(name = "anime")
 @ToString(exclude = {"titles", "episodes"})
-public class AnidbAnime implements AnidbApiResponse {
+public class AnidbAnime {
     @XmlAttribute
     public Long id;
 

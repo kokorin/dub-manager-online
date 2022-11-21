@@ -1,10 +1,5 @@
 package dmo.server.integration.anidb.client;
 
-import dmo.server.integration.anidb.dto.AnidbAnime;
-import dmo.server.integration.anidb.dto.AnidbAnimeTitlesList;
-import dmo.server.integration.anidb.dto.AnidbError;
-import dmo.server.util.okhttp.XmlUngzipInterceptor;
-import dmo.server.util.retrofit.JaxbConverterFactory;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +12,8 @@ public class AnidbClientConfiguration {
     @Qualifier("anidb")
     public OkHttpClient okHttpClient() {
         return new OkHttpClient.Builder()
-                .addInterceptor(new XmlUngzipInterceptor())
+                .addNetworkInterceptor(new XmlUngzipInterceptor())
+                .addInterceptor(new ApiErrorHandlingInterceptor())
                 .build();
     }
 
@@ -28,11 +24,6 @@ public class AnidbClientConfiguration {
                 //because anidb uses different hosts for anime list and anime
                 .baseUrl("http://localhost/why/")
                 .client(okHttpClient)
-                .addConverterFactory(JaxbConverterFactory.create(
-                        AnidbAnime.class,
-                        AnidbAnimeTitlesList.class,
-                        AnidbError.class
-                ))
                 .build();
     }
 
