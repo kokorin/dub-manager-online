@@ -2,9 +2,11 @@ package dmo.server.integration.anidb.client;
 
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
+import retrofit2.converter.jaxb.JaxbConverterFactory;
 
 @Configuration
 public class AnidbClientConfiguration {
@@ -19,17 +21,30 @@ public class AnidbClientConfiguration {
 
     @Bean
     @Qualifier("anidb")
-    public Retrofit retrofit(@Qualifier("anidb") OkHttpClient okHttpClient) {
+    public AnidbClient anidbClient(
+            @Value("${integration.anidb.api.base_url}") String apiBaseUrl,
+            @Qualifier("anidb") OkHttpClient okHttpClient
+    ) {
         return new Retrofit.Builder()
-                //because anidb uses different hosts for anime list and anime
-                .baseUrl("http://localhost/why/")
+                .baseUrl(apiBaseUrl)
                 .client(okHttpClient)
-                .build();
+                .addConverterFactory(JaxbConverterFactory.create())
+                .build()
+                .create(AnidbClient.class);
     }
 
     @Bean
-    public AnidbClient anidbClient(@Qualifier("anidb") Retrofit retrofit) {
-        return retrofit.create(AnidbClient.class);
+    @Qualifier("anidb")
+    public AnidbTitlesClient anidbTitlesClient(
+            @Value("${integration.anidb.titles.base_url}") String titlesBaseUrl,
+            @Qualifier("anidb") OkHttpClient okHttpClient
+    ) {
+        return new Retrofit.Builder()
+                .baseUrl(titlesBaseUrl)
+                .client(okHttpClient)
+                .addConverterFactory(JaxbConverterFactory.create())
+                .build()
+                .create(AnidbTitlesClient.class);
     }
 
 }

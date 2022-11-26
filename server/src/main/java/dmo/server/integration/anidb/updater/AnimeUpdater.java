@@ -5,17 +5,14 @@ import dmo.server.domain.ExternalSystem;
 import dmo.server.event.*;
 import dmo.server.integration.anidb.client.AnidbClient;
 import dmo.server.integration.anidb.dto.AnidbAnime;
-import dmo.server.integration.anidb.dto.AnidbError;
 import dmo.server.integration.anidb.mapper.AnidbAnimeMapper;
 import dmo.server.prop.AnidbProperties;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -93,14 +90,7 @@ public class AnimeUpdater {
             var response = call.execute();
             if (!response.isSuccessful()) {
                 log.warn("Failed to get anime: {}, code:{}, message: {}", anime, response.code(), response.message());
-                return;
-            }
-
-            var apiResponse = response.body();
-
-            if (apiResponse instanceof AnidbError error) {
-                log.warn("Failed to get anime: {}, got: {}", anime, apiResponse);
-                switch (error.message) {
+                switch (response.message()) {
                     case BANNED_ERROR_MESSAGE -> {
                         apiClientBanned.set(true);
                         var times = apiClientBannedTimes.getAndIncrement();
@@ -113,15 +103,13 @@ public class AnimeUpdater {
                         publisher.publishEvent(event);
                     }
                     default -> {
-                        log.warn("API error ignored: {}", error.message);
+                        log.warn("API error ignored: {}", response.message());
                     }
                 }
                 return;
             }
 
-            if (!(apiResponse instanceof AnidbAnime anidbAnime)) {
-                return;
-            }
+            var anidbAnime = response.body();
 
             var updated = anidbAnimeMapper.toAnime(anidbAnime);
             var episodes = anidbAnimeMapper.toEpisodeList(anidbAnime.episodes, updated.id());

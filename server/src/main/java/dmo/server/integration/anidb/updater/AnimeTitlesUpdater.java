@@ -3,6 +3,7 @@ package dmo.server.integration.anidb.updater;
 import dmo.server.domain.Anime;
 import dmo.server.domain.ExternalSystem;
 import dmo.server.integration.anidb.client.AnidbClient;
+import dmo.server.integration.anidb.client.AnidbTitlesClient;
 import dmo.server.integration.anidb.mapper.AnidbAnimeMapper;
 import dmo.server.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,14 @@ import static java.util.stream.Collectors.toSet;
 @Component
 @Slf4j
 public class AnimeTitlesUpdater {
-    private final AnidbClient client;
+    private final AnidbTitlesClient client;
     private final AnidbAnimeMapper mapper;
     private final AnimeRepository repository;
     private final Duration titlesUpdatePeriod;
     private volatile Instant nextUpdateAfter = Instant.now();
 
     public AnimeTitlesUpdater(
-            AnidbClient client,
+            AnidbTitlesClient client,
             AnidbAnimeMapper mapper,
             AnimeRepository repository,
             @Value("${integration.anidb.titles_update_period}")

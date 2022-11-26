@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<animetitles>
+    <anime aid="1">
+        <title type="short" xml:lang="en">CotS</title>
+        <title xml:lang="fr" type="official">Crest of the Stars</title>
+        <title xml:lang="pl" type="official">Crest of the Stars</title>
+        <title type="official" xml:lang="en">Crest of the Stars</title>
+        <title xml:lang="cs" type="syn">Hvězdný erb</title>
+        <title xml:lang="x-jat" type="main">Seikai no Monshou</title>
+        <title type="short" xml:lang="x-jat">SnM</title>
+        <title xml:lang="ko" type="syn">성계의 문장</title>
+        <title type="official" xml:lang="ja">星界の紋章</title>
+        <title type="syn" xml:lang="zh-Hans">星界之纹章</title>
+    </anime>
+    <anime aid="2">
+        <title type="official" xml:lang="ja">3×3 EYES</title>
+        <title xml:lang="x-jat" type="short">3x3</title>
+        <title xml:lang="de" type="official">3x3 Augen (OVA 1)</title>
+        <title xml:lang="en" type="official">3x3 Eyes</title>
+        <title xml:lang="x-jat" type="main">3x3 Eyes</title>
+        <title type="official" xml:lang="fr">3x3 Eyes</title>
+        <title type="syn" xml:lang="en">3x3 Eyes - Immortals</title>
+        <title type="official" xml:lang="it">3x3 Occhi</title>
+        <title xml:lang="cs" type="official">3x3 Oči</title>
+        <title type="official" xml:lang="sv">3x3 Ögon</title>
+        <title type="official" xml:lang="es">3x3 Ojos [1-4]</title>
+        <title xml:lang="ca" type="official">3x3 Ulls</title>
+        <title xml:lang="ru" type="syn">3x3 глаза</title>
+        <title type="syn" xml:lang="x-jat">Sazan Eyes</title>
+        <title xml:lang="x-jat" type="syn">Southern Eyes</title>
+        <title xml:lang="ja" type="syn">サザンアイズ</title>
+        <title xml:lang="zh-x-nan" type="syn">三隻眼</title>
+    </anime>
+    <anime aid="3">
+        <title xml:lang="pl" type="official">3*3 Oczy</title>
+        <title xml:lang="ja" type="official">3×3 EYES -聖魔伝説-</title>
+        <title xml:lang="de" type="official">3x3 Augen (OVA 2)</title>
+        <title type="official" xml:lang="fr">3x3 Eyes - La légende du démon divin</title>
+        <title type="official" xml:lang="en">3x3 Eyes: Legend of the Divine Demon</title>
+        <title type="main" xml:lang="x-jat">3x3 Eyes: Seima Densetsu</title>
+        <title xml:lang="it" type="official">3x3 Occhi - La Leggenda del Demone Divino</title>
+        <title type="syn" xml:lang="sv">3x3 Ögon (1995)</title>
+        <title type="official" xml:lang="es">3x3 Ojos [5-7]</title>
+        <title xml:lang="ru" type="syn">3х3 глаза: Сказание Сэймы</title>
+        <title xml:lang="x-jat" type="syn">Shin 3x3 Eyes</title>
+    </anime>
+    <anime aid="357">
+        <title xml:lang="x-jat" type="main">Test Anime</title>
+        <title type="card" xml:lang="ja">test title c</title>
+        <title xml:lang="x-jat" type="card">test title c TR</title>
+        <title type="kana" xml:lang="ja">test title k</title>
+        <title xml:lang="x-jat" type="syn">test`blubb</title>
+        <title type="official" xml:lang="ja">ンート</title>
+    </anime>
+	<anime aid="979">
+		<title xml:lang="ro" type="syn">Alchimistul de Oţel</title>
+		<title xml:lang="tr" type="official">Çelik Simyacı</title>
+		<title type="syn" xml:lang="es-LA">El Alquimista de Acero</title>
+		<title type="syn" xml:lang="es">El Alquimista de Acero</title>
+		<title type="short" xml:lang="en">FMA</title>
+		<title xml:lang="en" type="short">fma tv</title>
+		<title type="short" xml:lang="en">FMA1</title>
+		<title xml:lang="en" type="syn">FMA2003</title>
+		<title type="short" xml:lang="en">fmatv</title>
+		<title type="syn" xml:lang="pl">Full Matal Alchemist/Stalowy Alchemik</title>
+		<title xml:lang="en" type="syn">Full Metal Alchemist</title>
+		<title xml:lang="en" type="short">Fullmetal</title>
+		<title xml:lang="sv" type="official">Fullmetal Alchemist</title>
+		<title type="official" xml:lang="ro">Fullmetal Alchemist</title>
+		<title type="official" xml:lang="de">Fullmetal Alchemist</title>
+		<title xml:lang="en" type="official">Fullmetal Alchemist</title>
+		<title xml:lang="fr" type="official">Fullmetal Alchemist</title>
+		<title type="official" xml:lang="pt">Fullmetal Alchemist</title>
+		<title xml:lang="it" type="official">Fullmetal Alchemist</title>
+		<title xml:lang="pl" type="official">Fullmetal Alchemist</title>
+		<title xml:lang="es" type="official">Fullmetal Alchemist</title>
+		<title type="official" xml:lang="pt-BR">Fullmetal Alchemist</title>
+		<title type="official" xml:lang="es-LA">Fullmetal Alchemist</title>
+		<title xml:lang="fi" type="official">Fullmetal Alchemist</title>
+		<title xml:lang="hu" type="official">Fullmetal Alchemist - A Bölcsek kövének nyomában</title>
+		<title xml:lang="cs" type="official">Fullmetal Alchemist - Hledání kamene mudrců</title>
+		<title type="syn" xml:lang="vi">Giả Kim Thuật</title>
+		<title xml:lang="x-jat" type="main">Hagane no Renkinjutsushi</title>
+		<title type="syn" xml:lang="x-jat">Hagane no Renkinjutsushi 2003</title>
+		<title type="short" xml:lang="x-jat">HagaRen</title>
+		<title xml:lang="x-jat" type="short">HagaRen TV</title>
+		<title xml:lang="x-jat" type="short">HnR</title>
+		<title xml:lang="tr" type="syn">Metal Simyacı</title>
+		<title type="official" xml:lang="lt">Metalinis Alchemikas</title>
+		<title type="syn" xml:lang="pt-BR">O Alquimista de Aço</title>
+		<title xml:lang="cs" type="syn">Ocelový alchymista</title>
+		<title xml:lang="pl" type="syn">Pełno-metalowy alchemik</title>
+		<title type="official" xml:lang="el">Ο Μεταλλικός Αλχημιστής</title>
+		<title xml:lang="bg" type="syn">Железният Алхимик</title>
+		<title xml:lang="bg" type="syn">Металният Алхимик</title>
+		<title type="syn" xml:lang="bg">Напълно Металния Алхимист</title>
+		<title type="syn" xml:lang="uk">Сталевий алхімік</title>
+		<title xml:lang="ru" type="official">Стальной алхимик</title>
+		<title type="syn" xml:lang="bg">Стоманеният алхимик</title>
+		<title type="syn" xml:lang="uk">Суцільнометалевий алхімік</title>
+		<title type="official" xml:lang="sr">Челични алхемичар/Čelični alhemičar</title>
+		<title type="official" xml:lang="he">אלכימאי המתכת</title>
+		<title xml:lang="he" type="short">פמ"א</title>
+		<title xml:lang="ar" type="syn">الخيميائي المعدني</title>
+		<title type="official" xml:lang="th">แขนกลคนแปรธาตุ</title>
+		<title xml:lang="ko" type="official">강철의 연금술사</title>
+		<title xml:lang="ja" type="kana">はがねのれんきんじゅつし</title>
+		<title xml:lang="ja" type="short">ハガレン</title>
+		<title type="official" xml:lang="ja">鋼の錬金術師</title>
+		<title xml:lang="ja" type="card">鋼の錬金術師 FULLMETAL ALCHEMIST</title>
+		<title xml:lang="zh" type="syn">钢之炼金术士</title>
+		<title type="official" xml:lang="zh-Hans">钢之炼金术师</title>
+		<title type="official" xml:lang="zh">钢之炼金术师</title>
+		<title xml:lang="zh" type="short">钢炼</title>
+	</anime>
+	<anime aid="11681">
+		<title xml:lang="x-jat" type="short">Gekijouban SAO Ordinal Scale</title>
+		<title type="main" xml:lang="x-jat">Gekijouban Sword Art Online: Ordinal Scale</title>
+		<title xml:lang="en" type="syn">SAO Movie Ordinal Scale</title>
+		<title type="syn" xml:lang="ja">SWORD ART ONLINE THE MOVIE -Ordinal Scale-</title>
+		<title type="official" xml:lang="de">Sword Art Online the Movie: Ordinal Scale</title>
+		<title xml:lang="it" type="official">Sword Art Online the Movie: Ordinal Scale</title>
+		<title type="official" xml:lang="fr">SWORD ART ONLINE THE MOVIE: Ordinal Scale</title>
+		<title type="official" xml:lang="he">אומנות החרב אונליין הסרט: סולם סידורי</title>
+		<title xml:lang="zh-Hant" type="official">刀劍神域劇場版：序列爭戰</title>
+		<title type="official" xml:lang="zh">刀劍神域劇場版：序列爭戰</title>
+		<title xml:lang="ja" type="official">劇場版 ソードアート・オンライン -オーディナル・スケール-</title>
+	</anime>	
+</animetitles>

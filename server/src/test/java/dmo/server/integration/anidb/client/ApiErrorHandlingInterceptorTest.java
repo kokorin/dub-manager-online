@@ -1,6 +1,6 @@
 package dmo.server.integration.anidb.client;
 
-import dmo.server.junit.MockWebServerResolver;
+import dmo.server.junit.MockWebServerExtension;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith({MockitoExtension.class, MockWebServerResolver.class})
+@ExtendWith({MockitoExtension.class, MockWebServerExtension.class})
 @RequiredArgsConstructor
 class ApiErrorHandlingInterceptorTest {
 

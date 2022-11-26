@@ -37,6 +37,7 @@ class EpisodeRepositoryTest extends AbstractRepositoryTest {
                 .episodeCount(4L)
                 .startDate(LocalDate.of(1986, Month.SEPTEMBER, 24))
                 .endDate(LocalDate.of(1986, Month.DECEMBER, 24))
+                .deleted(false)
                 .build();
 
         animeId = animeRepository.save(anime).id();

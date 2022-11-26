@@ -1,6 +1,6 @@
 package dmo.server.integration.anidb.client;
 
-import dmo.server.junit.MockWebServerResolver;
+import dmo.server.junit.MockWebServerExtension;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,7 +15,7 @@ import java.util.zip.GZIPOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockWebServerResolver.class)
+@ExtendWith(MockWebServerExtension.class)
 @RequiredArgsConstructor
 public class XmlUngzipInterceptorTest  {
     private final OkHttpClient http = new OkHttpClient.Builder()
