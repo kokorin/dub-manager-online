@@ -1,8 +1,5 @@
-package dmo.server.integration.anidb;
+package dmo.server.integration.anidb.client;
 
-import dmo.server.integration.anidb.client.AnidbClient;
-import dmo.server.integration.anidb.client.AnidbClientConfiguration;
-import dmo.server.integration.anidb.client.AnidbTitlesClient;
 import dmo.server.integration.anidb.dto.*;
 import dmo.server.junit.MockWebServerExtension;
 import okhttp3.mockwebserver.MockResponse;

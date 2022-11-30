@@ -1,6 +1,8 @@
 package dmo.server.integration.anidb.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.xml.XMLConstants;
@@ -11,6 +13,8 @@ import javax.xml.bind.annotation.XmlValue;
 
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class AnidbAnimeTitle {
     @XmlAttribute
     public Type type;

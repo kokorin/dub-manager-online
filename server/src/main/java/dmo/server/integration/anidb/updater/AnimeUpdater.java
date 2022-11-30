@@ -4,12 +4,10 @@ import dmo.server.domain.Anime;
 import dmo.server.domain.ExternalSystem;
 import dmo.server.event.*;
 import dmo.server.integration.anidb.client.AnidbClient;
-import dmo.server.integration.anidb.dto.AnidbAnime;
 import dmo.server.integration.anidb.mapper.AnidbAnimeMapper;
-import dmo.server.prop.AnidbProperties;
-import lombok.NonNull;
+import dmo.server.integration.anidb.prop.AnidbApiProperties;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -24,12 +22,13 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class AnimeUpdater {
-    private final AnidbProperties anidbProperties;
+    private final AnidbApiProperties anidbProperties;
     private final AnidbClient anidbClient;
     private final ApplicationEventPublisher publisher;
     private final AnidbAnimeMapper anidbAnimeMapper;
-    private final Duration animeUpdatePeriod;
+    private final AnidbApiProperties apiProperties;
 
     private final AtomicBoolean apiClientBanned = new AtomicBoolean();
     private final AtomicInteger apiClientBannedTimes = new AtomicInteger();
@@ -39,21 +38,6 @@ public class AnimeUpdater {
 
     private static final String BANNED_ERROR_MESSAGE = "banned";
     private static final String NOT_FOUND_ERROR_MESSAGE = "Anime not found";
-
-    public AnimeUpdater(
-            @NonNull AnidbProperties anidbProperties,
-            @NonNull AnidbClient anidbClient,
-            @NonNull ApplicationEventPublisher publisher,
-            @NonNull AnidbAnimeMapper anidbAnimeMapper,
-            @Value("${integration.anidb.anime_update_delay}")
-            @NonNull Duration animeUpdatePeriod
-    ) {
-        this.anidbProperties = anidbProperties;
-        this.anidbClient = anidbClient;
-        this.publisher = publisher;
-        this.anidbAnimeMapper = anidbAnimeMapper;
-        this.animeUpdatePeriod = animeUpdatePeriod;
-    }
 
     @Async
     @EventListener
@@ -67,7 +51,7 @@ public class AnimeUpdater {
 
         // TODO improve update strategy to update old anime rarely (not once per day)
         // May be we can target anime episode air date to schedule smart updates
-        if (anime.lastUpdate().plus(animeUpdatePeriod).isAfter(Instant.now())) {
+        if (anime.lastUpdate().plus(apiProperties.updateInterval).isAfter(Instant.now())) {
             log.debug("Too early for update: {}", anime);
             return;
         }
@@ -86,7 +70,7 @@ public class AnimeUpdater {
             log.info("Will update anime: {}", anime);
 
             var call = anidbClient.getAnime(anime.id(),
-                    anidbProperties.client, anidbProperties.clientVersion);
+                    anidbProperties.clientName, anidbProperties.clientVersion);
             var response = call.execute();
             if (!response.isSuccessful()) {
                 log.warn("Failed to get anime: {}, code:{}, message: {}", anime, response.code(), response.message());

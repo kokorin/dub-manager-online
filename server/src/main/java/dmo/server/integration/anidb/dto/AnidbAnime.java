@@ -5,6 +5,7 @@ import lombok.ToString;
 import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @XmlRootElement(name = "anime")
 @ToString(exclude = {"titles", "episodes"})
@@ -26,7 +27,7 @@ public class AnidbAnime {
 
     @XmlElementWrapper(name = "titles")
     @XmlElement(name = "title")
-    public List<AnidbAnimeTitle> titles;
+    public Set<AnidbAnimeTitle> titles;
 
     @XmlElementWrapper(name = "episodes")
     @XmlElement(name = "episode")

@@ -5,6 +5,7 @@ import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
+//TODO make JUnit5 extension
 public abstract class AbstractDbTest {
     private static final DockerImageName MARIA_ALPINE = DockerImageName
             .parse("yobasystems/alpine-mariadb")
